@@ -1,0 +1,710 @@
+CLISP(1)               Platform: win32gcc              CLISP(1)
+
+
+
+
+
+[1mNAME[0m
+       clisp - ANSI Common Lisp compiler, interpreter and
+       debugger.
+
+[1mSYNOPSIS[0m
+       [1mclisp [22m[[[1m-h[22m] | [[1m--help[22m]] [[1m--version[22m] [[1m--license[22m]
+             [[1m-help-image[22m] [[1m-B [4m[22mlisp-lib-dir[24m] [[1m-K [4m[22mlinking-set[24m]
+             [[1m-M [4m[22mmem-file[24m] [[1m-m [4m[22mmemory-size[24m] [[1m-L [4m[22mlanguage[24m]
+             [[1m-N [4m[22mlocale-dir[24m] [[1m-E[4m[22mdomain[24m [4mencoding[24m] [[[1m-q[22m] |
+             [[1m--quiet[22m] | [[1m--silent[22m] | [[1m-v[22m] | [[1m--verbose[22m]]
+             [[1m-on-error [4m[22maction[24m] [[1m-repl[22m] [[1m-w[22m] [[1m-I[22m] [[[1m-ansi[22m] |
+             [[1m-traditional[22m]] [[1m-modern[22m] [[1m-p [4m[22mpackage[24m] [[1m-C[22m]
+             [[1m-norc[22m] [[1m-i [4m[22minit-file[24m...]
+             [[1m-c [22m[[1m-l[22m] [4mlisp-file[24m [[1m-o [4m[22moutput-file[24m]...]
+             [[1m-x [4m[22mexpressions[24m...] [[4mlisp-file[24m [[4margument[24m...]]
+
+[1mDESCRIPTION[0m
+       Invokes the [1mCommon Lisp[22m[1] interpreter and compiler.
+       When called without arguments, executes the
+       [4mread-eval-print[24m [4mloop[24m[2], in which expressions are in
+       turn [1mREAD[22m[3] from the standard input, [1mEVAL[22m[4]uated by
+       the lisp interpreter, and their results are [1mPRINT[22m[5]ed
+       to the standard output. Invoked with [1m-c[22m, compiles the
+       specified lisp files to a platform-independent bytecode
+       which can be executed more efficiently.
+
+[1mOPTIONS[0m
+       [1m-h[0m
+       [1m--help[0m
+           Displays a help message on how to invoke [1mCLISP[22m[6].
+
+       [1m--version[0m
+           Displays the [1mCLISP[22m[6] version number, as given by
+           the function [1mLISP-IMPLEMENTATION-VERSION[22m[7], the
+           value of the variable [4m*FEATURES*[24m, as well some other
+           information.
+
+       [1m--license[0m
+           Displays a summary of the licensing information, the
+           [4mGNU[24m[8] [4mGPL[24m[9].
+
+       [1m-help-image[0m
+           Displays information about the memory image being
+           invoked: whether is it suitable for scripting as
+           well as the [1m:DOCUMENTATION [22msupplied to
+           [1mEXT:SAVEINITMEM[22m.
+
+       [1m-B [4m[22mlisp-lib-dir[0m
+           Specifies the installation directory. This is the
+           directory containing the linking sets and other data
+           files. This option is normally not necessary,
+           because the installation directory is already
+           built-in into the [1mclisp [22mexecutable. Directory
+           [4mlisp-lib-dir[24m can be changed dynamically using the
+           [4mSYMBOL-MACRO[24m[10] [4m*LIB-DIRECTORY*[24m.
+
+       [1m-K [4m[22mlinking-set[0m
+           Specifies the linking set to be run. This is a
+           directory (relative to the [4mlisp-lib-dir[24m) containing
+           at least a main executable (runtime) and an initial
+           memory image. Possible values are
+
+           [1mbase[0m
+               the core [1mCLISP[22m[6]
+
+           [1mfull[0m
+               core plus all the modules with which this
+               installation was built, see Section 32.2,
+               "External Modules".
+
+           The default is [1mbase[22m.
+
+       [1m-M [4m[22mmem-file[0m
+           Specifies the initial memory image. This must be a
+           memory dump produced by the [1mEXT:SAVEINITMEM [22mfunction
+           by this [1mclisp [22mruntime.
+
+       [1m-m [4m[22mmemory-size[0m
+           Sets the amount of memory [1mCLISP[22m[6] tries to grab on
+           startup. The amount may be given as
+
+           [4mnnnnnnn[0m
+               measured in bytes
+
+           [4mnnnn[24m[1mK[0m
+           [4mnnnn[24m[1mKB[0m
+               measured in kilobytes
+
+           [4mn[24m[1mM[0m
+           [4mn[24m[1mMB[0m
+               measured in megabytes
+
+           The default is 3 megabytes.  The argument is
+           constrained above 100 KB.
+
+           This version of [1mCLISP[22m[6] is not likely to actually
+           use the entire [4mmemory-size[24m since garbage-collection
+           will periodically reduce the amount of used memory.
+           It is therefore common to specify 10 MB even if only
+           2 MB are going to be used.
+
+       [1m-L [4m[22mlanguage[0m
+           Specifies the language [1mCLISP[22m[6] uses to communicate
+           with the user. This may be one of [1menglish[22m, [1mgerman[22m,
+           [1mfrench[22m, [1mspanish[22m, [1mdutch[22m, [1mrussian[22m, [1mdanish[22m. Other
+           languages may be specified through the [4menvironment[0m
+           [4mvariable[24m[12] [1mLANG[22m, provided the corresponding
+           message catalog is installed.  The language may be
+           changed dynamically using the [4mSYMBOL-MACRO[24m[10]
+           [4mCUSTOM:*CURRENT-LANGUAGE*[24m.
+
+       [1m-N [4m[22mlocale-dir[0m
+           Specifies the base directory of locale files.
+           [1mCLISP[22m[6] will search its message catalogs in
+           [4mlocale-dir/language/LC_MESSAGES/clisp.mo[24m. This
+           directory may be changed dynamically using the
+           [4mSYMBOL-MACRO[24m[10] [4mCUSTOM:*CURRENT-LANGUAGE*[24m.
+
+       [1m-E[4m[22mdomain[24m [4mencoding[0m
+           Specifies the encoding used for the given domain,
+           overriding the default which depends on the
+           [4menvironment[24m [4mvariable[24m[12]s [1mLC_ALL[22m, [1mLC_CTYPE[22m, [1mLANG[22m.
+           [4mdomain[24m can be
+
+           [1mfile[0m
+               affecting [4mCUSTOM:*DEFAULT-FILE-ENCODING*[0m
+
+           [1mpathname[0m
+               affecting [4mCUSTOM:*PATHNAME-ENCODING*[0m
+
+           [1mterminal[0m
+               affecting [4mCUSTOM:*TERMINAL-ENCODING*[0m
+
+           [1mforeign[0m
+               affecting [4mCUSTOM:*FOREIGN-ENCODING*[0m
+
+           [1mmisc[0m
+               affecting [4mCUSTOM:*MISC-ENCODING*[0m
+
+           [4mblank[0m
+               affecting all of the above.
+
+
+           Warning
+           Note that the values of these [4mSYMBOL-MACRO[24m[10]s that
+           have been saved in a memory image are ignored: these
+           [4mSYMBOL-MACRO[24m[10]s are reset based on the OS
+           environment [1mafter [22mthe memory image is loaded. You
+           have to use the RC file, [4mCUSTOM:*INIT-HOOKS*[24m or init
+           function to set them on startup, but it is best to
+           set the aforementioned [4menvironment[24m [4mvariable[24m[12]s
+           appropriately for consistency with other programs.
+           See Section 31.1, "Customizing CLISP Process
+           Initialization and Termination".
+
+       [1m-q[0m
+       [1m--quiet[0m
+       [1m--silent[0m
+       [1m-v[0m
+       [1m--verbose[0m
+           Change verbosity level: by default, [1mCLISP[22m[6]
+           displays a banner at startup and a good-bye message
+           when quitting, and initializes [4m*LOAD-VERBOSE*[24m[13]
+           and [4m*COMPILE-VERBOSE*[24m[14] to [1mT[22m[15], and
+           [4m*LOAD-PRINT*[24m[13] and [4m*COMPILE-PRINT*[24m[14] to [1mNIL[22m[16],
+           as per [ANSI CL standard]. The first [1m-q [22mremoves the
+           banner and the good-bye message, the second sets
+           variables [4m*LOAD-VERBOSE*[24m[13], [4m*COMPILE-VERBOSE*[24m[14]
+           and [4mCUSTOM:*SAVEINITMEM-VERBOSE*[24m to [1mNIL[22m[16]. The
+           first [1m-v [22msets variables
+           [4mCUSTOM:*REPORT-ERROR-PRINT-BACKTRACE*[24m,
+           [4m*LOAD-PRINT*[24m[13] and [4m*COMPILE-PRINT*[24m[14] to [1mT[22m[15],
+           the second sets [4mCUSTOM:*LOAD-ECHO*[24m to [1mT[22m[15]. These
+           settings affect the output produced by [1m-i [22mand [1m-c[0m
+           options. Note that these settings persist into the
+           [4mread-eval-print[24m [4mloop[24m[2]. Repeated [1m-q [22mand [1m-v [22mcancel
+           each other, e.g., [1m-q -q -v -v -v [22mis equivalent to
+           [1m-v[22m.
+
+       [1m-on-error [4m[22maction[0m
+           Override (or force) the batch mode imposed by [1m-c[22m,
+           [1m-x[22m, and [4mlisp-file[24m, depending on [4maction[24m:.PP appease
+               [4mcontinuable[24m[17] [4mERROR[24m[18]s are turned into
+               [4mWARNING[24m[19]s (with [1mEXT:APPEASE-CERRORS[22m) other
+               [4mERROR[24m[18]s are handled in the default way
+
+           debug
+               [4mERROR[24m[18]s [1mINVOKE-DEBUGGER[22m[20] (the normal
+               [4mread-eval-print[24m [4mloop[24m[2] behavior)
+
+           abort
+               [4mcontinuable[24m[17] [4mERROR[24m[18]s are appeased, other
+               [4mERROR[24m[18]s are [1mABORT[22m[21]ed with
+               [1mEXT:ABORT-ON-ERROR[0m
+
+           exit
+               [4mcontinuable[24m[17] [4mERROR[24m[18]s are appeased, other
+               [4mERROR[24m[18]s terminate [1mCLISP[22m[6] with
+               [1mEXT:EXIT-ON-ERROR[0m
+
+           See also [1mEXT:SET-GLOBAL-HANDLER[22m.
+
+       [1m-repl[0m
+           Start an interactive [4mread-eval-print[24m [4mloop[24m[2] after
+           processing the [1m-c[22m, [1m-x[22m, and [4mlisp-file[24m options and on
+           any [4mERROR[24m[18] [1mSIGNAL[22m[22]ed during that processing.
+
+       [1m-w[0m
+           Wait for a keypress after program termination.
+
+       [1m-I[0m
+           Interact better with [4mEmacs[24m[23] (useful when running
+           [1mCLISP[22m[6] under [4mEmacs[24m[23] using [4mSLIME[24m[24], [4mILISP[24m[25]
+           et al). With this option, [1mCLISP[22m[6] interacts in a
+           way that [4mEmacs[24m[23] can deal with:
+
+           +o   unnecessary prompts are not suppressed.
+
+           +o   The [4mGNU[24m[8] [4mreadline[24m[26] library treats TAB (see
+               TAB key) as a normal self-inserting character
+               (see Q: A.4.5).
+
+       [1m-ansi[0m
+           Comply with the [ANSI CL standard] specification
+           even where [1mCLISP[22m[6] has been traditionally different
+           by setting the [4mSYMBOL-MACRO[24m[10] [4mCUSTOM:*ANSI*[24m to
+           [1mT[22m[15].
+
+       [1m-traditional[0m
+           Traditional: reverses the residual effects of [1m-ansi[0m
+           in the saved memory image.
+
+       [1m-modern[0m
+           Provides a modern view of symbols: at startup the
+           [4m*PACKAGE*[24m[27] variable will be set to the
+           "CS-COMMON-LISP-USER" package, and the
+           [4m*PRINT-CASE*[24m[28] will be set to [1m:DOWNCASE[22m. This has
+           the effect that symbol lookup is case-sensitive
+           (except for keywords and old-style packages) and
+           that keywords and uninterned symbols are printed
+           with lower-case preferrence. See Section 11.4,
+           "Package Case-Sensitivity".
+
+       [1m-p [4m[22mpackage[0m
+           At startup the value of the variable [4m*PACKAGE*[24m[27]
+           will be set to the package named [4mpackage[24m. The
+           default is the value of [4m*PACKAGE*[24m[27] when the image
+           was saved, normally [4m"COMMON-LISP-USER"[24m[29].
+
+       [1m-C[0m
+           Compile when loading: at startup the value of the
+           variable [4mCUSTOM:*LOAD-COMPILING*[24m will be set to
+           [1mT[22m[15]. Code being [1mLOAD[22m[30]ed will then be
+           [1mCOMPILE[22m[31]d on the fly. This results in slower
+           loading, but faster execution.
+
+       [1m-norc[0m
+           Normally [1mCLISP[22m[6] loads the user [4m"run[24m [4mcontrol"[0m
+           [4m(RC)[24m[32] file on startup (this happens [1mafter [22mthe [1m-C[0m
+           option is processed). The file loaded is
+           [4m.clisprc.lisp[24m or [4m.clisprc.fas[24m in the home directory
+           [1mUSER-HOMEDIR-PATHNAME[22m[33], whichever is newer. This
+           option, [1m-norc[22m, prevents loading of the RC file.
+
+       [1m-i [4m[22minit-file[0m
+           Specifies initialization files to be [1mLOAD[22m[30]ed at
+           startup. These should be lisp files (source or
+           compiled). Several [1m-i [22moptions can be given; all the
+           specified files will be loaded in order.
+
+       [1m-c [4m[22mlisp-file[0m
+           Compiles the specified [4mlisp-file[24ms to bytecode
+           ([4m*.fas[24m). The compiled files can then be [1mLOAD[22m[30]ed
+           instead of the sources to gain efficiency.
+
+       [1m-o [4m[22moutputfile[0m
+           Specifies the output file or directory for the
+           compilation of the last specified [4mlisp-file[24m.
+
+       [1m-l[0m
+           Produce a bytecode [1mDISASSEMBLE[22m[34] listing ([4m*.lis[24m)
+           of the files being compiled. Useful only for
+           debugging. See Section 24.1.1, "Function COMPILE-
+           FILE" for details.
+
+       [1m-x [4m[22mexpressions[0m
+           Executes a series of arbitrary expressions instead
+           of a [4mread-eval-print[24m [4mloop[24m[2]. The values of the
+           expressions will be output to [4m*STANDARD-OUTPUT*[24m[35].
+           Due to the argument processing done by the shell,
+           the [4mexpressions[24m must be enclosed in double quotes,
+           and double quotes and backslashes must be escaped
+           with backslashes.
+
+       [4mlisp-file[24m [ [4margument[24m ... ]
+           Loads and executes a [4mlisp-file[24m, as described in
+           Script execution. There will be no [4mread-eval-print[0m
+           [4mloop[24m[2]. Before [4mlisp-file[24m is loaded, the variable
+           [4mEXT:*ARGS*[24m will be bound to a list of strings,
+           representing the [4margument[24ms.  If [4mlisp-file[24m is [1m-[22m, the
+           [4m*STANDARD-INPUT*[24m[35] is used instead of a file.
+
+           This option is [4mdisabled[24m if the memory image was
+           created by [1mEXT:SAVEINITMEM [22mwith [1mNIL[22m[16] [1m:SCRIPT[0m
+           argument. In that case the [4mLIST[24m[36] [4mEXT:*ARGS*[0m
+           starts with [4mlisp-file[24m.
+
+           This option must be the last one.
+
+           No RC file will be executed.
+
+       As usual, [1m-- [22mstops option processing and places all
+       remaining command line arguments into [4mEXT:*ARGS*[24m.
+
+[1mLANGUAGE REFERENCE[0m
+       The language implemented is [4mANSI[38][24m[37] [1mCommon Lisp[22m[1].
+       The implementation mostly conforms to the ANSI Common
+       Lisp standard, see Section 31.10, "Maximum ANSI CL
+       compliance".
+
+       [ANSI CL] ANSI CL standard1994. ANSI Common Lisp
+       standard X3.226-1994 - [4mInformation[24m [4mTechnology[24m [4m-[0m
+       [4mProgramming[24m [4mLanguage[24m [4m-[24m [4mCommon[24m [4mLisp[24m[39].
+
+[1mUSAGE[0m
+       help
+           get context-sensitive on-line help, see Chapter 25,
+           Environment [CLHS-25].
+
+       ([1mAPROPOS [4m[22mname[24m)
+           list the [4mSYMBOL[24m[40]s matching [4mname[24m.
+
+       ([1mDESCRIBE [4m[22msymbol[24m)
+           describe the [4msymbol[24m.
+
+       (exit)
+       (quit)
+       (bye)
+           quit [1mCLISP[22m[6].
+
+       EOF (Control+Z on [4mWin32[24m[42])
+           leave the current level of the [4mread-eval-print[0m
+           [4mloop[24m[2] (see also Section 1.1, "Special Symbols
+           [CLHS-1.4.1.3]").
+
+       arrow keys
+           for editing and viewing the input history, using the
+           [4mGNU[24m[8] [4mreadline[24m[26] library.
+
+       TAB key
+           Context sensitive:
+
+           +o   If you are in the "function position" (in the
+               first symbol after an opening paren or in the
+               first symbol after a [4m#'[24m[43]), the completion is
+               limited to the symbols that name functions.
+
+           +o   If you are in the "filename position" (inside a
+               string after [4m#P[24m[44]), the completion is done
+               across file names, [4mbash[24m[45]-style.
+
+           +o   If you have not typed anything yet, you will get
+               a help message, as if by the [1mHelp [22mcommand.
+
+           +o   If you have not started typing the next symbol
+               (i.e., you are at a whitespace), the current
+               function or macro is [1mDESCRIBE[22md.
+
+           +o   Otherwise, the symbol you are currently typing
+               is completed.
+
+
+
+[1mFILES[0m
+       [1mclisp.exe[0m
+           startup driver (executable)
+
+       [4mlisp.run[0m
+       [4mlisp.exe[0m
+           main executable (runtime)
+
+       [4mlispinit.mem[0m
+           initial memory image
+
+       [4mconfig.lisp[0m
+           site-dependent configuration (should have been
+           customized before [1mCLISP[22m[6] was built); see
+           Section 31.12, "Customizing CLISP behavior"
+
+       [4m*.lisp[0m
+           lisp source
+
+       [4m*.fas[0m
+           lisp code, compiled by [1mCLISP[22m[6]
+
+       [4m*.lib[0m
+           lisp source library information, generated by
+           [1mCOMPILE-FILE[22m, see Section 24.1.3, "Function
+           REQUIRE".
+
+       [4m*.c[0m
+           C code, compiled from lisp source by [1mCLISP[22m[6] (see
+           Section 32.3, "The Foreign Function Call Facility")
+
+       For the [1mCLISP[22m[6] source files, see Chapter 34, The
+       source files of CLISP.
+
+[1mENVIRONMENT[0m
+       All [4menvironment[24m [4mvariable[24m[12]s that [1mCLISP[22m[6] uses are
+       read at most once.
+
+       [1mCLISP_LANGUAGE[0m
+           specifies the language [1mCLISP[22m[6] uses to communicate
+           with the user. The legal values are identical to
+           those of the [1m-L [22moption which can be used to override
+           this [4menvironment[24m [4mvariable[24m[12].
+
+       [1mLC_CTYPE[0m
+           specifies the locale which determines the character
+           set in use. The value can be of the form [4mlanguage[24m or
+           [4mlanguage[24m[1m_[4m[22mcountry[24m or [4mlanguage[24m[1m_[4m[22mcountry[24m[1m.[4m[22mcharset[24m, where
+           [4mlanguage[24m is a two-letter ISO 639 language code
+           (lower case), [4mcountry[24m is a two-letter ISO 3166
+           country code (upper case).  [4mcharset[24m is an optional
+           character set specification, and needs normally not
+           be given because the character set can be inferred
+           from the language and country. This [4menvironment[0m
+           [4mvariable[24m[12] can be overridden with the [1m-Edomain[0m
+           [1mencoding [22moption.
+
+       [1mLANG[0m
+           specifies the language [1mCLISP[22m[6] uses to communicate
+           with the user, unless it is already specified
+           through the [4menvironment[24m [4mvariable[24m[12] [1mCLISP_LANGUAGE[0m
+           or the [1m-L [22moption.  It also specifies the locale
+           determining the character set in use, unless already
+           specified through the [4menvironment[24m [4mvariable[24m[12]
+           [1mLC_CTYPE[22m.  The value may begin with a two-letter ISO
+           639 language code, for example [1men[22m, [1mde[22m, [1mfr[22m.
+
+       [1mSHELL[0m
+       [1mCOMSPEC[0m
+           is used to find the interactive command interpreter
+           called by [1mEXT:SHELL[22m.
+
+       [1mORGANIZATION[0m
+           for [1mSHORT-SITE-NAME[22m[46] and [1mLONG-SITE-NAME[22m[46] in
+           [4mconfig.lisp[24m.
+
+       [1mCLHSROOT[0m
+           for [1mCUSTOM:CLHS-ROOT [22min [4mconfig.lisp[24m.
+
+       [1mIMPNOTES[0m
+           for [1mCUSTOM:IMPNOTES-ROOT [22min [4mconfig.lisp[24m.
+
+       [1mEDITOR[0m
+           for [1meditor-name [22min [4mconfig.lisp[24m.
+
+       [1mLOGICAL_HOST_[4m[22mhost[24m[1m_FROM[0m
+       [1mLOGICAL_HOST_[4m[22mhost[24m[1m_TO[0m
+       [1mLOGICAL_HOST_[4m[22mhost[0m
+           for
+           [4mCUSTOM:*LOAD-LOGICAL-PATHNAME-TRANSLATIONS-DATABASE*[0m
+
+[1mSEE ALSO[0m
+           CLISP impnotes
+
+           [1mCMU CL[22m[47] - [1mcmucl[22m(1)
+
+           [4mEmacs[24m[23] - [1memacs[22m(1)
+
+           [4mXEmacs[24m[48] - [1mxemacs[22m(1)
+
+[1mBUGS[0m
+       When you encounter a bug in [1mCLISP[22m[6] or in its
+       documentation (this manual page or CLISP impnotes),
+       please report it to the [1mCLISP[22m[6] [4mSourceForge[24m [4mbug[0m
+       [4mtracker[24m[49].
+
+       [4mBefore[24m submitting a bug report, please take the
+       following basic steps to make the report more useful:
+
+        1.  Please do a clean build (remove your build
+           directory and build [1mCLISP[22m[6] with [1m./configure[0m
+           [1m--build build [22mor at least do a [1mmake distclean [22mbefore
+           [1mmake[22m).
+
+        2.  If you are reporting a "hard crash" (segmentation
+           fault, bus error, core dump etc), please do
+           [1m./configure --with-debug --build build-g ; cd[0m
+           [1mbuild-g; gdb lisp.run[22m, then load the appropriate
+           linking set by either [1mbase [22mor [1mfull gdb[22m[50] command,
+           and report the backtrace (see also Q: A.1.1.10).
+
+        3.  If you are using pre-built binaries and experience
+           a hard crash, the problem is likely to be in the
+           incompatibilities between the platform on which the
+           binary was built and yours; please try compiling the
+           sources and report the problem if it persists.
+
+       When submitting a bug report, please specify the
+       following information:
+
+        1.  What is your platform ([1muname -a [22mon a [1mUNIX[22m[41]
+           system)? Compiler version?  [4mGNU[24m[8] [4mlibc[24m[51] version
+           (on [4mGNU[24m[8]/[4mLinux[24m[52])?
+
+        2.  Where did you get the sources or binaries? When?
+           (Absolute dates - like "2006-01-17" - are preferred
+           over the relative ones - like "2 days ago").
+
+        3.  How did you build [1mCLISP[22m[6]? (What command, options
+           &c.)
+
+        4.  What is the output of [1mclisp --version[22m?
+
+        5.  Please supply the full output (copy and paste) of
+           all the error messages, as well as detailed
+           instructions on how to reproduce them.
+
+[1mPROJECTS[0m
+       +o   Enhance the compiler so that it can inline local
+           functions.
+
+       +o   Add Multi-Threading capabilities, via OS threads.
+
+[1mAUTHORS[0m
+       [1mBruno Haible [22m<[4mhttp://www.haible.de/bruno/[24m>
+           Author.
+
+       [1mMichael Stoll [22m<[4mhttp://www.faculty.iu-bremen.de/mstoll/[24m>
+           Author.
+
+       [1mSam Steingold [22m<[4mhttp://sds.podval.org/[24m>
+           Author.
+
+       [1mSee [4m[22mCOPYRIGHT[24m (file in the CLISP sources)  for the list
+       of other contributors and the license.
+
+[1mCOPYRIGHT[0m
+       Copyright (C) 1992-2008 Bruno Haible
+       Copyright (C) 1998-2008 Sam Steingold
+
+[1mNOTES[0m
+        1. [1mCommon Lisp[0m
+           http://www.lisp.org
+
+        2. read-eval-print loop
+           http://www.lisp.org/HyperSpec/Body/sec_25-1-1.html
+
+        3. [1mREAD[0m
+           http://www.lisp.org/HyperSpec/Body/fun_readcm_re_g-whitespace.html
+
+        4. [1mEVAL[0m
+           http://www.lisp.org/HyperSpec/Body/fun_eval.html
+
+        5. [1mPRINT[0m
+           http://www.lisp.org/HyperSpec/Body/fun_writecm_p_rintcm_princ.html
+
+        6. [1mCLISP[0m
+           http://clisp.cons.org
+
+        7. [1mLISP-IMPLEMENTATION-VERSION[0m
+           http://www.lisp.org/HyperSpec/Body/fun_lisp-impl_tion-version.html
+
+        8. GNU
+           http://www.gnu.org
+
+        9. GPL
+           http://www.gnu.org/copyleft/gpl.html
+
+       10. SYMBOL-MACRO
+           http://www.lisp.org/HyperSpec/Body/mac_define-symbol-macro.html
+
+       11. [1mgzip[0m
+           http://www.gzip.org/
+
+       12. environment variable
+           basedefs/xbd_chap08.html
+
+       13. [4m*LOAD-VERBOSE*[0m
+           http://www.lisp.org/HyperSpec/Body/var_stload-pr_ad-verbosest.html
+
+       14. [4m*COMPILE-VERBOSE*[0m
+           http://www.lisp.org/HyperSpec/Body/var_stcompile_le-verbosest.html
+
+       15. [1mT[0m
+           http://www.lisp.org/HyperSpec/Body/convar_t.html
+
+       16. [1mNIL[0m
+           http://www.lisp.org/HyperSpec/Body/convar_nil.html
+
+       17. continuable
+           http://www.lisp.org/HyperSpec/Body/glo_c.html#continuable
+
+       18. ERROR
+           http://www.lisp.org/HyperSpec/Body/contyp_error.html
+
+       19. WARNING
+           http://www.lisp.org/HyperSpec/Body/contyp_warning.html
+
+       20. [1mINVOKE-DEBUGGER[0m
+           http://www.lisp.org/HyperSpec/Body/fun_invoke-debugger.html
+
+       21. [1mABORT[0m
+           http://www.lisp.org/HyperSpec/Body/fun_abortcm_c_cm_use-value.html
+
+       22. [1mSIGNAL[0m
+           http://www.lisp.org/HyperSpec/Body/fun_signal.html
+
+       23. Emacs
+           http://www.gnu.org/software/emacs/
+
+       24. SLIME
+           http://common-lisp.net/project/slime/
+
+       25. ILISP
+           http://sourceforge.net/projects/ilisp/
+
+       26. readline
+           http://cnswww.cns.cwru.edu/~chet/readline/rltop.html
+
+       27. [4m*PACKAGE*[0m
+           http://www.lisp.org/HyperSpec/Body/var_stpackagest.html
+
+       28. [4m*PRINT-CASE*[0m
+           http://www.lisp.org/HyperSpec/Body/var_stprint-casest.html
+
+       29. "COMMON-LISP-USER"
+           http://www.lisp.org/HyperSpec/Body/sec_11-1-2-2.html
+
+       30. [1mLOAD[0m
+           http://www.lisp.org/HyperSpec/Body/fun_load.html
+
+       31. [1mCOMPILE[0m
+           http://www.lisp.org/HyperSpec/Body/fun_compile.html
+
+       32. "run
+                control" (RC)
+           http://www.faqs.org/docs/artu/ch10s03.html
+
+       33. [1mUSER-HOMEDIR-PATHNAME[0m
+           http://www.lisp.org/HyperSpec/Body/fun_user-homedir-pathname.html
+
+       34. [1mDISASSEMBLE[0m
+           http://www.lisp.org/HyperSpec/Body/fun_disassemble.html
+
+       35. [4m*STANDARD-OUTPUT*[0m
+           http://www.lisp.org/HyperSpec/Body/var_stdebug-i_ace-outputst.html
+
+       36. LIST
+           http://www.lisp.org/HyperSpec/Body/syscla_list.html
+
+       37. ANSI
+           http://www.ansi.org/
+
+       38. The American National Standards Institute
+
+       39. Information Technology - Programming Language -
+           Common Lisp
+           http://www.ncits.org/tc_home/j13sd4.htm
+
+       40. SYMBOL
+           http://www.lisp.org/HyperSpec/Body/syscla_symbol.html
+
+       41. [1mUNIX[0m
+           http://www.UNIX-systems.org/online.html
+
+       42. [4mWin32[0m
+           http://winehq.com/
+
+       43. #'
+           http://www.lisp.org/HyperSpec/Body/sec_2-4-8-2.html
+
+       44. #P
+           http://www.lisp.org/HyperSpec/Body/sec_2-4-8-14.html
+
+       45. bash
+           http://www.gnu.org/software/bash/
+
+       46. [1mSHORT-SITE-NAME[0m
+           http://www.lisp.org/HyperSpec/Body/fun_short-sit_ng-site-name.html
+
+       47. [1mCMU CL[0m
+           http://www.cons.org/cmucl/
+
+       48. XEmacs
+           http://www.xemacs.org
+
+       49. SourceForge bug tracker
+           http://sourceforge.net/tracker/?func=add&group_id=1355&atid=101355
+
+       50. [1mgdb[0m
+           http://sources.redhat.com/gdb/
+
+       51. libc
+           http://www.gnu.org/software/libc/
+
+       52. [4mLinux[0m
+           http://www.linux.org/
+
+
+
+CLISP 2.44         Last modified: 2008-01-30           CLISP(1)

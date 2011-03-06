@@ -1,0 +1,26 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 10.00
+# Visual C++ Express 2008
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "OgreTut1", "OgreTut1\OgreTut1.vcproj", "{D8D44B8C-6A0D-48B3-A1FB-423BDC588D45}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "TestOgreDLL", "TestOgreDLL\TestOgreDLL.vcproj", "{44756049-BD80-4A62-B116-23A34C94EFC3}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Win32 = Debug|Win32
+		Release|Win32 = Release|Win32
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{D8D44B8C-6A0D-48B3-A1FB-423BDC588D45}.Debug|Win32.ActiveCfg = Debug|Win32
+		{D8D44B8C-6A0D-48B3-A1FB-423BDC588D45}.Debug|Win32.Build.0 = Debug|Win32
+		{D8D44B8C-6A0D-48B3-A1FB-423BDC588D45}.Release|Win32.ActiveCfg = Release|Win32
+		{D8D44B8C-6A0D-48B3-A1FB-423BDC588D45}.Release|Win32.Build.0 = Release|Win32
+		{44756049-BD80-4A62-B116-23A34C94EFC3}.Debug|Win32.ActiveCfg = Debug|Win32
+		{44756049-BD80-4A62-B116-23A34C94EFC3}.Debug|Win32.Build.0 = Debug|Win32
+		{44756049-BD80-4A62-B116-23A34C94EFC3}.Release|Win32.ActiveCfg = Release|Win32
+		{44756049-BD80-4A62-B116-23A34C94EFC3}.Release|Win32.Build.0 = Release|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

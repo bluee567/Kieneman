@@ -1,0 +1,28 @@
+material Body
+{
+	receive_shadows on
+	technique
+	{
+		pass
+		{
+			ambient 0.500000 0.500000 0.500000 1.000000
+			diffuse 0.508235 0.605490 0.781176 1.000000
+			specular 0.100000 0.100000 0.100000 1.000000 12.500000
+			emissive 0.000000 0.000000 0.000000 1.000000
+		}
+	}
+}
+material Pupil
+{
+	receive_shadows on
+	technique
+	{
+		pass
+		{
+			ambient 0.500000 0.500000 0.500000 1.000000
+			diffuse 0.000000 0.000000 0.000000 1.000000
+			specular 1.000000 1.000000 1.000000 1.000000 49.500000
+			emissive 0.000000 0.000000 0.000000 1.000000
+		}
+	}
+}

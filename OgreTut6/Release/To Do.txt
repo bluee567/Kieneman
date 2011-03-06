@@ -1,0 +1,6 @@
+Adjust default hitboxes.
+Allow quitting when not running under emacs.
+Slow and reduce the magnitude of the idle animation.
+Adjust jab feinting.
+Swap, direction-symbol and forward-symbol.
+Memory hogs: States and key-buffer copying.

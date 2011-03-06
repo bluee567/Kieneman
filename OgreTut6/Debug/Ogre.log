@@ -1,0 +1,69 @@
+21:01:06: Creating resource group General
+21:01:06: Creating resource group Internal
+21:01:06: Creating resource group Autodetect
+21:01:06: SceneManagerFactory for type 'DefaultSceneManager' registered.
+21:01:06: Registering ResourceManager for type Material
+21:01:06: Registering ResourceManager for type Mesh
+21:01:06: Registering ResourceManager for type Skeleton
+21:01:06: MovableObjectFactory for type 'ParticleSystem' registered.
+21:01:06: OverlayElementFactory for type Panel registered.
+21:01:06: OverlayElementFactory for type BorderPanel registered.
+21:01:06: OverlayElementFactory for type TextArea registered.
+21:01:06: Registering ResourceManager for type Font
+21:01:06: ArchiveFactory for archive type FileSystem registered.
+21:01:06: ArchiveFactory for archive type Zip registered.
+21:01:06: FreeImage version: 3.10.0
+21:01:06: This program uses FreeImage, a free, open source image library supporting all common bitmap formats. See http://freeimage.sourceforge.net for details
+21:01:06: Supported formats: bmp,ico,jpg,jif,jpeg,jpe,jng,koa,iff,lbm,mng,pbm,pbm,pcd,pcx,pgm,pgm,png,ppm,ppm,ras,tga,targa,tif,tiff,wap,wbmp,wbm,psd,cut,xbm,xpm,gif,hdr,g3,sgi,exr,j2k,j2c,jp2
+21:01:06: DDS codec registering
+21:01:06: Registering ResourceManager for type HighLevelGpuProgram
+21:01:06: Registering ResourceManager for type Compositor
+21:01:06: MovableObjectFactory for type 'Entity' registered.
+21:01:06: MovableObjectFactory for type 'Light' registered.
+21:01:06: MovableObjectFactory for type 'BillboardSet' registered.
+21:01:06: MovableObjectFactory for type 'ManualObject' registered.
+21:01:06: MovableObjectFactory for type 'BillboardChain' registered.
+21:01:06: MovableObjectFactory for type 'RibbonTrail' registered.
+21:01:06: Loading library .\RenderSystem_Direct3D9_d
+21:01:07: Installing plugin: D3D9 RenderSystem
+21:01:07: D3D9 : Direct3D9 Rendering Subsystem created.
+21:01:07: D3D9: Driver Detection Starts
+21:01:07: D3D9: Driver Detection Ends
+21:01:07: Plugin successfully installed
+21:01:07: Loading library .\RenderSystem_GL_d
+21:01:07: Installing plugin: GL RenderSystem
+21:01:07: OpenGL Rendering Subsystem created.
+21:01:08: Plugin successfully installed
+21:01:08: *-*-* OGRE Initialising
+21:01:08: *-*-* Version 1.4.9 (Eihort)
+21:01:08: Creating resource group Bootstrap
+21:01:08: Added resource location '../resources/OgreCore.zip' of type 'Zip' to resource group 'Bootstrap'
+21:01:08: Added resource location 'C:/OgreSDK/media' of type 'FileSystem' to resource group 'General'
+21:01:08: Added resource location 'C:/OgreSDK/media/fonts' of type 'FileSystem' to resource group 'General'
+21:01:08: Added resource location 'C:/OgreSDK/media/materials/programs' of type 'FileSystem' to resource group 'General'
+21:01:08: Added resource location 'C:/OgreSDK/media/materials/scripts' of type 'FileSystem' to resource group 'General'
+21:01:08: Added resource location 'C:/OgreSDK/media/materials/textures' of type 'FileSystem' to resource group 'General'
+21:01:08: Added resource location 'C:/OgreSDK/media/models' of type 'FileSystem' to resource group 'General'
+21:01:08: D3D9 : RenderSystem Option: Allow NVPerfHUD = No
+21:01:08: D3D9 : RenderSystem Option: Anti aliasing = None
+21:01:08: D3D9 : RenderSystem Option: Floating-point mode = Fastest
+21:01:08: D3D9 : RenderSystem Option: Full Screen = Yes
+21:01:08: D3D9 : RenderSystem Option: Rendering Device = NVIDIA GeForce 8800 GT
+21:01:08: D3D9 : RenderSystem Option: VSync = No
+21:01:08: D3D9 : RenderSystem Option: Video Mode = 800 x 600 @ 32-bit colour
+21:01:12: *-*-* OGRE Shutdown
+21:01:12: Unregistering ResourceManager for type Compositor
+21:01:12: Unregistering ResourceManager for type Font
+21:01:12: Unregistering ResourceManager for type Skeleton
+21:01:12: Unregistering ResourceManager for type Mesh
+21:01:12: Unregistering ResourceManager for type HighLevelGpuProgram
+21:01:12: Uninstalling plugin: GL RenderSystem
+21:01:12: *** Stopping Win32GL Subsystem ***
+21:01:12: Plugin successfully uninstalled
+21:01:12: Unloading library .\RenderSystem_GL_d
+21:01:12: Uninstalling plugin: D3D9 RenderSystem
+21:01:12: D3D9 : Shutting down cleanly.
+21:01:12: D3D9 : Direct3D9 Rendering Subsystem destroyed.
+21:01:12: Plugin successfully uninstalled
+21:01:12: Unloading library .\RenderSystem_Direct3D9_d
+21:01:12: Unregistering ResourceManager for type Material
