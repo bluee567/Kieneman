@@ -68,6 +68,7 @@
 
 (def-call-out return-dir
   (:name "returnDir")
+  (:arguments (joystick int))
   (:return-type int))
 
 (def-call-out slider-val
@@ -113,7 +114,7 @@ corresponding to kc is held down."
 (defun get-direction-input-func (direction joystick)
   "Returns a function which returns true if the pad/stick key
 corresponding to kc is held down."
-  (λ (= (boole boole-and (return-dir) direction) direction)))
+  (λ (= (boole boole-and (return-dir joystick) direction) direction)))
 
 (defparameter *slider-max-val* 100)
 
@@ -175,12 +176,12 @@ corresponding to kc is held down."
 ;; neither logical left or logical right (or up/down) are being pressed, though both
 ;; buttons may be physically held down.
 
-(defun get-key-state (key state-key)
+(defun get-key-state (key state-key &optional (keymap *keymap*))
   "
 NOTE: keymap is a dynamic variable and hence a keymap
 variable must be lexicaly bound at the point of invocation."
   (flet ((call-func (sym)
-		    (getf (getf *keymap* sym) state-key)))
+		    (getf (getf keymap sym) state-key)))
    (cond
     ((eql key :left)
      (and (not (call-func :r-right))
@@ -202,19 +203,28 @@ variable must be lexicaly bound at the point of invocation."
    
     (t (getf (getf *keymap* key) state-key)))))
 
-(defun get-held (key)
+(defun get-keymap ()
+  *keymap*)
+
+(defmacro with-keymap (km &body body)
+  `(let ((*keymap* ,km))
+     ,@body))
+
+(defun get-held (key &optional (keymap *keymap*) (not-past t))
   "Calls the corresponding 'held' func from the current keymap."
-  (get-key-state key :current-state))
+  (if not-past
+      (get-key-state key :current-state keymap)
+    (get-key-state key :prev-state keymap)))
 
-(defun get-pressed (key)
+(defun get-pressed (key &optional (keymap *keymap*))
   (and
-   (get-key-state key :current-state)
-   (not (get-key-state key :prev-state))))
+   (get-key-state key :current-state keymap)
+   (not (get-key-state key :prev-state keymap))))
 
-(defun get-released (key)
+(defun get-released (key &optional (keymap *keymap*))
   (and
-   (get-key-state key :prev-state)
-   (not (get-key-state key :current-state))))
+   (get-key-state key :prev-state keymap)
+   (not (get-key-state key :current-state keymap))))
 
 (defun get-label (key)
   "Gets the lable of the key in the current keymap.
@@ -222,14 +232,25 @@ NOTE: keymap is a dynamic variable and hence a keymap
 variable must be lexicaly bound at the point of invocation."
   (getf (getf *keymap* key) :label))
 
-(defun get-numeric (key)
+(defun convert-to-numeric (raw-val)
+  (cond
+   ((numberp raw-val) raw-val)
+   ((not raw-val) 0.0)
+   (t 1.0)))
+
+(defun get-numeric (key &optional (keymap *keymap*) (not-past t))
   "Returns an interpritation of the numeric value of an
 axis or button."
-  (let* ((raw-val (get-key-state key :current-state)))
-    (cond
-     ((numberp raw-val) raw-val)
-     ((not raw-val) 0.0)
-     (t 1.0))))
+  (let* ((raw-val (if not-past
+		      (get-key-state key :current-state keymap)
+		    (get-key-state key :prev-state keymap))))
+    (convert-to-numeric raw-val)))
+
+(defun get-past-numeric (key &optional (keymap *keymap*))
+  "Returns an interpritation of the numeric value of an
+axis or button."
+  (let* ((raw-val (get-key-state key :prev-state keymap)))
+    (convert-to-numeric raw-val)))
 
 (defun get-change (key)
   (let* ((raw-current-val (get-key-state key :current-state))
@@ -244,6 +265,45 @@ axis or button."
 		    (t 1.0))))
     (- current-val prev-val)))
 
+(defun get-butterfly-angle (&optional (keymap *keymap*) (not-past t))
+  "The 'butterfly angle' is the angle the stick faces such that
+the bottom position of the stick counts as the angle 0, and the
+topmost position is the angle PI. The side that the stick rests on
+makes no diffrence to this angle, though an x-axis neutral stick will
+give an angle of either 0, nil (in the case that both x and y axis
+are neutral) or PI.
+RETURNS: nil or a value between 0.0 and PI inclusive."
+  (let ((x-axis (if (get-held :right keymap not-past) (get-numeric :right keymap not-past) (if (get-held :left keymap not-past) (get-numeric :left keymap not-past) 0.0)))
+	(y-axis (if (get-held :up keymap not-past) (- (get-numeric :up keymap not-past)) (if (get-held :down keymap not-past) (get-numeric :down keymap not-past) 0.0))))
+   (if (or (not (equal 0.0 x-axis)) (not (equal 0.0 y-axis)))
+       (atan x-axis y-axis)
+     nil)))
+
+;;Note: This function currently returns the SQUARE of the distance as opposed to the distance itself.
+(defun get-axis-dist (&optional (keymap *keymap*) (not-past t))
+  "The distance from the center of the stick's axis."
+  (let* ((x-axis (if (get-held :right keymap not-past) (get-numeric :right keymap not-past) (if (get-held :left keymap not-past) (get-numeric :left keymap not-past) 0.0)))
+	 (y-axis (if (get-held :up keymap not-past) (- (get-numeric :up keymap not-past)) (if (get-held :down keymap not-past) (get-numeric :down keymap not-past) 0.0)))
+	 (ret-val (+ (* x-axis x-axis) (* y-axis y-axis))))
+    (format t "~&x:~a y:~a" x-axis y-axis)
+    (if (<= ret-val 1.0) ret-val 1.0)))
+
+(defun get-in-region (&key (min-butterfly 0.0) (max-butterfly pi) (min-axis-dist 0.0) (max-axis-dist 2.0) (keymap *keymap*))
+  "Returns true if the joystick is currently in the joystick region inclusively defined by the four values
+passed to this function."
+  (and (get-butterfly-angle keymap) (<= min-butterfly (get-butterfly-angle keymap) max-butterfly) (<= min-axis-dist (get-axis-dist keymap) max-axis-dist)))
+
+(defun get-region-entered (&key (min-butterfly 0.0) (max-butterfly pi) (min-axis-dist 0.0) (max-axis-dist 2.0) (keymap *keymap*))
+  "Returns true if the joystick region inclusively defined by the four values has been entered in the current frame."
+  (and
+   (and (get-butterfly-angle keymap) (<= min-butterfly (get-butterfly-angle keymap) max-butterfly) (<= min-axis-dist (get-axis-dist keymap) max-axis-dist))
+   (not (and (get-butterfly-angle keymap nil) (<= min-butterfly (get-butterfly-angle keymap nil) max-butterfly) (<= min-axis-dist (get-axis-dist keymap nil) max-axis-dist)))))
+
+(defun region-entered-from-center (&key (min-butterfly 0.0) (max-butterfly pi) (min-axis-dist 0.0) (max-axis-dist 2.0) (keymap *keymap*))
+  "Returns true if the joystick region inclusively defined by the four values has been entered in the current frame."
+  (and
+   (and (get-butterfly-angle keymap) (<= min-butterfly (get-butterfly-angle keymap) max-butterfly) (<= min-axis-dist (get-axis-dist keymap) max-axis-dist))
+   (not (<= min-axis-dist (get-axis-dist keymap nil) max-axis-dist))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; INPUT CONFIGURATIONS

@@ -21,12 +21,14 @@
 
 (defvar *frame-delay* 0.0)
 
+(defparameter *stage-width* 300.0f0);The max positive and negative values a player's x value can be.
+
 (defun add-actor (actor)
   (push actor *actor-list*))
 
 (def-call-out setup-background
   (:name "setupBackground")
-  (:arguments (cptr scene-manager)(cptr viewport))
+  (:arguments (cptr scene-manager) (cptr viewport) (width single-float))
   (:return-type nil))
 
 (def-call-out set-hp-bar-value
@@ -36,7 +38,7 @@
 
 (def-call-out set-text-area
  (:name "setTextArea")
- (:arguments (text c-string)(bar int)))
+ (:arguments (text c-string) (bar int)))
 
 (defun setup-rendering ()
   (let (vp light)
@@ -51,7 +53,7 @@
    (set-aspect-to-viewport *cam* vp)
    
    (set-ambient-light *mgr* 0f5 0f5 0f5 1f0)   
-   (setup-background *mgr* vp)
+   (setup-background *mgr* vp *stage-width*)
   
    (setf light (create-light *mgr* "Light1"))
    (set-lt-type light 0)
@@ -176,5 +178,3 @@
 (start-system)
 (setup-rendering)
 (start-io)
-
-(defparameter *stage-width* 300.0f0);The max positive and negative values a player's x value can be.

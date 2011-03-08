@@ -73,25 +73,25 @@
     #Y(#:|16 93 (DEFSTATE "idle" :SLOTS ...)-5-1|
        #15Y(00 00 00 00 01 00 00 00 00 02 DA C6 5D 19 02)
        (#Y(#:|16 93 (DEFSTATE "idle" :SLOTS ...)-5-1-1|
-           #394Y(00 00 00 00 01 00 00 00 00 02 00 2B 01 7F 02 00 00 9D 2B 01 06
-                 01 00 0B 00 00 14 2F 00 AC 6D 01 01 2E 02 14 88 03 81 0E 0E 05
-                 14 68 02 00 6F 06 E1 E2 63 E3 63 2D 06 0A 1D 0B 2E 0B 14 89 03
-                 05 E6 88 03 80 F6 E1 89 03 80 4D 68 02 00 6F 06 2E 0B 14 E2 63
-                 E3 63 2D 06 0A 1D 10 68 02 00 6F 06 E6 E2 63 E3 63 2D 06 0A 1C
-                 80 D0 68 02 00 6F 06 2E 0B 14 E2 63 E3 63 2D 06 0A 1D 05 E6 88
-                 03 80 BA 2E 0B 14 89 03 10 68 02 00 6F 06 E6 E2 63 E3 63 2D 06
-                 0A 1C 80 A4 EB 9F 34 1C 80 A1 ED 89 03 12 68 02 00 6F 06 2E 02
-                 14 E2 63 E3 63 2D 06 0A 1C 80 8E ED 89 03 12 68 02 00 6F 06 2E
-                 0B 14 E2 63 E3 63 2D 06 0A 1C 80 7B E6 89 03 10 68 02 00 6F 06
-                 ED E2 63 E3 63 2D 06 0A 1C 80 6B EB 89 03 10 68 02 00 6F 06 ED
-                 E2 63 E3 63 2D 06 0A 1C 80 5B ED 89 03 05 F2 88 03 80 56 F4 89
-                 03 05 EB 88 03 80 51 F4 88 03 80 50 E1 89 03 05 F2 88 03 80 4B
-                 E1 89 03 05 E6 88 03 80 46 65 1F 88 03 80 67 E1 89 03 80 49 65
-                 28 03 22 14 AE 2D 03 0E 14 6B 0F AD 30 10 19 07 0E 04 1B FE EF
-                 D2 1B 24 D7 1B 21 D9 1B 1E 03 15 1B 1A 03 16 1B 16 03 17 1B 12
-                 03 19 1B 0E 03 1B 1B 0A 03 1C 1B 06 03 1D 1B 02 03 1E 14 2F 0E
-                 1B 47 65 21 03 22 1B FF BB 65 20 89 03 74 65 23 65 24 65 25 AF
-                 73 02 37 65 26 65 27 2D 05 0E 1B FF A7 00 19 06)
+           #392Y(00 00 00 00 01 00 00 00 00 02 00 2B 01 7F 02 00 00 9D 2B 01 06
+                 01 00 0B 00 00 14 2F 00 AC 6D 01 01 2E 02 14 88 03 81 0D CA 14
+                 68 02 00 6F 06 E1 E2 63 E3 63 2D 06 0A 1D 0B 2E 0B 14 89 03 05
+                 E6 88 03 80 F5 E1 89 03 80 4D 68 02 00 6F 06 2E 0B 14 E2 63 E3
+                 63 2D 06 0A 1D 10 68 02 00 6F 06 E6 E2 63 E3 63 2D 06 0A 1C 80
+                 CF 68 02 00 6F 06 2E 0B 14 E2 63 E3 63 2D 06 0A 1D 05 E6 88 03
+                 80 B9 2E 0B 14 89 03 10 68 02 00 6F 06 E6 E2 63 E3 63 2D 06 0A
+                 1C 80 A3 EB 9F 34 1C 80 A0 ED 89 03 12 68 02 00 6F 06 2E 02 14
+                 E2 63 E3 63 2D 06 0A 1C 80 8D ED 89 03 12 68 02 00 6F 06 2E 0B
+                 14 E2 63 E3 63 2D 06 0A 1C 80 7A E6 89 03 10 68 02 00 6F 06 ED
+                 E2 63 E3 63 2D 06 0A 1C 80 6A EB 89 03 10 68 02 00 6F 06 ED E2
+                 63 E3 63 2D 06 0A 1C 80 5A ED 89 03 05 F2 88 03 80 55 F4 89 03
+                 05 EB 88 03 80 50 F4 88 03 80 4F E1 89 03 05 F2 88 03 80 4A E1
+                 89 03 05 E6 88 03 80 45 65 1F 88 03 80 66 E1 89 03 80 48 65 28
+                 03 22 14 AE 2D 03 0E 14 6B 0F AD 30 10 19 07 C9 1B FE F0 D2 1B
+                 24 D7 1B 21 D9 1B 1E 03 15 1B 1A 03 16 1B 16 03 17 1B 12 03 19
+                 1B 0E 03 1B 1B 0A 03 1C 1B 06 03 1D 1B 02 03 1E 14 2F 0E 1B 48
+                 65 21 03 22 1B FF BC 65 20 89 03 74 65 23 65 24 65 25 AF 73 02
+                 37 65 26 65 27 2D 05 0E 1B FF A8 00 19 06)
            (|KIENEMAN|::|PARENT|
             #Y(|KIENEMAN|::|GET-UNTAPPED|
                #40Y(00 00 00 00 01 00 00 00 06 02 69 01 01 6F 01 DC 90 01 2D 05
@@ -103,7 +103,7 @@
                (|COMMON-LISP|::|T| |COMMON-LISP|::|T| |COMMON-LISP|::|T|)
                (|KIENEMAN|::|INPUT|) |COMMON-LISP|::|NIL|)
             |KIENEMAN|::|DIRECTION-SYMBOL| |KIENEMAN|::|GET-HELD|
-            |KIENEMAN|::|POSITIVE| |KIENEMAN|::|NEGATIVE|
+            #.|KIENEMAN|::|POSITIVE| #.|KIENEMAN|::|NEGATIVE|
             |KIENEMAN|::|KEY-BUFFER| :|DODGE| :|RELEASED| :|OTHERS|
             |KIENEMAN|::|GET-TAPPEDF| |KIENEMAN|::|OPPOSITE-SYMBOL| :|UP|
             |KIENEMAN|::|BACKFLIP| |CLOS|::|MAKE-INSTANCE|
@@ -240,21 +240,22 @@
        #19Y(00 00 00 00 01 00 00 00 00 02 2A 14 6D 01 01 C7 5D 19 02)
        (|COMMON-LISP|::|NIL|
         #Y(#:|104 130 (LET (#) (DEFMETHOD MAIN-ACTION # ...))-8-1-1|
-           #154Y(00 00 00 00 01 00 00 00 00 02 DB 88 02 3A E1 88 08 39 E4 89 02
-                 0A 2E 0B 14 89 08 04 E6 88 08 22 E4 89 08 2E 2E 0B 14 89 02 04
-                 E6 88 02 14 2E 0B 14 89 02 04 E6 88 08 0A 2E 0B 14 89 08 14 E6
-                 89 02 10 D2 14 2F 04 1B 24 C8 1B 78 CE 1B 75 0E 13 1B 16 E4 89
-                 08 29 E8 88 08 04 E9 89 08 21 EA EB 2E 12 14 88 08 68 0E 14 14
-                 2D 03 04 14 6B 05 AD 30 06 19 03 6B 05 AC 6F 15 F0 33 01 36 1B
-                 11 E9 88 08 71 E8 89 08 10 6B 05 AC 6F 15 F0 33 02 35 14 AC AE
-                 30 17 19 04 00 19 02)
+           #152Y(00 00 00 00 01 00 00 00 00 02 DB 88 02 3A E1 88 08 39 E4 89 02
+                 0A 2E 0B 14 89 08 04 E6 88 08 22 E4 89 08 2D 2E 0B 14 89 02 04
+                 E6 88 02 14 2E 0B 14 89 02 04 E6 88 08 0A 2E 0B 14 89 08 13 E6
+                 89 02 0F D2 14 2F 04 1B 22 C8 1B 78 CE 1B 75 D8 1B 15 E4 89 08
+                 28 E8 88 08 04 E9 89 08 20 EA EB 2E 12 14 88 08 69 D9 14 2D 03
+                 04 14 6B 05 AD 30 06 19 03 6B 05 AC 6F 15 F0 33 01 36 1B 11 E9
+                 88 08 71 E8 89 08 10 6B 05 AC 6F 15 F0 33 02 35 14 AC AE 30 17
+                 19 04 00 19 02)
            (|COMMON-LISP|::|NIL| :|A1| |KIENEMAN|::|GET-PRESSED|
             |KIENEMAN|::|JAB| |CLOS|::|MAKE-INSTANCE| |KIENEMAN|::|*FIGHTER*|
             |KIENEMAN|::|CHANGE-STATE| :|H-NEUTRAL| |KIENEMAN|::|GET-HELD|
             |KIENEMAN|::|IDLE| :|DODGE| |KIENEMAN|::|OPPOSITE-SYMBOL| :|UP|
             |KIENEMAN|::|BACKFLIP| :|RIGHT| :|LEFT| |KIENEMAN|::|STRIDE|
-            :|DIRECTION| |KIENEMAN|::|DIRECTION-SYMBOL| |KIENEMAN|::|POSITIVE|
-            |KIENEMAN|::|NEGATIVE| |KIENEMAN|::|X| #.|KIENEMAN|::|*WALKSPEED*|
+            :|DIRECTION| |KIENEMAN|::|DIRECTION-SYMBOL|
+            #.|KIENEMAN|::|POSITIVE| #.|KIENEMAN|::|NEGATIVE| |KIENEMAN|::|X|
+            #.|KIENEMAN|::|*WALKSPEED*|
             #.(|SYSTEM|::|GET-SETF-SYMBOL| '|KIENEMAN|::|X|))
            (|COMMON-LISP|::|T| |COMMON-LISP|::|T| |COMMON-LISP|::|T|))
         (|COMMON-LISP|::|T|))
@@ -921,10 +922,10 @@ In this function the new foot pos is affected by the new velocity instead of the
     (|COMMON-LISP|::|LIST| :|SUB| :|PUSH-OFF| :|DIRECTION|
      |KIENEMAN|::|POSITIVE| :|FORCE| :|ADVANCE|)
     #Y(|KIENEMAN|::|DEFAULT-ACTION|
-       #21Y(00 00 00 00 00 00 00 00 06 01 DA DB DC 6B 03 DE DF 61 06 19 01)
-       (:|SUB| :|PUSH-OFF| :|DIRECTION| |KIENEMAN|::|POSITIVE| :|FORCE|
+       #20Y(00 00 00 00 00 00 00 00 06 01 DA DB DC DD DE DF 61 06 19 01)
+       (:|SUB| :|PUSH-OFF| :|DIRECTION| #.|KIENEMAN|::|POSITIVE| :|FORCE|
         :|ADVANCE|)
-       (|COMMON-LISP|::|T| |COMMON-LISP|::|NIL| |COMMON-LISP|::|NIL|) ()
+       (|COMMON-LISP|::|NIL| |COMMON-LISP|::|NIL| |COMMON-LISP|::|NIL|) ()
        |COMMON-LISP|::|NIL|)
     |KIENEMAN|::|ACCEL-D| (|KIENEMAN|::|ACCEL-D|)
     ((|COMMON-LISP|::|SETF| |KIENEMAN|::|ACCEL-D|)) (:|ACCEL-D|) :|METACLASS|
@@ -1255,23 +1256,23 @@ In this function the new foot pos is affected by the new velocity instead of the
                (|COMMON-LISP|::|T| |COMMON-LISP|::|T| |COMMON-LISP|::|T|) ()
                |COMMON-LISP|::|NIL|)
             #Y(|KIENEMAN|::|HIGH-DASH|
-               #280Y(00 00 00 00 00 00 00 00 06 01 69 02 01 6F 01 DC 38 01 72
+               #269Y(00 00 00 00 00 00 00 00 06 01 69 02 01 6F 01 DC 38 01 72
                      86 69 01 01 AD 73 02 37 69 01 02 DD DE 69 02 01 6F 05 72
-                     9F 73 01 36 DE 73 01 38 73 02 37 73 02 37 AE 6B 06 8F 04
-                     80 4B 69 02 01 AC 6F 07 AF 73 02 35 AC AE 30 08 16 02 AD
-                     72 9F 69 01 02 73 02 37 2F 09 69 02 01 AD B0 73 02 37 AD
-                     6F 05 AD 73 02 35 AC AF 30 0A 16 03 E5 89 0C 17 E7 E8 69
-                     02 01 6F 05 E9 69 02 01 6F 07 6E 05 10 6B 11 AD 30 12 16
-                     01 AE 6B 06 8F 04 09 07 00 01 34 1C 03 0E 13 FA AE 6B 06
-                     8F 04 21 69 02 01 6F 07 EE 91 01 32 17 EF F0 69 02 01 6F
-                     05 F1 69 02 01 6F 07 6E 05 10 6B 11 AD 30 12 16 01 AE 6B
-                     13 8F 04 30 69 02 01 AD B0 73 02 37 AD 6F 05 AD 73 02 35
-                     AC AF 30 0A 16 03 69 02 01 AC 6F 07 AF 73 02 35 AC AE 30
-                     08 16 02 AD 72 9F 69 01 02 73 02 37 2F 09 AE 6B 13 8F 04
-                     0B 69 01 01 F2 91 01 2F 03 03 19 34 69 02 01 AC 6F 01 DC
-                     B1 6E 03 1A 93 00 04 14 AE 30 1B A1 19 06)
+                     9F 73 01 36 DE 73 01 38 73 02 37 73 02 37 AE 25 06 80 4B
+                     69 02 01 AC 6F 07 AF 73 02 35 AC AE 30 08 16 02 AD 72 9F
+                     69 01 02 73 02 37 2F 09 69 02 01 AD B0 73 02 37 AD 6F 05
+                     AD 73 02 35 AC AF 30 0A 16 03 E5 89 0C 17 E7 E8 69 02 01
+                     6F 05 E9 69 02 01 6F 07 6E 05 10 6B 11 AD 30 12 16 01 AE
+                     25 06 08 07 00 01 34 1C 02 D8 FA AE 25 06 21 69 02 01 6F
+                     07 EE 91 01 32 17 EF F0 69 02 01 6F 05 F1 69 02 01 6F 07
+                     6E 05 10 6B 11 AD 30 12 16 01 AE 25 13 30 69 02 01 AD B0
+                     73 02 37 AD 6F 05 AD 73 02 35 AC AF 30 0A 16 03 69 02 01
+                     AC 6F 07 AF 73 02 35 AC AE 30 08 16 02 AD 72 9F 69 01 02
+                     73 02 37 2F 09 AE 25 13 0B 69 01 01 F2 91 01 2F 03 03 19
+                     34 69 02 01 AC 6F 01 DC B1 6E 03 1A 93 00 04 14 AE 30 1B
+                     A1 19 06)
                (|COMMON-LISP|::|NIL| |KIENEMAN|::|ACTION| :|EXPANDING| 0.18f0
-                1.9f0 |KIENEMAN|::|VEL| |KIENEMAN|::|POSITIVE|
+                1.9f0 |KIENEMAN|::|VEL| #.|KIENEMAN|::|POSITIVE|
                 |KIENEMAN|::|LEG-SPACE|
                 #.(|SYSTEM|::|GET-SETF-SYMBOL| '|KIENEMAN|::|LEG-SPACE|)
                 |KIENEMAN|::|MOVE-FORWARD|
@@ -1279,7 +1280,7 @@ In this function the new foot pos is affected by the new velocity instead of the
                 |KIENEMAN|::|GET-PRESSED| |KIENEMAN|::|STRAIGHT|
                 :|FORWARD-SPEED| :|LEG-SPACE| |CLOS|::|MAKE-INSTANCE|
                 |KIENEMAN|::|*FIGHTER*| |KIENEMAN|::|CHANGE-STATE|
-                |KIENEMAN|::|NEGATIVE| 29.0f0 |KIENEMAN|::|RUNNING| :|VEL|
+                #.|KIENEMAN|::|NEGATIVE| 29.0f0 |KIENEMAN|::|RUNNING| :|VEL|
                 :|FOOT-POS| #8=0.15f0 #7# |SYSTEM|::|%PUTF|
                 #.(|SYSTEM|::|GET-SETF-SYMBOL| '|KIENEMAN|::|ACTION|))
                (|COMMON-LISP|::|T| |COMMON-LISP|::|T| |COMMON-LISP|::|T|) ()
@@ -1370,16 +1371,16 @@ In this function the new foot pos is affected by the new velocity instead of the
            #20Y(00 00 00 00 01 00 00 00 01 17 2A 14 6D 01 01 AF A0 9B 01 03)
            (|COMMON-LISP|::|NIL|
             #Y(#:|370 724 (DEFSTATE "stride" :SLOTS ...)-25-4-1-1|
-               #74Y(00 00 00 00 01 00 00 00 C0 1C 02 00 01 00 3D 02 3D 01 AF 6F
-                    03 DB B0 6E 03 04 93 00 04 14 B1 30 05 16 01 93 01 15 14 25
-                    06 11 E1 B0 30 08 E3 E0 E4 6B 0B 7B 04 AC B1 30 05 16 01 AE
-                    B0 6F 0C 72 9F 73 02 37 AC B1 30 08 19 05)
+               #73Y(00 00 00 00 01 00 00 00 C0 1C 02 00 01 00 3D 02 3D 01 AF 6F
+                    03 DB B0 6E 03 04 93 00 04 14 B1 30 05 16 01 93 01 14 14 25
+                    06 10 E1 B0 30 08 E3 E0 E4 E5 7B 04 AC B1 30 05 16 01 AE B0
+                    6F 0C 72 9F 73 02 37 AC B1 30 08 19 05)
                (|COMMON-LISP|::|NIL| :|DIRECTION| :|ACTION-FORM|
                 |KIENEMAN|::|ACTION| |SYSTEM|::|%PUTF|
                 #.(|SYSTEM|::|GET-SETF-SYMBOL| '|KIENEMAN|::|ACTION|)
                 :|HIGH-DASH| #8#
                 #.(|SYSTEM|::|GET-SETF-SYMBOL| '|KIENEMAN|::|VEL|) :|SUB|
-                :|EXPANDING| |KIENEMAN|::|POSITIVE| |KIENEMAN|::|VEL|)
+                :|EXPANDING| #.|KIENEMAN|::|POSITIVE| |KIENEMAN|::|VEL|)
                (|COMMON-LISP|::|T| |COMMON-LISP|::|T| |COMMON-LISP|::|T|)))
            (|COMMON-LISP|::|T| |COMMON-LISP|::|T| |COMMON-LISP|::|T|))
         (|COMMON-LISP|::|T|))
@@ -1446,21 +1447,21 @@ In this function the new foot pos is affected by the new velocity instead of the
          F1 F2 F3 E9 63 EB 63 6F 1A 7B 0C E7 F5 EE F6 F0 F7 F2 65 1E E9 63 EB
          63 6F 1A 7B 0C E7 65 1F EE 65 20 F0 65 21 F2 65 22 E9 65 23 EB 65 24
          7B 0C E7 65 25 EE 65 26 F0 65 27 F2 65 28 E9 65 29 EB 65 29 6F 1A 7B
-         0C E7 65 2A EE 65 2B F0 65 2C F2 65 2D E9 65 2E EB 6B 2E 6F 1A 7B 0C
-         E7 65 2F EE 65 30 F0 65 31 F2 65 32 E9 63 EB 63 6F 1A 7B 0C E7 65 33
-         EE 65 34 F0 65 35 F2 65 36 E9 63 EB 63 6F 1A 7B 0C E7 65 37 EE 65 38
-         F0 65 39 F2 65 3A E9 63 EB 63 6F 1A 7B 0C 7B 09 65 3B B3 65 3C 65 3D
-         63 65 3E 63 65 3F 64 7B 06 33 02 22 37 07 16 01 DA 38 02 32 2A 65 40
-         65 41 38 01 8F 85 04 65 40 2F 42 65 40 63 6D 43 01 65 44 63 65 45 65
-         46 65 47 65 48 65 49 DA 38 02 72 2A 7B 01 7B 08 2D 03 4A 65 4B 65 41
-         38 01 8F 85 04 65 4B 2F 42 65 4B 65 4C 65 44 63 65 45 65 4D 65 47 65
-         4E 65 49 DA 38 02 72 2A 7B 01 7B 08 2D 03 4A 65 4F 65 41 38 01 8F 85
-         04 65 4F 2F 42 65 4F 65 50 65 44 65 51 65 45 65 52 65 47 65 53 65 49
-         DA 38 02 72 2A 7B 01 7B 08 2D 03 4A 65 54 65 41 38 01 8F 85 04 65 54
-         2F 42 65 54 63 6D 55 01 65 44 65 56 65 45 65 57 65 47 65 58 65 49 65
-         59 38 02 72 2A DA 38 02 72 2A 7B 02 7B 08 2D 03 4A 65 5A 65 41 38 01
-         8F 85 04 65 5A 2F 42 65 5A 65 5B 65 44 63 65 45 65 5C 65 47 65 5D 65
-         49 DA 38 02 72 2A 7B 01 7B 08 2D 03 4A 19 01)
+         0C E7 65 2A EE 65 2B F0 65 2C F2 65 2D E9 65 2E EB 65 2F 6F 1A 7B 0C
+         E7 65 30 EE 65 31 F0 65 32 F2 65 33 E9 63 EB 63 6F 1A 7B 0C E7 65 34
+         EE 65 35 F0 65 36 F2 65 37 E9 63 EB 63 6F 1A 7B 0C E7 65 38 EE 65 39
+         F0 65 3A F2 65 3B E9 63 EB 63 6F 1A 7B 0C 7B 09 65 3C B3 65 3D 65 3E
+         63 65 3F 63 65 40 64 7B 06 33 02 22 37 07 16 01 DA 38 02 32 2A 65 41
+         65 42 38 01 8F 85 04 65 41 2F 43 65 41 63 6D 44 01 65 45 63 65 46 65
+         47 65 48 65 49 65 4A DA 38 02 72 2A 7B 01 7B 08 2D 03 4B 65 4C 65 42
+         38 01 8F 85 04 65 4C 2F 43 65 4C 65 4D 65 45 63 65 46 65 4E 65 48 65
+         4F 65 4A DA 38 02 72 2A 7B 01 7B 08 2D 03 4B 65 50 65 42 38 01 8F 85
+         04 65 50 2F 43 65 50 65 51 65 45 65 52 65 46 65 53 65 48 65 54 65 4A
+         DA 38 02 72 2A 7B 01 7B 08 2D 03 4B 65 55 65 42 38 01 8F 85 04 65 55
+         2F 43 65 55 63 6D 56 01 65 45 65 57 65 46 65 58 65 48 65 59 65 4A 65
+         5A 38 02 72 2A DA 38 02 72 2A 7B 02 7B 08 2D 03 4B 65 5B 65 42 38 01
+         8F 85 04 65 5B 2F 43 65 5B 65 5C 65 45 63 65 46 65 5D 65 48 65 5E 65
+         4A DA 38 02 72 2A 7B 01 7B 08 2D 03 4B 19 01)
    (|KIENEMAN|::|HIGH-STRIDE| |KIENEMAN|::|SLOTS|
     (|KIENEMAN|::|NAME| |KIENEMAN|::|SPD| |KIENEMAN|::|DIR|
      |KIENEMAN|::|FOOT-POS| |KIENEMAN|::|BODY-DEPTH| |KIENEMAN|::|EXPANDING|
@@ -1492,7 +1493,8 @@ In this function the new foot pos is affected by the new velocity instead of the
     ((|COMMON-LISP|::|SETF| |KIENEMAN|::|BODY-DEPTH|)) (:|BODY-DEPTH|) #2=0.0f0
     |KIENEMAN|::|EXPANDING| (|KIENEMAN|::|EXPANDING|)
     ((|COMMON-LISP|::|SETF| |KIENEMAN|::|EXPANDING|)) (:|EXPANDING|)
-    |KIENEMAN|::|POSITIVE| |KIENEMAN|::|SPEED-LOCK| (|KIENEMAN|::|SPEED-LOCK|)
+    |KIENEMAN|::|POSITIVE| #.|KIENEMAN|::|POSITIVE| |KIENEMAN|::|SPEED-LOCK|
+    (|KIENEMAN|::|SPEED-LOCK|)
     ((|COMMON-LISP|::|SETF| |KIENEMAN|::|SPEED-LOCK|)) (:|SPEED-LOCK|)
     |KIENEMAN|::|GOAL-ACTION| (|KIENEMAN|::|GOAL-ACTION|)
     ((|COMMON-LISP|::|SETF| |KIENEMAN|::|GOAL-ACTION|)) (:|GOAL-ACTION|)
@@ -1506,47 +1508,47 @@ In this function the new foot pos is affected by the new velocity instead of the
        #19Y(00 00 00 00 01 00 00 00 00 02 2A 14 6D 01 01 C7 5D 19 02)
        (|COMMON-LISP|::|NIL|
         #Y(#:|744 905 (DEFSTATE "high-stride" :CONSTANTS ...)-32-1-1|
-           #851Y(00 00 00 00 01 00 00 00 00 02 2A 2B 01 7F 02 00 00 14 2F 01 68
-                 00 00 6F 02 8F 94 81 23 2E 04 14 68 01 00 6F 02 8F 93 06 2E 03
+           #849Y(00 00 00 00 01 00 00 00 00 02 2A 2B 01 7F 02 00 00 14 2F 01 68
+                 00 00 6F 02 8F 94 81 21 2E 04 14 68 01 00 6F 02 8F 93 06 2E 03
                  14 88 05 0B AF CB 74 8F 94 05 2E 04 14 2F 05 14 68 02 00 6F 07
                  72 9F AC 68 04 00 6F 08 73 02 37 AF 6F 09 B3 CB 74 68 06 00 6F
                  0A 70 0B B1 6F 09 E6 AD 73 02 37 B6 CB 74 99 0B 68 0A 00 6F 0A
                  B3 73 02 35 E7 E8 6E 05 0F 68 09 00 88 10 07 A4 59 1C 03 EB 2F
-                 05 14 B6 6D 12 01 68 0B 00 6F 08 6B 13 8E 04 81 6F 65 39 6B 15
-                 33 01 15 68 0B 00 68 0C 00 6F 02 8E 93 82 68 A3 14 AD 6F 07 AD
-                 73 01 36 AC AF 30 19 16 03 68 0B 00 68 0C 00 6F 07 AD 6F 0A AD
-                 73 01 36 AC AF 30 16 16 03 B9 CB 74 2F 17 65 3A 6B 15 33 01 15
-                 68 0B 00 6F 1C B7 65 1E 63 65 1F 63 2D 06 20 1C 82 3F 68 0B 00
-                 6F 1C 65 34 65 1E 63 65 1F 63 2D 06 20 1C 82 2C 68 0B 00 6F 07
-                 E8 91 01 31 14 65 3C 6B 15 33 01 15 03 3D 14 2F 26 14 6B 27 AD
-                 30 28 16 01 16 01 65 3E 6B 15 33 01 15 65 3F 6B 15 68 0C 00 6F
-                 40 B6 68 0E 00 6F 02 73 02 37 68 0E 00 6F 0A B6 68 10 00 6F 08
-                 33 06 15 19 0D 2E 03 1B FE DA 65 23 65 24 BB CB 74 03 25 1B 81
-                 F5 65 22 88 05 6F 65 29 65 2A BB CB 74 03 2B 1B 81 E4 68 0B 00
-                 6F 0A BA CB 74 72 9F 6F 21 90 01 32 5F 68 0B 00 65 2C AD 30 2D
-                 16 01 1B FF 96 03 2F 1B FF 86 65 31 65 32 68 0D 00 6F 02 65 33
-                 BD CB 74 32 9F 1B 81 B5 BB CB 74 E8 73 01 36 8E 93 21 68 0D 00
-                 6F 02 E8 33 02 37 1B 19 65 36 65 24 68 0D 00 6F 02 8F 94 5F BB
-                 CB 74 E8 73 02 35 8F 94 5F BB CB 34 14 03 25 1B 81 7B 65 35 6B
-                 15 33 01 15 92 02 57 68 0B 00 64 AD 30 37 16 01 1B FF 34 65 23
-                 65 24 BB CB 74 03 25 1B 81 59 65 22 88 05 6F 65 29 65 2A BB CB
-                 74 03 2B 1B 81 48 EE 6B 15 33 01 15 68 0B 00 AC 6F 0A B5 73 02
-                 35 AC AE 30 16 16 02 B3 72 9F 68 0C 00 6F 02 73 02 37 2F 17 B9
-                 CB 74 72 9F E6 91 01 2F 80 55 92 01 80 51 68 0B 00 88 18 80 4A
-                 68 0B 00 6F 07 B0 91 01 2F 23 68 0B 00 AC 6F 07 B3 73 02 35 AC
-                 AE 30 19 16 02 68 0B 00 6F 07 B0 91 01 30 09 68 0B 00 B0 AD 30
-                 19 16 01 68 0B 00 2F 07 68 0B 00 6F 07 B0 8F 04 0F AF E6 91 01
-                 2F 09 68 0B 00 64 AD 30 1A 16 01 F5 6B 15 33 01 15 68 0B 00 6F
-                 1C F7 65 1E 63 65 1F 63 2D 06 20 1C FE C9 2E 03 14 89 05 13 68
-                 0B 00 6F 1C 65 2E 65 1E 63 65 1F 63 2D 06 20 1C FE CD 68 0B 00
-                 6F 1C 65 30 65 1E 63 65 1F 63 2D 06 20 1C FE BF 68 0B 00 6F 1C
-                 65 34 65 1E 63 65 1F 63 2D 06 20 1C FE F3 68 0B 00 88 10 FE EC
-                 68 0B 00 6F 18 24 2C FF 05 93 01 03 92 02 0F 68 0B 00 6F 0A BA
-                 CB 74 6F 21 91 01 32 FE 18 65 38 6B 15 B7 33 02 15 9D 34 1B FE
-                 0B A3 1B FD 95 BB CB 74 E8 73 01 36 8E 93 28 68 0D 00 6F 02 E8
-                 33 02 37 1B 20 65 3B 6B 15 33 01 15 65 36 65 24 68 0D 00 6F 02
-                 8F 94 58 BB CB 74 E8 73 02 35 8F 94 58 BB CB 34 14 03 25 14 68
-                 0F 00 2F 0A 14 2D 05 26 1B FD BA)
+                 05 14 B6 6D 12 01 68 0B 00 6F 08 24 13 81 6F 65 39 6B 15 33 01
+                 15 68 0B 00 68 0C 00 6F 02 8E 93 82 68 A3 14 AD 6F 07 AD 73 01
+                 36 AC AF 30 19 16 03 68 0B 00 68 0C 00 6F 07 AD 6F 0A AD 73 01
+                 36 AC AF 30 16 16 03 B9 CB 74 2F 17 65 3A 6B 15 33 01 15 68 0B
+                 00 6F 1C B7 65 1E 63 65 1F 63 2D 06 20 1C 82 3F 68 0B 00 6F 1C
+                 65 34 65 1E 63 65 1F 63 2D 06 20 1C 82 2C 68 0B 00 6F 07 E8 91
+                 01 31 14 65 3C 6B 15 33 01 15 03 3D 14 2F 26 14 6B 27 AD 30 28
+                 16 01 16 01 65 3E 6B 15 33 01 15 65 3F 6B 15 68 0C 00 6F 40 B6
+                 68 0E 00 6F 02 73 02 37 68 0E 00 6F 0A B6 68 10 00 6F 08 33 06
+                 15 19 0D 2E 03 1B FE DC 65 23 65 24 BB CB 74 03 25 1B 81 F5 65
+                 22 88 05 6F 65 29 65 2A BB CB 74 03 2B 1B 81 E4 68 0B 00 6F 0A
+                 BA CB 74 72 9F 6F 21 90 01 32 5F 68 0B 00 65 2C AD 30 2D 16 01
+                 1B FF 96 03 2F 1B FF 86 65 31 65 32 68 0D 00 6F 02 65 33 BD CB
+                 74 32 9F 1B 81 B5 BB CB 74 E8 73 01 36 8E 93 21 68 0D 00 6F 02
+                 E8 33 02 37 1B 19 65 36 65 24 68 0D 00 6F 02 8F 94 5F BB CB 74
+                 E8 73 02 35 8F 94 5F BB CB 34 14 03 25 1B 81 7B 65 35 6B 15 33
+                 01 15 92 02 57 68 0B 00 64 AD 30 37 16 01 1B FF 34 65 23 65 24
+                 BB CB 74 03 25 1B 81 59 65 22 88 05 6F 65 29 65 2A BB CB 74 03
+                 2B 1B 81 48 EE 6B 15 33 01 15 68 0B 00 AC 6F 0A B5 73 02 35 AC
+                 AE 30 16 16 02 B3 72 9F 68 0C 00 6F 02 73 02 37 2F 17 B9 CB 74
+                 72 9F E6 91 01 2F 80 55 92 01 80 51 68 0B 00 88 18 80 4A 68 0B
+                 00 6F 07 B0 91 01 2F 23 68 0B 00 AC 6F 07 B3 73 02 35 AC AE 30
+                 19 16 02 68 0B 00 6F 07 B0 91 01 30 09 68 0B 00 B0 AD 30 19 16
+                 01 68 0B 00 2F 07 68 0B 00 6F 07 B0 8F 04 0F AF E6 91 01 2F 09
+                 68 0B 00 64 AD 30 1A 16 01 F5 6B 15 33 01 15 68 0B 00 6F 1C F7
+                 65 1E 63 65 1F 63 2D 06 20 1C FE C9 2E 03 14 89 05 13 68 0B 00
+                 6F 1C 65 2E 65 1E 63 65 1F 63 2D 06 20 1C FE CD 68 0B 00 6F 1C
+                 65 30 65 1E 63 65 1F 63 2D 06 20 1C FE BF 68 0B 00 6F 1C 65 34
+                 65 1E 63 65 1F 63 2D 06 20 1C FE F3 68 0B 00 88 10 FE EC 68 0B
+                 00 6F 18 24 2C FF 05 93 01 03 92 02 0F 68 0B 00 6F 0A BA CB 74
+                 6F 21 91 01 32 FE 18 65 38 6B 15 B7 33 02 15 9D 34 1B FE 0B A3
+                 1B FD 95 BB CB 74 E8 73 01 36 8E 93 28 68 0D 00 6F 02 E8 33 02
+                 37 1B 20 65 3B 6B 15 33 01 15 65 36 65 24 68 0D 00 6F 02 8F 94
+                 58 BB CB 74 E8 73 02 35 8F 94 58 BB CB 34 14 03 25 14 68 0F 00
+                 2F 0A 14 2D 05 26 1B FD BA)
            (|COMMON-LISP|::|NIL| |KIENEMAN|::|PARENT| |KIENEMAN|::|DIR|
             |KIENEMAN|::|DIRECTION-SYMBOL| |KIENEMAN|::|OPPOSITE-SYMBOL|
             |KIENEMAN|::|GET-HELD|
@@ -1562,16 +1564,16 @@ In this function the new foot pos is affected by the new velocity instead of the
             |KIENEMAN|::|SLOWING-POSSIBLE-B-P| |KIENEMAN|::|GLIDE-ASAP|
             :|DEFENSE|
             #Y(|KIENEMAN|::|SET-EXPANDING-NEGATIVE|
-               #39Y(00 00 00 00 00 00 00 00 06 01 69 00 01 63 AD 30 01 16 01 69
-                    00 01 6B 02 AC AE 30 03 16 02 69 00 01 63 AD 30 04 19 02)
+               #37Y(00 00 00 00 00 00 00 00 06 01 69 00 01 63 AD 30 01 16 01 69
+                    00 01 DC AD 30 03 16 01 69 00 01 63 AD 30 04 19 02)
                (|COMMON-LISP|::|NIL|
                 #.(|SYSTEM|::|GET-SETF-SYMBOL| '|KIENEMAN|::|GOAL-ACTION|)
-                |KIENEMAN|::|NEGATIVE|
+                #.|KIENEMAN|::|NEGATIVE|
                 #.(|SYSTEM|::|GET-SETF-SYMBOL| '|KIENEMAN|::|EXPANDING|)
                 #.(|SYSTEM|::|GET-SETF-SYMBOL| '|KIENEMAN|::|SPEED-LOCK|))
                (|COMMON-LISP|::|T| |COMMON-LISP|::|T| |COMMON-LISP|::|T|) ()
                |COMMON-LISP|::|NIL|)
-            |KIENEMAN|::|POSITIVE|
+            #.|KIENEMAN|::|POSITIVE|
             #Y(#:|744 905 (DEFSTATE "high-stride" :CONSTANTS ...)-32-1-1-1|
                #19Y(00 00 00 00 01 00 00 00 01 17 DA AF 38 02 31 8B 9E 19 03)
                ("C1")
