@@ -72,11 +72,8 @@
       
 	((not (get-held :h-neutral))
 	 (if (not (get-held :dodge))
-	     (if (not (get-held :cancel))
-		 (switch-to-state high-stride :dir dir)
-	       (switch-to-state running
-				:vel (* dir 0.15) 
-				:foot-pos (+ *neutral-leg-space* 4.0)))
+	     (switch-to-state high-stride :dir dir)
+	       
 	   (switch-to-state high-dodge :dir dir)))))))
 
   :entryfunc
@@ -367,361 +364,6 @@ In this function the new foot pos is affected by the new velocity instead of the
 (defun create-glide-form (foot-pos)
   (list :sub :glide))
 
-#|
-Stride action specifications
-
-push-off: direction (positive negative) force (advance resist) exp-stopping-pos (t nil)
-glide:
-contracting:
-stopped: time 'int' foot (front rear)
-|#
-
-(defstate "stride"
-  
-  :slots
-  ((vel :initform min-speed) ;Denotes velocity from the co-ordinate system where the direction being faced is positive.
-   (leg-space :initform neutral-leg-space)
-   (foot-height :initform 0.0)
-   (body-depth :initform 0.0)
-   (action :initform (list :sub :push-off
-			   :direction positive
-			   :force :advance))
-   ;; (key-buffer :initform nil)
-   ;;Debug variables
-   (accel-d :initform nil))
-
-  :constants
-  ((min-speed 0.25)
-   (min-dash-speed 0.15)
-   (dash-accel 0.03)
-   (max-dash-leg-space 29.0)
-   (max-base-speed 1.5)
-   (max-leg-space *wide-leg-space*)
-   (neutral-leg-space *neutral-leg-space*)
-   ;(max-glide-leg-space 12.0) ;Not currently used
-   (min-leg-space 1.0)
-   (max-accel 0.08)
-   (max-deccel (* max-accel 1.0))
-   (max-expanding-deccel (* max-deccel 0.1))
-   (glide-deccel 0.02)
-   (glide-deccel-threshold 0.6)
-   (max-stoppage 1.0)
-   (max-foot-height 3.0))
-
-  :animation
-  single-animation
-
-  :main-action
-  ((let ((time-window 1.0)
-	 (abs-speed (abs vel))
-	 (dir (if (equal vel 0.0)
-		  (getf action :direction)
-		(signum vel))))
-     
-     ;;Going 'into the grain' of motion.
-     (labels ((current-dir-held ()
-				(or (and (> vel 0.0) (get-held (direction-symbol))) (and (< vel 0.0) (get-held (opposite-symbol)))))
-
-	      ;; (get-tapped (input)
-;; 			  (or (equal input key-buffer) (get-pressed input)))
-
-	      (clear-buffer ()
- 			    (reset-key-buffer key-buffer))
-
-	      (time-to-stopped ()
-			       (ceiling (/ (abs vel) max-deccel)))
-	      
-	      (contracting-possible () ;True if the minimun distance traveled is less the the distance to the neutral-leg-space
-				    ;; (stopping-possible-p vel max-deccel (- leg-space neutral-leg-space))
-				    (slowing-possible-p vel #'(lambda (v fp) max-deccel) leg-space neutral-leg-space min-speed))
-
-	      (expanding-stopping-possible () ;True if the minimum distance traveled is less the the distance to the neutral-leg-space
-					   (stopping-possible-p vel max-expanding-deccel (- neutral-leg-space leg-space)))
-
-	      (glide-leg-pos (&optional (leg-pos leg-space) (neutral-pos neutral-leg-space))
-			     ;; (+ (* 0.5 (- leg-pos neutral-pos)) neutral-pos)
-			     leg-pos)
-
-	      (enter-glide ()
-			   (setf leg-space (glide-leg-pos max-leg-space))
-			   (setf action (create-glide-form leg-space)))
-
-	      (goto-neutral ()
-			    (switch-to-state idle))
-
-	      (high-deccel (vel foot-pos)
-			   0.2)
-
-	      (glide-advancing-accel (vel foot-pos dir)
-				     (let ((spd (abs vel)))
-				       (* dir
-					(cond
-					 ((< spd 1.0) 0.01)
-					 ((< spd 1.4) 0.0)
-					 (t -0.01)))))
-	      
-	      (glide-resisting-accel (vel foot-pos dir)
-				     (let ((spd (abs vel)))
-				      (* dir
-				       (cond
-					((< spd 0.6) 0.02)
-					((< spd 1.2) -0.01)
-					(t -0.03)))))
-	      
-	      (push-off ()
-			(let ((dir (if (equal vel 0.0)
-				       (getf action :direction)
-				     (signum vel))))
-			  (if (equal (getf action :force) :advance)
-			      ;;When action = :advance
-			      (let ((accel (* dir (let ((ne (* (/ (- max-base-speed (abs vel)) max-base-speed) max-accel)))
-						    (if (> ne 0.0) ne 0.0)))))
-				(format t "In advancing.~&")
-
-				(let* ((candidate-leg-pos (+ leg-space abs-speed))
-				       (new-leg-pos (if (< candidate-leg-pos max-leg-space)
-							candidate-leg-pos
-						      max-leg-space))
-				       (leg-delta (- new-leg-pos leg-space)))
-				  (incf leg-space leg-delta)
-				  (move-forward (* leg-delta dir)))
-
-				(when (>= leg-space neutral-leg-space)
-				  (appending-cond
-				   (push-common-transitions)
-				       
-				   (((get-tapped :a1)
-				     (format t "Attempting straight punch.~&")
-				     (when (and (contracting-possible)
-						(< (abs vel) 3.0))
-				       (clear-buffer)
-				       (switch-to-state straight
-							:forward-speed (abs vel)
-							:leg-space leg-space))))))
-				
-				(incf vel accel)
-				(if (> (abs vel) max-base-speed)
-				    (setf vel (* dir max-base-speed))))
-			    
-			    ;;When action = :resist
-			    (let ((deccel (* dir max-expanding-deccel)))
-			      (if (< leg-space neutral-leg-space)
-				  (progn
-				    (format t "In close expanding resist.~&")
-				    (if (getf action :exp-stopping-pos)
-					;;If it is possible to stop within the alloted distance.
-					;;NOTE: Change this to THE FORMULA later on.
-					(progn
-					  (format t "In expaning slowing SP.~&")
-					  ;;Constant velocity
-					  (incf leg-space abs-speed)
-					  (move-forward vel)
-
-					  (incf vel (glide-resisting-accel vel leg-space dir))
-					  
-					  (when (>= leg-space neutral-leg-space)
-					    (setf action (list :sub :stopped :time 4 :foot dir))
-					    (setf vel 0.0)))
-				      
-				      ;;If it is not possible to stop before reaching the neutral leg position.
-				      (progn
-					(format t "In expanding slowing SI.~&")
-					
-					(incf leg-space abs-speed)
-					(move-forward vel)
-					
-					(decf vel deccel))))
-				
-				;;When resisting, but 
-				(progn
-				  (format t "In wide expanding resist.~&")
-				  
-				  (let* ((candidate-leg-pos (+ leg-space abs-speed))
-					 (new-leg-pos (if (< candidate-leg-pos max-leg-space)
-							  candidate-leg-pos
-							max-leg-space))
-					 (leg-delta (- new-leg-pos leg-space)))
-				    (incf leg-space leg-delta)
-				    (move-forward (* leg-delta dir)))
-				  
-				  (appending-cond
-				   (push-common-transitions))
-				  
-				  (decf vel deccel)))))))
-	      
-	      (glide (time)
-		     (let ((deccel (* glide-deccel (signum vel))))
-					 
-		       (format t "In glide.~&")
-					 
-		       (decf leg-space (abs vel))
-		       (move-forward vel)
-
-		       (if (current-dir-held)
-			   (incf vel (glide-advancing-accel vel leg-space dir))
-			 (incf vel (glide-resisting-accel vel leg-space dir)))
-					  
-		       (if (<= leg-space min-leg-space)
-			   (let ((neg-time (/ (- min-leg-space leg-space) (abs vel) time)))
-			     (format t "Min leg pos reached.~&")
-			     (setf leg-space min-leg-space)
-			     (setf action
-				   (list :sub :push-off
-					 :direction dir
-					 :force (if (current-dir-held) :advance :resist)
-					 :exp-stopping-pos (expanding-stopping-possible)))))))
-	      
-	      (slowing ()
-		       (format t "In wide slowing.~&")
-			(let* ((direction (signum vel)) ;;forward or backward.
-			       (deccel (* max-deccel direction)))
-			  (setf action (list :sub :contracting))
-			  
-			  (decf leg-space (abs vel))
-			  
-			  (when (< leg-space min-leg-space)
-			    (format t "TRIP!!!!.~&")
-			    (setf leg-space min-leg-space)
-			    (setf action (list :sub :push-off
-					       :direction direction
-					       :force :resist))) ;;NOTE: Change this to a stagger state later on.
-			   
-			  (if (or
-				 (< (abs vel) min-speed)
-				 (not (equal direction (signum vel))))
-			    (progn
-			      (setf vel 0.0)
-			      (goto-neutral))
-			   
-			    (progn
-			     (move-forward vel)
-			     (decf vel deccel)))))
-	      
-	      (stopped ()
-		       (format t "In stopped.~&")
-		       ;;ADD STUFF HERE!
-		       (decf (getf action :time))
-		       (when (<= (getf action :time) 0)
-			 (goto-neutral)))
-
-	      (stoppage ()
-			(format t "In stoppage.~&")
-			(let ((tinit (getf action :tinit)))
-			 (cond
-			  
-			  ((equal (getf action :phase) :hopping)
-			   (incf leg-space (abs vel))
-			   (move-forward vel)
-			   (incf vel (* (getf action :initial-accel) dir))
-			   (if (> tinit 0)
-			       (decf tinit)
-			     (progn
-			       (setf tinit (getf action :air-time))
-			       (setf (getf action :phase) :in-air))))
-
-			  ((equal (getf action :phase) :in-air)
-			   ;; (decf leg-space (abs vel))
-			   (move-forward vel)
-			   (if (> tinit 0)
-			       (decf tinit)
-			     (setf (getf action :phase) :resisting)))
-
-			  ((equal (getf action :phase) :resisting)
-			   (let* ((deccel (* (getf action :deccel) dir))
-				  (new-vel (- vel deccel)))
-			    (decf leg-space (abs vel))
-			    (move-forward vel)
-			    
-			    (if (equal (signum vel) (signum (- new-vel min-speed)))
-				(setf vel new-vel)
-			      (progn
-				(setf action (list :sub :stopped :time (getf action :stopping-time) :foot dir))
-				(setf vel 0.0))))))
-
-			 (setf (getf action :tinit) tinit)))
-
-	      (high-dash ()
-			 (let* ((expanding (getf action :expanding))
-				(leg-delta (* abs-speed expanding))
-				(max-vel 1.9)
-				(dash-accel (* dir (* (/ (- max-vel (abs vel)) max-vel) 0.18))))
-
-			   (when (equal expanding positive)
-			    (incf leg-space leg-delta)
-			    (move-forward (* (abs leg-delta) dir))
-			    (incf vel (* dash-accel expanding))
-
-			    (when (get-pressed :a1)
-			      (switch-to-state straight
-					       :forward-speed vel
-					       :leg-space leg-space)))
-			   
-			   (when (and (equal expanding positive)
-				      (or (not (current-dir-held))
-					  ;; (get-held :down)
-					  ;; (>= leg-space max-dash-leg-space)
-					  ))
-			       (setf expanding negative))
-
-			   (when (and (equal expanding positive)
-				      (>= leg-space max-dash-leg-space))
-			       (switch-to-state running
-						:vel vel
-						:foot-pos leg-space))
-
-			   (when (equal expanding negative)
-			     (incf vel (* dash-accel expanding))
-			     (incf leg-space leg-delta)
-			     (move-forward (* (abs leg-delta) dir)))
-
-			   (when (and (equal expanding negative)
-				      (< abs-speed min-dash-speed))
-			     (goto-neutral))
-
-			   (setf (getf action :expanding) expanding))))
-       (cond
-	((equal (getf action :sub) :push-off)
-	 (push-off))
-	((equal (getf action :sub) :glide)
-	 (glide 1.0))
-	((equal (getf action :sub) :contracting)
-	 (slowing))
-	((equal (getf action :sub) :stopped)
-	 (stopped))
-	((equal (getf action :sub) :stoppage)
-	 (stoppage))
-	((equal (getf action :sub) :high-dash)
-	 (high-dash)))
-
-       (when (get-pressed :a1)
-	 (set-tapped :a1))
-
-       (format t "vel: ~a ~20Tleg: ~a~&action: ~a" vel leg-space action)
-       (format t "~&f: ~a d: ~a cp: ~a tpos: ~a~&" (current-dir-held) (get-held :down) (contracting-possible) tpos)
-       (format t "**********************************~&"))))
-
-  ;; :initfunc
-;;   ((&key direction)
-;;    ((let ((direction (if direction direction positive)))
-;;       ())))
-  
-  :rest
-  (progn
-    (defmethod animate ((sa stride))
-      (let ((ls (/ (float (leg-space sa)) 60.0))
-	    (ani (animation sa)))
-	(set-time-position ani ls)))
-
-    (defmethod initialize-instance :after ((state stride) &key direction action-form)
-      
-      (setf (getf (action state) :direction) direction)
-      (when action-form
-	(case action-form
-	  (:high-dash
-	   (setf (vel state) min-dash-speed)
-	   (setf (action state) (list :sub :high-dash :expanding positive)))))
-
-      (setf (vel state) (* direction (abs (vel state)))))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; high-stride
@@ -835,11 +477,6 @@ stopped: time 'int' foot (front rear)
 	     ((and (get-held (direction-symbol)) (get-tapped :a2))
 	      (switch-to-state sidekickW))
 
-	     ((get-tapped :dodge)
-	      (switch-to-state high-dodge
-			       :dir dir
-			       :intspeed (abs vel)))
-
 	     ((or (get-tapped :cancel) glide-asap)
 	      (format t "CA1")
 	      (if expanding-possible
@@ -947,12 +584,7 @@ stopped: time 'int' foot (front rear)
 	 (setf spd (+ spd 0.2 (* air-time 0.01)))
 	 (setf stopping-time (round (* 3.0 new-air-time)))
 	 (setf air-time new-air-time)
-	 (setf starting nil)
-	 (if (and (get-held :cancel))
-	     (switch-to-state running
-			    :vel vel
-			    :foot-pos foot-pos
-			    :key-buffer key-buffer)))))
+	 (setf starting nil))))
 
     ((> air-time 0)
      (decf air-time)
@@ -1211,14 +843,12 @@ stopped: time 'int' foot (front rear)
 	(decf-to vel (min 1.1 target-speed) 0.05)
       (incf-to vel (max -1.1 (- target-speed)) 0.05))
      (if (<= status 0)
-      (if (get-held :cancel)
-	  (switch-to-state running :vel vel :foot-pos *neutral-leg-space*)
 	(switch-to-state glide-out
 			 :vel vel
 			 :foot-pos foot-pos
 			 :entry-height exit-height
 			 :max-foot-pos  (* (- *wide-leg-space* *neutral-leg-space*) (/ (abs (vel state)) *max-stride-vel*)) ;; (- (* 2 *neutral-leg-space*) foot-pos)
-			 :key-buffer key-buffer))))
+			 :key-buffer key-buffer)))
 
    (format t "~&**************************~&")
    (format t "~&tpos: ~a Vel: ~a ~& Foot-Pos ~a Min-Foot-Pos: ~a~&" tpos vel foot-pos min-foot-pos))
@@ -1314,7 +944,7 @@ stopped: time 'int' foot (front rear)
   ((vel (* -1.0 spd)))
 
   :slots
-  ((spd :initform 0.0)) ;his should be constant throughout the life of this state.
+  ((spd :initform 0.6)) ;his should be constant throughout the life of this state.
 
   :main-action
   ((move-forward vel)

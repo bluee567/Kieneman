@@ -626,7 +626,7 @@ is possible from the foot position of the previous state.
 			   :hitspeed 1.6
 			   :hitdeccel 0.08
 			   :blockstun (- reco-time 10)
-			   :blockspeed 1.7
+			   :blockspeed 1.0
 			   :blockdeccel 0.08
 			   :x (* (get-direction fighter) 22.0) :Y 42.0
 			   :radius 7.0 :height 6.0))
@@ -785,12 +785,12 @@ is possible from the foot position of the previous state.
 	    (make-static-dist-rab 
 	     :parent-state state
 	     :damage 100
-	     :hitstun (- (+ 20 end-time) tpos)
+	     :hitstun (- (+ end-time 10) tpos)
 	     :hit-movement-time 25
-	     :hitdist 80
-	     :blockstun (- (+ 20 end-time) tpos)
+	     :hitdist 70
+	     :blockstun (- end-time 5 tpos)
 	     :block-movement-time 20
-	     :blockdist 74
+	     :blockdist 55
 	     :x (* (get-direction fighter) 35.0) :Y 32.0
 	     :radius 11.0 :height 8.0)))
 

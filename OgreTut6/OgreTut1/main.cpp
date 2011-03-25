@@ -655,8 +655,8 @@ extern "C"
 		Plane leftPlane(Vector3::UNIT_X, -stageWidth);
 		Plane rightPlane(Vector3::NEGATIVE_UNIT_X, -stageWidth);
 
-		const int mesh_fineness = 40;
-		Real s_width = 2000;
+		const int mesh_fineness = 15;
+		Real s_width = 1000;
 
 		MeshManager::getSingleton().createPlane("ground", ResourceGroupManager::DEFAULT_RESOURCE_GROUP_NAME, plane,
 			  s_width, s_width, mesh_fineness, mesh_fineness, true, 1,5,5, Vector3::UNIT_Z);
@@ -665,12 +665,29 @@ extern "C"
 		  ent->setMaterialName("Examples/Rockwall");
 		  ent->setCastShadows(false);
 
-		  MeshManager::getSingleton().createPlane("leftWall", ResourceGroupManager::DEFAULT_RESOURCE_GROUP_NAME, leftPlane,
+		  ent = mgr->createEntity("leftWall", "ground");
+		  ent->setMaterialName("Examples/Rockwall");
+		  ent->setCastShadows(false);
+		  SceneNode* wall = mgr->getRootSceneNode()->createChildSceneNode();
+		  wall->translate(-stageWidth,0,0);
+		  wall->rotate(Vector3::UNIT_Z, Ogre::Radian(Math::HALF_PI), Node::TS_WORLD);
+		  wall->attachObject(ent);
+
+		  ent = mgr->createEntity("rightWall", "ground");
+		  ent->setMaterialName("Examples/Rockwall");
+		  ent->setCastShadows(false);
+		  wall = mgr->getRootSceneNode()->createChildSceneNode();
+		  wall->translate(-stageWidth,0,0);
+		  wall->rotate(Vector3::UNIT_Z, Ogre::Radian(-Math::HALF_PI));
+		  wall->attachObject(ent);
+		  
+
+		  /*MeshManager::getSingleton().createPlane("leftWall", ResourceGroupManager::DEFAULT_RESOURCE_GROUP_NAME, leftPlane,
 			  s_width, s_width, mesh_fineness, mesh_fineness, true, 1,5,5, Vector3::UNIT_Z);
 		  ent = mgr->createEntity("wall1", "leftWall");
 		  mgr->getRootSceneNode()->createChildSceneNode()->attachObject(ent);
 		  ent->setMaterialName("Examples/Rockwall");
-		  ent->setCastShadows(false);
+		  ent->setCastShadows(false);*/
 
 		  MeshManager::getSingleton().createPlane("rightWall", ResourceGroupManager::DEFAULT_RESOURCE_GROUP_NAME, rightPlane,
 			  s_width, s_width, mesh_fineness, mesh_fineness, true, 1,5,5, Vector3::UNIT_Z);
@@ -678,14 +695,6 @@ extern "C"
 		  mgr->getRootSceneNode()->createChildSceneNode()->attachObject(ent);
 		  ent->setMaterialName("Examples/Rockwall");
 		  ent->setCastShadows(false);
-
-
-		  //Create GUI
-		/*Ogre::Rectangle2D *miniScreen = new Ogre::Rectangle2D(true);
-		miniScreen->setCorners(0.5, -0.5, 1.0, -1.0);
-		miniScreen->setBoundingBox(AxisAlignedBox(-100000.0*Vector3::UNIT_SCALE, 100000.0*Vector3::UNIT_SCALE));
-		Ogre::SceneNode *miniScreenNode = mgr->getRootSceneNode()->createChildSceneNode("MiniScreenNode");
-		miniScreenNode->attachObject(miniScreen);*/
 
 		Plane plane2(Vector3::UNIT_Z, 0);
 		MeshManager::getSingleton().createPlane("hitbox", ResourceGroupManager::DEFAULT_RESOURCE_GROUP_NAME, plane2,

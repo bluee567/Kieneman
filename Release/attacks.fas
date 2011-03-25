@@ -1488,7 +1488,7 @@
             :|PUNCH| |KIENEMAN|::|PUNCH-TIME| |KIENEMAN|::|REC-STRIKE-BOX|
             :|PARENT-STATE| :|DAMAGE| |KIENEMAN|::|BASE-DAMAGE| :|HITSTUN| 2.
             |KIENEMAN|::|RECO-TIME| :|HITSPEED| 1.6f0 :|HITDECCEL| 0.08f0
-            :|BLOCKSTUN| -10. :|BLOCKSPEED| 1.7f0 :|BLOCKDECCEL| :|X| 22.0f0
+            :|BLOCKSTUN| -10. :|BLOCKSPEED| 1.0f0 :|BLOCKDECCEL| :|X| 22.0f0
             |KIENEMAN|::|GET-DIRECTION| :|Y| 42.0f0 :|RADIUS| 7.0f0 :|HEIGHT|
             6.0f0 |CLOS|::|MAKE-INSTANCE|
             #.(|SYSTEM|::|GET-SETF-SYMBOL| '|KIENEMAN|::|HITBOX|)
@@ -1818,15 +1818,15 @@ base-damage: ")
     #Y(#:|755 811 (DEFSTATE "sidekickW" :HB ...)-40-1|
        #15Y(00 00 00 00 01 00 00 00 00 02 DA C6 5D 19 02)
        (#Y(#:|755 811 (DEFSTATE "sidekickW" :HB ...)-40-1-1|
-           #170Y(00 00 00 00 01 00 00 00 00 02 AD 6F 00 AE C6 74 AF 6F 00 6F 02
+           #168Y(00 00 00 00 01 00 00 00 00 02 AD 6F 00 AE C6 74 AF 6F 00 6F 02
                  73 02 37 AD 6F 03 AD 73 02 35 AC AF 30 04 16 02 AE 6F 05 AF CB
-                 74 8E 04 18 AE 6F 05 AF 03 20 74 8E 04 80 51 AE 6F 05 AF D1 74
-                 8E 04 80 56 00 19 03 E1 AF E2 E3 E4 E5 B4 D1 74 73 02 35 B4 6F
-                 05 73 01 36 E7 E8 E9 EA EB E5 BA D1 74 73 02 35 BA 6F 05 73 01
-                 36 EC E5 ED EE EF F0 C0 6F 00 6F 02 73 02 37 F1 F2 F3 F4 F5 F6
-                 6E 18 1D AC B0 30 1E AC 2F 1F 19 04 AE 89 21 05 AE 6F 21 2F 22
-                 63 AF 30 1E 19 03 65 23 65 24 B0 6F 25 6E 03 26 6B 27 AD 30 28
-                 19 04)
+                 74 8E 04 18 AE 6F 05 AF 03 22 74 8E 04 80 4F AE 6F 05 AF D1 74
+                 8E 04 80 54 00 19 03 E1 AF E2 E3 E4 E5 B4 D1 74 73 02 35 B4 6F
+                 05 73 01 36 E7 E8 E9 EA EB B9 D1 74 EC BB 6F 05 73 02 36 ED EE
+                 EF F0 F1 F2 C0 6F 00 6F 02 73 02 37 F3 F4 F5 F6 F7 65 1E 6E 18
+                 1F AC B0 30 20 AC 2F 21 19 04 AE 89 23 05 AE 6F 23 2F 24 63 AF
+                 30 20 19 03 65 25 65 26 B0 6F 27 6E 03 28 6B 29 AD 30 2A 19
+                 04)
            (|KIENEMAN|::|PARENT|
             #2=#Y(|KIENEMAN|::|MOVE-SPEED|
                   #16Y(00 00 00 00 01 00 00 00 06 02 AD 2F 00 C6 19 02)
@@ -1840,14 +1840,14 @@ base-damage: ")
                   (|KIENEMAN|::|PARENT| 23.)
                   (|COMMON-LISP|::|T| |COMMON-LISP|::|T| |COMMON-LISP|::|T|)
                   (|KIENEMAN|::|STATE|) |COMMON-LISP|::|NIL|)
-            :|PARENT-STATE| :|DAMAGE| 100. :|HITSTUN| 20.
+            :|PARENT-STATE| :|DAMAGE| 100. :|HITSTUN| 10.
             #Y(|KIENEMAN|::|END-TIME|
                #16Y(00 00 00 00 01 00 00 00 06 02 AD 2F 00 C6 19 02)
                (|KIENEMAN|::|PARENT| 66.)
                (|COMMON-LISP|::|T| |COMMON-LISP|::|T| |COMMON-LISP|::|T|)
                (|KIENEMAN|::|STATE|) |COMMON-LISP|::|NIL|)
-            :|HIT-MOVEMENT-TIME| 25. :|HITDIST| 80. :|BLOCKSTUN|
-            :|BLOCK-MOVEMENT-TIME| :|BLOCKDIST| 74. :|X| 35.0f0 :|Y| 32.0f0
+            :|HIT-MOVEMENT-TIME| 25. :|HITDIST| 70. :|BLOCKSTUN| 5.
+            :|BLOCK-MOVEMENT-TIME| 20. :|BLOCKDIST| 55. :|X| 35.0f0 :|Y| 32.0f0
             :|RADIUS| 11.0f0 :|HEIGHT| 8.0f0 |KIENEMAN|::|MAKE-STATIC-DIST-RAB|
             #.(|SYSTEM|::|GET-SETF-SYMBOL| '|KIENEMAN|::|HITBOX|)
             |KIENEMAN|::|ADD-ACTOR|

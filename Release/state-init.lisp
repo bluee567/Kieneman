@@ -104,8 +104,12 @@ If false, then sidesteps become effective."))
   (setf (spd state) (abs vel))
   (setf (dir state) (signum vel)))
 
-;; (defmethod vel ((state component-velocity))
-;;   (* (dir state) (spd state)))
+  ;;Returns the velocity of the state reletive to world coordinates.
+(defmethod real-vel ((state state))
+  0.0)
+
+(defmethod real-vel ((state component-velocity))
+  (* (vel state) (get-direction (parent state))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;A mixin class which adds a simple linear timeline to a class
@@ -225,6 +229,18 @@ If false, then sidesteps become effective."))
 		       (set-untapped ,key)))
 	      key-list)))
 
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;For states which can be stunned by a hit (inducing a kind of recovery).
+;;The stunn however will not switch states, instead it will simply alter the
+;;stun-recover variable.
+
+(defclass+ stunnable ()
+  ((:ia initial-stun-recovery :initform 0)
+   (:ia stun-recovery :initform 0)))
+
+(defmethod set-initial-stun-recovery ((state stunnable) value)
+  (setf (slot-value state 'initial-stun-recovery) value)
+  (setf (slot-value state 'stun-recovery) value))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;For states, enter state should be used in place of initialise-instance.
@@ -281,10 +297,13 @@ If false, then sidesteps become effective."))
      ,@meta))
 
 (defmacro switch-to-state (state-name &rest args)
-  "Switches states."
-  `(progn
-     (let ((state (make-instance (quote ,state-name) ,@args)))
-      (change-state *fighter* state))))
+  "Switches states. State neme must either be a list (which will be evaluated) or a
+single symbol which will be automatically quoted."
+  (let ((sname (if (listp state-name) state-name `(quote ,state-name))))
+
+   `(progn
+      (let ((new-state (make-instance ,sname ,@args)))
+	(change-state *fighter* new-state)))))
 
 
 ;;Copied from Practical Common Lisp
