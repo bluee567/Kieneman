@@ -38,43 +38,44 @@
 	       (or (and (get-tapped (opposite-symbol)) (get-tapped :up))
 		   (and (get-tapped (opposite-symbol)) (get-held :up))
 		   (and (get-held (opposite-symbol)) (get-tapped :up)))))
-	 (switch-to-state backflip))
+	 (switch-to-state 'backflip))
 
 	((get-untapped :a1)
-	 (switch-to-state jab))
+	 (switch-to-state 'jab)
+	 (make-hit-triangle 0.0 0.0  100.0 0.0  0.0 50.0 "red" *mgr*))
 
 	((and (get-held :a2) (get-tapped (direction-symbol)))
-	 (switch-to-state sidekickW))
+	 (switch-to-state 'sidekickW))
 
 	((and (get-held :a2) (get-tapped (opposite-symbol)))
-	 (switch-to-state sidekickS))
+	 (switch-to-state 'sidekickS))
 
 	((and (get-held :up) (get-tapped :a2))
-	 (switch-to-state roundhouse))
+	 (switch-to-state 'roundhouse))
 
 	((and (get-held :a1) (get-tapped :a2))
-	 (switch-to-state bodykick))
+	 (switch-to-state 'bodykick))
 
 	((and (get-held :a2) (get-held :down))
-	 (switch-to-state spinning-hook-kick))
+	 (switch-to-state 'spinning-hook-kick))
 
 	((and (get-held :defense) (get-held :a1))
-	 (switch-to-state grab))
+	 (switch-to-state 'grab))
       
 	((get-held :defense)
-	 (switch-to-state high-block))
+	 (switch-to-state 'high-block))
 
 	((and (get-held :dodge) (get-held :down))
-	 (switch-to-state duck))
+	 (switch-to-state 'duck))
 
 	((and (get-held :dodge) (get-held :up))
-	 (switch-to-state sidestep))
+	 (switch-to-state 'sidestep))
       
 	((not (get-held :h-neutral))
 	 (if (not (get-held :dodge))
-	     (switch-to-state high-stride :dir dir)
+	     (switch-to-state 'high-stride :dir dir)
 	       
-	   (switch-to-state high-dodge :dir dir)))))))
+	   (switch-to-state 'high-dodge :dir dir)))))))
 
   :entryfunc
   (default-hitboxes)
@@ -104,10 +105,10 @@
    (cond
 
     ((get-pressed :a1)
-     (switch-to-state jab))
+     (switch-to-state 'jab))
      
     ((get-held :h-neutral)
-     (switch-to-state idle))
+     (switch-to-state 'idle))
 
     ((or
       (and (get-pressed :dodge) (get-held (opposite-symbol)) (get-held :up))
@@ -115,10 +116,10 @@
 	   (or (and (get-pressed (opposite-symbol)) (get-pressed :up))
 	       (and (get-pressed (opposite-symbol)) (get-held :up))
 	       (and (get-held (opposite-symbol)) (get-pressed :up)))))
-     (switch-to-state backflip))
+     (switch-to-state 'backflip))
 
     ((and (get-held :dodge) (or (get-held :right) (get-held :left)))
-     (switch-to-state stride :direction (if (get-held (direction-symbol)) positive negative)))
+     (switch-to-state 'stride :direction (if (get-held (direction-symbol)) positive negative)))
      
     ((get-held :left) 
      (decf (x *fighter*) walkspeed))
@@ -160,7 +161,7 @@
        (set-tapped nil))
    
    (when (<= duration 0)
-     (switch-to-state idle :key-buffer key-buffer))))
+     (switch-to-state 'idle :key-buffer key-buffer))))
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -197,15 +198,15 @@
        (cond
 	((not (get-held :defense))
 	 (setf escape-time 4)
-	 (setf escape-func (λ (switch-to-state idle :key-buffer key-buffer))))
+	 (setf escape-func (λ (switch-to-state 'idle :key-buffer key-buffer))))
 	
 	((get-held :a1)
 	 (setf escape-time 3)
-	 (setf escape-func (λ (switch-to-state grab))))
+	 (setf escape-func (λ (switch-to-state 'grab))))
 	
 	((get-pressed :down)
 	 (setf escape-time 2)
-	 (setf escape-func (λ (switch-to-state duck)))))))))
+	 (setf escape-func (λ (switch-to-state 'duck)))))))))
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -243,8 +244,8 @@
       ((<= duration 0)
        ;;Add key-buffer transition to idle
        (if (and (get-held :defense) (get-tapped nil))
-	   (switch-to-state high-block :key-buffer key-buffer)
-	 (switch-to-state idle :key-buffer key-buffer))))))
+	   (switch-to-state 'high-block :key-buffer key-buffer)
+	 (switch-to-state 'idle :key-buffer key-buffer))))))
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -466,21 +467,21 @@ In this function the new foot pos is affected by the new velocity instead of the
 	     ((get-tapped :a1)
 	      (if (>= foot-pos (max-foot-pos-per-speed (abs vel)))
 		  (if (get-held :down)
-		      (switch-to-state forward-jab
+		      (switch-to-state 'forward-jab
 				       :vel vel
 				       :foot-pos foot-pos)
-		    (switch-to-state straight
+		    (switch-to-state 'straight
 				     :forward-speed vel
 				     :leg-space foot-pos))
 		(setf goal-action :jab)))
 
 	     ((and (get-held (direction-symbol)) (get-tapped :a2))
-	      (switch-to-state sidekickW))
+	      (switch-to-state 'sidekickW))
 
 	     ((or (get-tapped :cancel) glide-asap)
 	      (format t "CA1")
 	      (if expanding-possible
-		  (switch-to-state glide-in
+		  (switch-to-state 'glide-in
 				   :vel (if (if (>= dir 0.0)
 						(<= (- vel min-speed) 0.0)
 					      (>= (+ vel min-speed) 0.0))
@@ -491,10 +492,10 @@ In this function the new foot pos is affected by the new velocity instead of the
 
 	     ((equal goal-action :jab)
 	      (if (get-held :down)
-		      (switch-to-state forward-jab
+		      (switch-to-state 'forward-jab
 				       :vel vel
 				       :foot-pos foot-pos)
-		    (switch-to-state straight
+		    (switch-to-state 'straight
 				     :forward-speed vel
 				     :leg-space foot-pos)))
 	    
@@ -516,7 +517,7 @@ In this function the new foot pos is affected by the new velocity instead of the
 	  (cond
 	   ((or (get-tapped forward-symbol) (get-tapped :cancel))
 	    (format t "~&******* TO GLIDE-IN *******~&")
-	    (switch-to-state glide-in
+	    (switch-to-state 'glide-in
 			     :vel (if (if (>= dir 0.0)
 					  (<= (- vel min-speed) 0.0)
 					(>= (+ vel min-speed) 0.0))
@@ -530,7 +531,7 @@ In this function the new foot pos is affected by the new velocity instead of the
 	  
 	   ((<= spd min-speed)
 	    (format t "I1")
-	    (switch-to-state idle))))))
+	    (switch-to-state 'idle))))))
 
      (format t "~&**************************~&")
      (format t "~&tpos: ~a vel: ~a ~& Foot-Pos ~a Cap-Val: ~a~& expanding: ~a~&" tpos (* abs-speed dir) foot-pos cap-val expanding)))
@@ -599,7 +600,7 @@ In this function the new foot pos is affected by the new velocity instead of the
        (decf stopping-time)))
 
     (t
-     (switch-to-state idle :key-buffer key-buffer)))
+     (switch-to-state 'idle :key-buffer key-buffer)))
 
    (format t "~&tpos: ~a spd: ~a ~20Tleg: ~a~& air-time ~a ~20Tstopping-time: ~a" tpos spd foot-pos air-time stopping-time))
 
@@ -734,7 +735,7 @@ In this function the new foot pos is affected by the new velocity instead of the
 	       (decf-to time-till-return 0)
 	       (when (and (= time-till-return 0) (<= spd 0.1))
 		 ;; (switch-to-state high-stride :vel (* spd dir) :foot-pos foot-pos :expanding negative)
-		 (switch-to-state idle :key-buffer key-buffer)))
+		 (switch-to-state 'idle :key-buffer key-buffer)))
 	     
 	   ;;If not returning to dash
 	   (progn
@@ -745,32 +746,32 @@ In this function the new foot pos is affected by the new velocity instead of the
 	 (decf-to time-till-return 0)
 	 (when (= time-till-return 0)
 	   ;; (switch-to-state straight :forward-speed (* spd dir) :leg-space foot-pos)
-	   (switch-to-state high-stride :vel (* spd dir) :foot-pos foot-pos :key-buffer key-buffer)))
+	   (switch-to-state 'high-stride :vel (* spd dir) :foot-pos foot-pos :key-buffer key-buffer)))
 
 	((equal returning-state :to-grab)
 	 (speed-to-target 0.0)
 	 (decf-to time-till-return 0)
 	 (when (and (= time-till-return 0) (<= spd 0.0))
-	   (switch-to-state grab :key-buffer key-buffer)))
+	   (switch-to-state 'grab :key-buffer key-buffer)))
 
 	((equal returning-state :to-frontkick)
 	 (speed-to-target 0.2)
 	 (decf-to time-till-return 0)
 	 (when (and (= time-till-return 0) (<= spd 0.2))
 	   ;; (switch-to-state straight :forward-speed (* spd dir) :leg-space foot-pos)
-	   (switch-to-state frontkick :vel (* spd dir) :foot-pos (+ 4.0 *neutral-leg-space*) :key-buffer key-buffer)))
+	   (switch-to-state 'frontkick :vel (* spd dir) :foot-pos (+ 4.0 *neutral-leg-space*) :key-buffer key-buffer)))
 
 	((equal returning-state :to-sidekick)
 	 (speed-to-target target-speed)
 	 (decf-to time-till-return 0)
 	 (when (= time-till-return 0)
-	   (switch-to-state sidekick :start-vel (* spd dir) :foot-pos foot-pos)))
+	   (switch-to-state 'sidekick :start-vel (* spd dir) :foot-pos foot-pos)))
 
 	((equal returning-state :to-glide-in)
 	 (speed-to-target 1.6)
 	 (decf-to time-till-return 0)
 	 (when (= time-till-return 0)
-	   (switch-to-state glide-in :vel (* spd dir) :foot-pos (+ 5.0 *neutral-leg-space*)))))
+	   (switch-to-state 'glide-in :vel (* spd dir) :foot-pos (+ 5.0 *neutral-leg-space*)))))
 
        (setf animation-incr (* vel 0.5))
        
@@ -843,7 +844,7 @@ In this function the new foot pos is affected by the new velocity instead of the
 	(decf-to vel (min 1.1 target-speed) 0.05)
       (incf-to vel (max -1.1 (- target-speed)) 0.05))
      (if (<= status 0)
-	(switch-to-state glide-out
+	(switch-to-state 'glide-out
 			 :vel vel
 			 :foot-pos foot-pos
 			 :entry-height exit-height
@@ -921,7 +922,7 @@ In this function the new foot pos is affected by the new velocity instead of the
       (format t "Min leg pos reached.~&")
      
 					;Switch to high-stride
-      (switch-to-state high-stride
+      (switch-to-state 'high-stride
 		       :vel vel
 		       :foot-pos foot-pos
 		       :key-buffer key-buffer))
@@ -949,7 +950,7 @@ In this function the new foot pos is affected by the new velocity instead of the
   :main-action
   ((move-forward vel)
    (when (>= tpos 20)
-     (switch-to-state idle :key-buffer key-buffer)))
+     (switch-to-state 'idle :key-buffer key-buffer)))
 
   :rest
   (def-statemeth side-spd ()
@@ -973,7 +974,7 @@ In this function the new foot pos is affected by the new velocity instead of the
 	   (move-forward -3.5))
    
    (when (equal tpos 25)
-	 (switch-to-state idle)))
+	 (switch-to-state 'idle)))
 
   :initfunc
   ((&key)
@@ -1001,7 +1002,7 @@ in the middle of the flip."
        (setf tpos 10))
 
    (when (= tpos 20)
-     (switch-to-state idle :key-buffer key-buffer)))
+     (switch-to-state 'idle :key-buffer key-buffer)))
 
   :rest
   (progn

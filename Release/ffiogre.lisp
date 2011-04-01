@@ -174,6 +174,16 @@ by anim-name. Returns a pointer to the animation state."
   (:name "makeHitRectangle")
   (:arguments (x single-float) (y single-float) (width single-float) (height single-float) (material c-string) (sm scene-manager))
   (:return-type entity))
+  
+(def-call-out make-hit-triangle
+  (:name "makeHitTriangle")
+  (:arguments (x1 single-float) (y1 single-float) (x2 single-float) (y2 single-float) (x3 single-float) (y3 single-float) (material c-string) (sm scene-manager))
+  (:return-type manual-object))
+ 
+ (def-call-out update-hit-triangle
+  (:name "updateHitTriangle")
+  (:arguments (x1 single-float) (y1 single-float) (x2 single-float) (y2 single-float) (x3 single-float) (y3 single-float) (mo manual-object))
+  (:return-type ))
 
 (def-call-out reload-entity-skeleton
   (:name "reloadEntitySkeleton")

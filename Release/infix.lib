@@ -40,12 +40,12 @@
      (|COMMON-LISP|::|LET*|
       ((|INFIX|::|OPERATOR|
         (|COMMON-LISP|::|CADR| . #1=(|SYSTEM|::|<MACRO-FORM>|)))
-       (#2=#:|G5938| (|COMMON-LISP|::|CDDR| . #1#))
+       (#2=#:|G5598| (|COMMON-LISP|::|CDDR| . #1#))
        (|INFIX|::|PRECEDENCE|
         (|COMMON-LISP|::|GETF| #2# ':|PRECEDENCE| . #3=(|COMMON-LISP|::|NIL|)))
        (|INFIX|::|ASSOCIATIVITY|
         (|COMMON-LISP|::|LET|
-         ((#4=#:|KWD-ARG-5939|
+         ((#4=#:|KWD-ARG-5599|
            (|COMMON-LISP|::|GETF| #2# ':|ASSOCIATIVITY|
             '#5=(|COMMON-LISP|::|NIL|))))
          (|COMMON-LISP|::|IF| (|COMMON-LISP|::|EQ| #4# '#5#)
@@ -54,7 +54,7 @@
         (|COMMON-LISP|::|GETF| #2# ':|FUNCTION-NAME| . #3#))
        (|INFIX|::|FUNGIBLE|
         (|COMMON-LISP|::|LET|
-         ((#6=#:|KWD-ARG-5940| (|COMMON-LISP|::|GETF| #2# ':|FUNGIBLE| '#5#)))
+         ((#6=#:|KWD-ARG-5600| (|COMMON-LISP|::|GETF| #2# ':|FUNGIBLE| '#5#)))
          (|COMMON-LISP|::|IF| (|COMMON-LISP|::|EQ| #6# '#5#)
           (|COMMON-LISP|::|PROGN| |COMMON-LISP|::|T|) #6#))))
       (|SYSTEM|::|KEYWORD-TEST| #2#

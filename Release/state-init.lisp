@@ -37,6 +37,10 @@ by calling change-state which will call this function). This function will prefo
 be drawn appropriately when the screen is rendered."))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;mixin-state
+
+(defmacro def-mixin-state (supers slots)
+  `())
 ;;State
 
 (defclass+ state (low-y-box)
@@ -245,11 +249,11 @@ If false, then sidesteps become effective."))
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;For states, enter state should be used in place of initialise-instance.
 
-(defmethod enter-state :after ((f1 fighter) (state single-hitbox))
+(defmethod enter-state :after ((f1 fighter) (state displayed-box))
   (with-accessors ((display display)) state
     (setf display (make-hit-rectangle (x state) (median-y state) (width state) (height state) "blue" *mgr*))))
 
-(defmethod exit-state :after ((f1 fighter) (state single-hitbox))
+(defmethod exit-state :after ((f1 fighter) (state displayed-box))
   (with-accessors ((display display)) state
     (destroy-entity *mgr* display)))
 
@@ -299,11 +303,8 @@ If false, then sidesteps become effective."))
 (defmacro switch-to-state (state-name &rest args)
   "Switches states. State neme must either be a list (which will be evaluated) or a
 single symbol which will be automatically quoted."
-  (let ((sname (if (listp state-name) state-name `(quote ,state-name))))
-
-   `(progn
-      (let ((new-state (make-instance ,sname ,@args)))
-	(change-state *fighter* new-state)))))
+  `(let ((new-state (make-instance ,state-name ,@args)))
+	(change-state *fighter* new-state)))
 
 
 ;;Copied from Practical Common Lisp
@@ -404,20 +405,6 @@ alt-name allows the default animation to be overridden and replaced with another
 			     :x ,x :y ,y
 			     :radius ,r :height ,h)))
        hitbox-forms)))
-
-;; (defmacro make-hitbox-list (&rest hitbox-forms)
-;;   `(list
-;;     ,@(mapcar
-;;        #'(lambda (form)
-;; 	   (if (listp form)
-;; 	       `(apply #'make-uni-box ,(append '(state) form))
-;; 	    ;; (destructuring-bind (x y r h &optional binding) form
-;; ;; 	      `(make-instance 'uni-box
-;; ;; 			      :parent state
-;; ;; 			      :x ,x :y ,y
-;; ;; 			      :radius ,r :height ,h))
-;; 	    form))
-;;        hitbox-forms)))
 
 (defmacro set-hitbox-list (&rest hitbox-forms)
   "When applied to a state with a multihitbox,

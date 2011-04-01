@@ -1,0 +1,16 @@
+<NotepadPlus>
+    <Session activeView="0">
+        <mainView activeIndex="6">
+            <File firstVisibleLine="329" xOffset="0" scrollWidth="1400" startPos="13036" endPos="13036" selMode="0" lang="LISP" encoding="-1" filename="C:\Users\Andrew\Documents\Kineman\Newest\Release\input.lisp" />
+            <File firstVisibleLine="314" xOffset="0" scrollWidth="1400" startPos="12984" endPos="11618" selMode="0" lang="LISP" encoding="-1" filename="C:\Users\Andrew\Documents\Kineman\Newest\OgreTut6\Release\input.lisp" />
+            <File firstVisibleLine="0" xOffset="0" scrollWidth="1224" startPos="930" endPos="930" selMode="0" lang="LISP" encoding="-1" filename="C:\Users\Andrew\Documents\Kineman\Newest\Release\states.lisp" />
+            <File firstVisibleLine="96" xOffset="0" scrollWidth="1528" startPos="0" endPos="0" selMode="0" lang="LISP" encoding="-1" filename="C:\Users\Andrew\Documents\Kineman\Newest\OgreTut6\Release\states.lisp" />
+            <File firstVisibleLine="430" xOffset="0" scrollWidth="1360" startPos="23041" endPos="23041" selMode="0" lang="LISP" encoding="-1" filename="C:\Users\Andrew\Documents\Kineman\Newest\Release\attacks.lisp" />
+            <File firstVisibleLine="325" xOffset="0" scrollWidth="1496" startPos="11859" endPos="11488" selMode="0" lang="LISP" encoding="-1" filename="C:\Users\Andrew\Documents\Kineman\Newest\OgreTut6\Release\state-init.lisp" />
+            <File firstVisibleLine="0" xOffset="0" scrollWidth="528" startPos="154" endPos="154" selMode="0" lang="LISP" encoding="-1" filename="C:\Users\Andrew\Documents\Kineman\Newest\Release\hitboxes.lisp" />
+        </mainView>
+        <subView activeIndex="0">
+            <File firstVisibleLine="34" xOffset="0" scrollWidth="1520" startPos="10397" endPos="10397" selMode="0" lang="LISP" encoding="-1" filename="C:\Users\Andrew\Documents\Kineman\Newest\Release\state-init.lisp" />
+        </subView>
+    </Session>
+</NotepadPlus>

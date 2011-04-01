@@ -27,6 +27,7 @@ c-type type"
 		   node
 		   scene-node
 		   entity
+		   manual-object
 		   camera
 		   vector3
 		   quaternion

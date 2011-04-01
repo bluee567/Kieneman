@@ -52,7 +52,7 @@
   t)
 
 (defmethod handle-collision (thing (rab rec-attack-box))
-  (handle-collision (rab thing)))
+  (handle-collision rab thing))
 
 (defmethod handle-collision ((rab rec-attack-box) (fighter fighter))
   (when (= 0 (loop for e in (hit-objects rab) count (eq e fighter)))
@@ -61,7 +61,7 @@
     (handle-collision rab (state fighter))))
 
 (defmethod handle-collision ((fighter fighter) (rab rec-attack-box))
-  (handle-collision (rab fighter)))
+  (handle-collision rab fighter))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;; rec-strike-box
@@ -125,7 +125,7 @@
 
       ((and (> tpos 3) (not grabbed-entity))
        (when (not (get-held :a1))
-	 (switch-to-state idle)))
+	 (switch-to-state 'idle)))
 
       ((and (> tpos 3) grabbed-entity)
        (when (get-pressed (direction-symbol))
@@ -142,7 +142,7 @@
 				     :kb-direction (get-direction parent)
 				     :kb-speed 3.0
 				     :decceleration 0.25))
-       (switch-to-state high-block-stun
+       (switch-to-state 'high-block-stun
 			:duration 14
 			:kb-direction (opposite (get-direction parent))
 			:kb-speed 0.0
@@ -314,7 +314,7 @@
 	 (set-tapped :a1 :released t))
        (when (get-released :a2)
 	 (set-tapped :a2 :released t))))
-   bink
+   ;bink
    (case tpos
      (6 (set-hitbox (;; make-instance 'jab-box
 		     make-static-dist-rab
@@ -330,11 +330,11 @@
 				   :x (* (get-direction fighter) 20.0) :Y 52.0
 				   :radius 5.0 :height 5.0)))
      (7 (remove-hitbox ))
-     (25 (switch-to-state idle :key-buffer key-buffer)))
+     (25 (switch-to-state 'idle :key-buffer key-buffer)))
    
    (within 12 25
 	   (when to-second
-	     (switch-to-state second-jab))))
+	     (switch-to-state 'second-jab))))
   
   :rest
   (progn
@@ -386,7 +386,7 @@
 	  
 	  ((+ attack-time 2) (remove-hitbox))
 	  
-	  (end-time (switch-to-state idle :key-buffer key-buffer))))
+	  (end-time (switch-to-state 'idle :key-buffer key-buffer))))
   
   :rest
   (progn
@@ -443,7 +443,7 @@
     
     ((and attacked-time (= tpos (+ 1 attacked-time))) (remove-hitbox))
     
-    ((and attacked-time (= tpos (+ 20 attacked-time))) (switch-to-state idle :key-buffer key-buffer)))))
+    ((and attacked-time (= tpos (+ 20 attacked-time))) (switch-to-state 'idle :key-buffer key-buffer)))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -486,7 +486,7 @@
      (set-tapped :a2 :released t))
 
    (when (and (>= tpos block-time) (get-held :defense))
-     (switch-to-state high-block-stun
+     (switch-to-state 'high-block-stun
 		      :duration (* 1.2 (- end-time tpos))
 		      :kb-direction 1.0
 		      :kb-speed 0.0
@@ -509,7 +509,7 @@
      
      ((+ 1 attack-time) (remove-hitbox))
      
-     (end-time (switch-to-state idle :key-buffer key-buffer))))
+     (end-time (switch-to-state 'idle :key-buffer key-buffer))))
 
   :rest
   (progn
@@ -638,7 +638,7 @@ is possible from the foot position of the previous state.
       (when (= tpos 2)
 	(remove-hitbox))
       (when (> tpos reco-time)
-	(switch-to-state idle :key-buffer key-buffer))))
+	(switch-to-state 'idle :key-buffer key-buffer))))
 
     (format t "Action: ~a ~10T Tpos: ~a ~10T Vel: ~a" action tpos vel)
     (format t "~&************************~%")))
@@ -747,7 +747,7 @@ is possible from the foot position of the previous state.
      (remove-hitbox))
 
     ((= tpos 56)
-     (switch-to-state idle :key-buffer key-buffer)))
+     (switch-to-state 'idle :key-buffer key-buffer)))
 
    (format t "~&*LP* vel: ~a~&" vel)))
 
@@ -798,7 +798,7 @@ is possible from the foot position of the previous state.
 	   (remove-hitbox))
 
 	  (end-time
-	   (switch-to-state idle :key-buffer key-buffer))))
+	   (switch-to-state 'idle :key-buffer key-buffer))))
 
   :rest
   (progn
@@ -849,7 +849,7 @@ is possible from the foot position of the previous state.
       (animate-forward (* 0.6 move-speed))))
    (within 0 11
 	   (if (or (not (get-held (opposite-symbol))) (get-pressed :cancel) (get-pressed :defense))
-	       (switch-to-state sidekickS-a
+	       (switch-to-state 'sidekickS-a
 				:key-buffer key-buffer
 				:entry-time tpos)))
    (lcase tpos
@@ -871,7 +871,7 @@ is possible from the foot position of the previous state.
 	   (remove-hitbox))
 
 	  (end-time
-	   (switch-to-state idle :key-buffer key-buffer))))
+	   (switch-to-state 'idle :key-buffer key-buffer))))
 
   :rest
   (progn
@@ -908,7 +908,7 @@ is possible from the foot position of the previous state.
   ((animate-forward (if (< tpos 12) move-speed (* 0.3 move-speed)))
    (lcase tpos
 	  (end-time
-	   (switch-to-state idle :key-buffer key-buffer))))
+	   (switch-to-state 'idle :key-buffer key-buffer))))
 
   ;; :rest
   ;; (def-statemeth animate ()
@@ -963,7 +963,7 @@ is possible from the foot position of the previous state.
 
     ((and attack-time (= tpos (+ 16 attack-time))) (remove-hitbox))
     
-    ((and attack-time (= tpos (+ 40 attack-time))) (switch-to-state idle :key-buffer key-buffer))))
+    ((and attack-time (= tpos (+ 40 attack-time))) (switch-to-state 'idle :key-buffer key-buffer))))
 
   :rest
   (def-statemeth linear-tracking ()
@@ -1023,7 +1023,7 @@ is possible from the foot position of the previous state.
 	   (remove-hitbox))
 	  
 	  (end-time
-	   (switch-to-state idle :key-buffer key-buffer))))
+	   (switch-to-state 'idle :key-buffer key-buffer))))
 
   :rest
   (def-statemeth attack-blocked (other-state)
@@ -1074,7 +1074,7 @@ is possible from the foot position of the previous state.
 	  
 	  ((+ 2 attack-point) (remove-hitbox))
 	  
-	  (end-point (switch-to-state idle :key-buffer key-buffer))))
+	  (end-point (switch-to-state 'idle :key-buffer key-buffer))))
 
   ;; :rest
 ;;   (progn

@@ -336,7 +336,44 @@ by anim-name. Returns a pointer to the animation state."))
     |FFI|::|FIND-FOREIGN-FUNCTION| |KIENEMAN|::|MAKE-HIT-RECTANGLE|
     |SYSTEM|::|REMOVE-OLD-DEFINITIONS|)
    (|COMMON-LISP|::|T| |COMMON-LISP|::|T| |COMMON-LISP|::|T|))
-#Y(#:|178 181 (DEF-CALL-OUT RELOAD-ENTITY-SKELETON (:NAME "reloadEntitySkeleton") ...)-28|
+#Y(#:|178 181 (DEF-CALL-OUT MAKE-HIT-TRIANGLE (:NAME "makeHitTriangle") ...)-28|
+   #35Y(00 00 00 00 00 00 00 00 00 01 DA DB DC 70 03 63 6B 04 63 6E 05 05 93 00
+        07 E0 2F 07 E0 AD 32 83 CB 19 02)
+   (#1="makeHitTriangle"
+    #2=((:|NAME| #1#)
+        (:|ARGUMENTS| (|KIENEMAN|::|X1| |COMMON-LISP|::|SINGLE-FLOAT|)
+         (|KIENEMAN|::|Y1| |COMMON-LISP|::|SINGLE-FLOAT|)
+         (|KIENEMAN|::|X2| |COMMON-LISP|::|SINGLE-FLOAT|)
+         (|KIENEMAN|::|Y2| |COMMON-LISP|::|SINGLE-FLOAT|)
+         (|KIENEMAN|::|X3| |COMMON-LISP|::|SINGLE-FLOAT|)
+         (|KIENEMAN|::|Y3| |COMMON-LISP|::|SINGLE-FLOAT|)
+         (|KIENEMAN|::|MATERIAL| |FFI|::|C-STRING|)
+         (|KIENEMAN|::|SM| |KIENEMAN|::|SCENE-MANAGER|))
+        (:|RETURN-TYPE| |KIENEMAN|::|MANUAL-OBJECT|))
+    (|FFI|::|DEF-CALL-OUT| |KIENEMAN|::|MAKE-HIT-TRIANGLE| . #2#)
+    |FFI|::|PARSE-C-FUNCTION| |FFI|::|*FOREIGN-LIBRARY*|
+    |FFI|::|FIND-FOREIGN-FUNCTION| |KIENEMAN|::|MAKE-HIT-TRIANGLE|
+    |SYSTEM|::|REMOVE-OLD-DEFINITIONS|)
+   (|COMMON-LISP|::|T| |COMMON-LISP|::|T| |COMMON-LISP|::|T|))
+#Y(#:|183 186 (DEF-CALL-OUT UPDATE-HIT-TRIANGLE (:NAME "updateHitTriangle") ...)-29|
+   #35Y(00 00 00 00 00 00 00 00 00 01 DA DB DC 70 03 63 6B 04 63 6E 05 05 93 00
+        07 E0 2F 07 E0 AD 32 83 CB 19 02)
+   (#1="updateHitTriangle"
+    #2=((:|NAME| #1#)
+        (:|ARGUMENTS| (|KIENEMAN|::|X1| |COMMON-LISP|::|SINGLE-FLOAT|)
+         (|KIENEMAN|::|Y1| |COMMON-LISP|::|SINGLE-FLOAT|)
+         (|KIENEMAN|::|X2| |COMMON-LISP|::|SINGLE-FLOAT|)
+         (|KIENEMAN|::|Y2| |COMMON-LISP|::|SINGLE-FLOAT|)
+         (|KIENEMAN|::|X3| |COMMON-LISP|::|SINGLE-FLOAT|)
+         (|KIENEMAN|::|Y3| |COMMON-LISP|::|SINGLE-FLOAT|)
+         (|KIENEMAN|::|MO| |KIENEMAN|::|MANUAL-OBJECT|))
+        (:|RETURN-TYPE|))
+    (|FFI|::|DEF-CALL-OUT| |KIENEMAN|::|UPDATE-HIT-TRIANGLE| . #2#)
+    |FFI|::|PARSE-C-FUNCTION| |FFI|::|*FOREIGN-LIBRARY*|
+    |FFI|::|FIND-FOREIGN-FUNCTION| |KIENEMAN|::|UPDATE-HIT-TRIANGLE|
+    |SYSTEM|::|REMOVE-OLD-DEFINITIONS|)
+   (|COMMON-LISP|::|T| |COMMON-LISP|::|T| |COMMON-LISP|::|T|))
+#Y(#:|188 191 (DEF-CALL-OUT RELOAD-ENTITY-SKELETON (:NAME "reloadEntitySkeleton") ...)-30|
    #35Y(00 00 00 00 00 00 00 00 00 01 DA DB DC 70 03 63 6B 04 63 6E 05 05 93 00
         07 E0 2F 07 E0 AD 32 83 CB 19 02)
    (#1="reloadEntitySkeleton"
@@ -347,7 +384,7 @@ by anim-name. Returns a pointer to the animation state."))
     |FFI|::|FIND-FOREIGN-FUNCTION| |KIENEMAN|::|RELOAD-ENTITY-SKELETON|
     |SYSTEM|::|REMOVE-OLD-DEFINITIONS|)
    (|COMMON-LISP|::|T| |COMMON-LISP|::|T| |COMMON-LISP|::|T|))
-#Y(#:|183 188 (DEF-CALL-OUT CREATE-LIGHT (:NAME "create_light") ...)-29|
+#Y(#:|193 198 (DEF-CALL-OUT CREATE-LIGHT (:NAME "create_light") ...)-31|
    #35Y(00 00 00 00 00 00 00 00 00 01 DA DB DC 70 03 63 6B 04 63 6E 05 05 93 00
         07 E0 2F 07 E0 AD 32 83 CB 19 02)
    (#1="create_light"
@@ -360,7 +397,7 @@ by anim-name. Returns a pointer to the animation state."))
     |FFI|::|FIND-FOREIGN-FUNCTION| |KIENEMAN|::|CREATE-LIGHT|
     |SYSTEM|::|REMOVE-OLD-DEFINITIONS|)
    (|COMMON-LISP|::|T| |COMMON-LISP|::|T| |COMMON-LISP|::|T|))
-#Y(#:|190 193 (DEF-CALL-OUT SET-LT-TYPE (:NAME "set_lt_type") ...)-30|
+#Y(#:|200 203 (DEF-CALL-OUT SET-LT-TYPE (:NAME "set_lt_type") ...)-32|
    #35Y(00 00 00 00 00 00 00 00 00 01 DA DB DC 70 03 63 6B 04 63 6E 05 05 93 00
         07 E0 2F 07 E0 AD 32 83 CB 19 02)
    (#1="set_lt_type"
@@ -373,7 +410,7 @@ by anim-name. Returns a pointer to the animation state."))
     |FFI|::|FIND-FOREIGN-FUNCTION| |KIENEMAN|::|SET-LT-TYPE|
     |SYSTEM|::|REMOVE-OLD-DEFINITIONS|)
    (|COMMON-LISP|::|T| |COMMON-LISP|::|T| |COMMON-LISP|::|T|))
-#Y(#:|195 198 (DEF-CALL-OUT SET-LT-POSITION (:NAME "set_lt_position") ...)-31|
+#Y(#:|205 208 (DEF-CALL-OUT SET-LT-POSITION (:NAME "set_lt_position") ...)-33|
    #35Y(00 00 00 00 00 00 00 00 00 01 DA DB DC 70 03 63 6B 04 63 6E 05 05 93 00
         07 E0 2F 07 E0 AD 32 83 CB 19 02)
    (#1="set_lt_position"
@@ -388,7 +425,7 @@ by anim-name. Returns a pointer to the animation state."))
     |FFI|::|FIND-FOREIGN-FUNCTION| |KIENEMAN|::|SET-LT-POSITION|
     |SYSTEM|::|REMOVE-OLD-DEFINITIONS|)
    (|COMMON-LISP|::|T| |COMMON-LISP|::|T| |COMMON-LISP|::|T|))
-#Y(#:|200 203 (DEF-CALL-OUT SET-LT-DIFFUSE-COLOUR (:NAME "set_lt_diffuse_colour") ...)-32|
+#Y(#:|210 213 (DEF-CALL-OUT SET-LT-DIFFUSE-COLOUR (:NAME "set_lt_diffuse_colour") ...)-34|
    #35Y(00 00 00 00 00 00 00 00 00 01 DA DB DC 70 03 63 6B 04 63 6E 05 05 93 00
         07 E0 2F 07 E0 AD 32 83 CB 19 02)
    (#1="set_lt_diffuse_colour"
@@ -403,7 +440,7 @@ by anim-name. Returns a pointer to the animation state."))
     |FFI|::|FIND-FOREIGN-FUNCTION| |KIENEMAN|::|SET-LT-DIFFUSE-COLOUR|
     |SYSTEM|::|REMOVE-OLD-DEFINITIONS|)
    (|COMMON-LISP|::|T| |COMMON-LISP|::|T| |COMMON-LISP|::|T|))
-#Y(#:|205 208 (DEF-CALL-OUT SET-LT-SPECULAR-COLOUR (:NAME "set_lt_specular_colour") ...)-33|
+#Y(#:|215 218 (DEF-CALL-OUT SET-LT-SPECULAR-COLOUR (:NAME "set_lt_specular_colour") ...)-35|
    #35Y(00 00 00 00 00 00 00 00 00 01 DA DB DC 70 03 63 6B 04 63 6E 05 05 93 00
         07 E0 2F 07 E0 AD 32 83 CB 19 02)
    (#1="set_lt_specular_colour"
@@ -418,7 +455,7 @@ by anim-name. Returns a pointer to the animation state."))
     |FFI|::|FIND-FOREIGN-FUNCTION| |KIENEMAN|::|SET-LT-SPECULAR-COLOUR|
     |SYSTEM|::|REMOVE-OLD-DEFINITIONS|)
    (|COMMON-LISP|::|T| |COMMON-LISP|::|T| |COMMON-LISP|::|T|))
-#Y(#:|210 213 (DEF-CALL-OUT SET-LT-DIRECTION (:NAME "set_lt_direction") ...)-34|
+#Y(#:|220 223 (DEF-CALL-OUT SET-LT-DIRECTION (:NAME "set_lt_direction") ...)-36|
    #35Y(00 00 00 00 00 00 00 00 00 01 DA DB DC 70 03 63 6B 04 63 6E 05 05 93 00
         07 E0 2F 07 E0 AD 32 83 CB 19 02)
    (#1="set_lt_direction"

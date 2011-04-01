@@ -1,6 +1,0 @@
-(|SYSTEM|::|VERSION| '(20060802.))
-#0Y |CHARSET|::|UTF-8|
-#Y(#:|1 1 (ASDF:OPERATE 'ASDF:LOAD-OP "kieneman")-1|
-   #16Y(00 00 00 00 00 00 00 00 00 01 DA DB 30 02 19 01)
-   (|ASDF|::|LOAD-OP| "kieneman" |ASDF|::|OPERATE|)
-   (|COMMON-LISP|::|T| |COMMON-LISP|::|T| |COMMON-LISP|::|T|))

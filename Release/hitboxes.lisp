@@ -32,14 +32,47 @@ left and right)."))
 (defclass+ 2d-vector ()
   ((:iea x)
    (:iea y)))
+   
+(defun vector2 (ax ay)
+   (make-instance '2d-vector
+   :x ax :y ay))
+   
+ (defmethod print-object ((2d-vector 2d-vector) stream)
+  (format stream "[x: ~a y: ~a]" (x 2d-vector) (y 2d-vector)))
 
+;;
 (defun abs-dist (2d-vec-a 2d-vec-b)
+"Euclidian distance metric"
   (let ((x-val (- (x 2d-vec-a) (x 2d-vec-b)))
 	(y-val (- (y 2d-vec-a) (y 2d-vec-b))))
    (sqrt (+ (* x-val x-val) (* y-val y-val)))))
 
+;;Ab
 (defun ground-dist (2d-vec-a 2d-vec-b)
+"Absolute distance between the x values"
   (abs (- (x 2d-vec-b) (x 2d-vec-a))))
+  
+(defun add (a b)
+ "Adds two vectors"
+  (vector2 (+ (x a) (x b)) (+ (y a) (y b))))
+  
+(defun subtract (a b)
+ "Subtracts two vectors"
+  (vector2 (- (x a) (x b)) (- (y a) (y b))))
+  
+(defun v-dot (a b)
+	(+ (* (x a) (x b))
+	 (* (y a) (y b))))
+	 
+(defun v-length (vec)
+	(let ((x (x vec)) (y (y vec)))
+	(sqrt (+ (* x x) (* y y)))))
+	 
+(defun normalise (vec)
+	 (let ((len (v-length vec)))
+	 (vector2 (/ (x vec) len) (/ (y vec) len))))
+	 
+(defun v-normal (vec) (vector2 (y vec) (- (x vec))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -96,6 +129,9 @@ in order to form the multibox.")))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
+;; Requires: Rectangle (top bottom left right)
+;; Impliments: collision
+
 (defclass+ rectangular-hitbox (single-hitbox)
   ())
 
@@ -131,12 +167,71 @@ in order to form the multibox.")))
 
 (defmethod right ((low-y-box low-y-box))
   (+ (x low-y-box) (radius low-y-box)))
+  
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;; triangle-box
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
+;; Requires: -
+;; Impliments: Triangle
+
+(defclass+ triangular-hitbox (single-hitbox)
+	(;A list of 2d-vectors.
+	(:ia point-list)))
+	
+(labels ((is-overlapping (a b c x)
+				(destructuring-bind (d e f) x ;vectors
+				(let* ((v (subtract b c));vector
+						(n (normalise (v-normal v)));v
+						(an (v-dot a n));scaler
+						(cn (v-dot c n));s
+						(dn (v-dot d n));s
+						(en (v-dot e n));s
+						(fn (v-dot f n));s
+						(anltcn (< an cn));bool
+						(vmin (if anltcn an cn)) ;s
+						(vmax (if anltcn cn an)));s
+					(not (or (and (<= vmax dn) (<= vmax en) (<= vmax fn))
+							(and (>= vmin dn) (>= vmin en) (>= vmin fn)))))))
+			(side-test (a b)
+			"Accepts two point lists."
+				(and
+					(is-overlapping (first a) (second a) (third a) b)
+					(is-overlapping (second a) (third a) (first a) b)
+					(is-overlapping (third a) (first a) (second a) b)))
+					
+			(triangle-collision (pl1 pl2)
+				(and (side-test pl1 pl2)
+					(side-test pl2 pl1))))
+	
+	(defmethod collision ((t1 triangular-hitbox) (t2 triangular-hitbox))
+		(triangle-collision (point-list t1) (point-list t2)))
+		
+	(defun t-collision-example (a1x a1y a2x a2y a3x a3y  b1x b1y b2x b2y b3x b3y)
+				(triangle-collision
+					(list (vector2 a1x a1y) (vector2 a2x a2y) (vector2 a3x a3y))
+					(list (vector2 b1x b1y) (vector2 b2x b2y) (vector2 b3x b3y))))
+			
+	(defun test-t-collision ()
+		(format nil "~a ~a ~a ~a"
+		(t-collision-example 0 1   0 0   1 0
+							 5 10  10 5  10 10)
+		(collision (make-instance 'triangular-hitbox
+						:point-list (list (vector2 0 1) (vector2 0 0) (vector2 1 0)))
+					(make-instance 'triangular-hitbox
+						:point-list (list (vector2 0 1) (vector2 1 0) (vector2 1 1))))
+		(collision (make-instance 'triangular-hitbox
+						:point-list (list (vector2 0 1) (vector2 0 0) (vector2 1 0)))
+					(make-instance 'triangular-hitbox
+						:point-list (list (vector2 0 1) (vector2 0 0) (vector2 1 0))))
+		(t-collision-example 0 1      0 0      1 0
+							 0.5 1.5  0.4 0.5  1.5 0.6))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;; displayed-box
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
+;;Display must be an object that can be parented to an Ogre node.
 (defclass+ displayed-box ()
   ((:ia display)))
 

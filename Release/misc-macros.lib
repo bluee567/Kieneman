@@ -78,8 +78,8 @@ the second atom of the case form."
       (|SYSTEM|::|PROPER-LIST-LENGTH-IN-BOUNDS-P| |SYSTEM|::|<MACRO-FORM>| 2.))
      (|SYSTEM|::|MACRO-CALL-ERROR| |SYSTEM|::|<MACRO-FORM>|)
      (|COMMON-LISP|::|LET*|
-      ((#1=#:|G5496| (|COMMON-LISP|::|CADR| . #2=(|SYSTEM|::|<MACRO-FORM>|)))
-       (#3=#:|G5497|
+      ((#1=#:|G6036| (|COMMON-LISP|::|CADR| . #2=(|SYSTEM|::|<MACRO-FORM>|)))
+       (#3=#:|G6037|
         (|COMMON-LISP|::|IF|
          (|COMMON-LISP|::|NOT|
           (|SYSTEM|::|PROPER-LIST-LENGTH-IN-BOUNDS-P| #1# 2. 2.))
@@ -213,7 +213,7 @@ return values of these function calls are anded"
        (|KIENEMAN|::|DELTA|
         (|COMMON-LISP|::|IF| (|COMMON-LISP|::|CDDDR| . #1#)
          (|COMMON-LISP|::|CADDDR| . #1#) 1.))
-       (#2=#:|G5604| (|COMMON-LISP|::|CDDDDR| . #1#))
+       (#2=#:|G6144| (|COMMON-LISP|::|CDDDDR| . #1#))
        (|KIENEMAN|::|FORCE-TO-LIMIT|
         (|COMMON-LISP|::|GETF| #2# ':|FORCE-TO-LIMIT| |COMMON-LISP|::|NIL|)))
       (|SYSTEM|::|KEYWORD-TEST| #2# '(:|FORCE-TO-LIMIT|))
@@ -257,7 +257,7 @@ return values of these function calls are anded"
        (|KIENEMAN|::|DELTA|
         (|COMMON-LISP|::|IF| (|COMMON-LISP|::|CDDDR| . #1#)
          (|COMMON-LISP|::|CADDDR| . #1#) 1.))
-       (#2=#:|G5620| (|COMMON-LISP|::|CDDDDR| . #1#))
+       (#2=#:|G6160| (|COMMON-LISP|::|CDDDDR| . #1#))
        (|KIENEMAN|::|FORCE-TO-LIMIT|
         (|COMMON-LISP|::|GETF| #2# ':|FORCE-TO-LIMIT| |COMMON-LISP|::|NIL|)))
       (|SYSTEM|::|KEYWORD-TEST| #2# '(:|FORCE-TO-LIMIT|))
@@ -301,7 +301,7 @@ return values of these function calls are anded"
        (|KIENEMAN|::|DELTA|
         (|COMMON-LISP|::|IF| (|COMMON-LISP|::|CDDDR| . #1#)
          (|COMMON-LISP|::|CADDDR| . #1#) 1.))
-       (#2=#:|G5636| (|COMMON-LISP|::|CDDDDR| . #1#))
+       (#2=#:|G6176| (|COMMON-LISP|::|CDDDDR| . #1#))
        (|KIENEMAN|::|FORCE-TO-LIMIT|
         (|COMMON-LISP|::|GETF| #2# ':|FORCE-TO-LIMIT| |COMMON-LISP|::|NIL|)))
       (|SYSTEM|::|KEYWORD-TEST| #2# '(:|FORCE-TO-LIMIT|))
