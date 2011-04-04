@@ -14,6 +14,10 @@ by the start of the next frame."))
 (defmethod alive (entity)
   t)
 
+;;Entities will not die unless  they are mortal.
+(defmethod kill (entity)
+ ())
+
 ;;Mortal objects can be destroyed by 'killing' them.
 (defclass+ mortal ()
   ((:ia alive

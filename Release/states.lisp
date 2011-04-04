@@ -14,7 +14,8 @@
 		   (0.0 (* 0.8 (height fighter)) 0.5 0.2)))
 
 ;;Idle
-
+(let ((ht nil)
+		(va 0.0))
 (defstate "idle"
   :slots
   ((tpos :initform 0))
@@ -42,7 +43,9 @@
 
 	((get-untapped :a1)
 	 (switch-to-state 'jab)
-	 (make-hit-triangle 0.0 0.0  100.0 0.0  0.0 50.0 "red" *mgr*))
+	 (if ht
+	 (progn (incf va 10.0) (update-hit-triangle (- va) 0.0  100.0 0.0  0.0 50.0 ht))
+	 (setf ht (make-hit-triangle 0.0 0.0  100.0 0.0  0.0 50.0 "red" *mgr*))))
 
 	((and (get-held :a2) (get-tapped (direction-symbol)))
 	 (switch-to-state 'sidekickW))
@@ -88,7 +91,7 @@
   
     (def-statemeth print-state ()
       (let ((fighter (parent state)))
-	(format nil "~at: ~a~%" (ccnm) tpos)))))
+	(format nil "~at: ~a~%" (ccnm) tpos))))))
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;

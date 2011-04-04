@@ -179,6 +179,25 @@ in order to form the multibox.")))
 	(;A list of 2d-vectors.
 	(:ia point-list)))
 	
+(defclass+ displayed-tribox (triangular-hitbox)
+  ((:ia display)))
+  
+(defun make-displayed-tribox (scalar-list material-name &optional (class 'displayed-tribox))
+	(destructuring-bind (x1 y1 x2 y2 x3 y3) scalar-list 
+	(make-instance class
+		:point-list (list (vector2d x1 y1) (vector2d x2 y2) (vector2d x3 y3))
+		:display (make-hit-triangle x1 y1 x2 y2 x3 y3 material-name *mgr*))))
+  
+(defmethod animate :after ((obj displayed-tribox))
+  (with-accessors ((pl point-list) (display display)) obj
+		  (destructuring-bind (a b c) pl
+		    (update-hit-triangle (x a) (y a) (x b) (y b) (x c) (y c) display))))
+			
+(defmethod kill ((box displayed-tribox))
+  (when (alive box)
+    (destroy-manual-object *mgr* (display box)))
+  (call-next-method))
+	
 (labels ((is-overlapping (a b c x)
 				(destructuring-bind (d e f) x ;vectors
 				(let* ((v (subtract b c));vector
@@ -206,6 +225,20 @@ in order to form the multibox.")))
 	
 	(defmethod collision ((t1 triangular-hitbox) (t2 triangular-hitbox))
 		(triangle-collision (point-list t1) (point-list t2)))
+		
+	(defmethod collision ((t1 triangular-hitbox) (r1 rectangular-hitbox))
+		(with-accessors ((top top) (bottom bottom) (left left) (right right)) r1
+		(let ((tl (vector2 left top))
+				(tr (vector2 right top))
+				(bl (vector2 left bottom))
+				(br (vector2 right bottom)))
+		;;Here the rectangle is treated as two triangles, each one colliding against the triangle that was
+		;;not a rectangle to start with.
+		(or (triangle-collision (point-list t1) (list tl tr bl))
+			(triangle-collision (point-list t1) (list tr bl br))))))
+		
+	(defmethod collision ((r1 rectangular-hitbox) (t1 triangular-hitbox))
+		(triangle-collision t1 r1))
 		
 	(defun t-collision-example (a1x a1y a2x a2y a3x a3y  b1x b1y b2x b2y b3x b3y)
 				(triangle-collision
@@ -235,11 +268,18 @@ in order to form the multibox.")))
 (defclass+ displayed-box ()
   ((:ia display)))
 
+(defmethod initialize-instance :after ((box displayed-box) &key)
+  (with-accessors ((display display)) box
+     (setf display (make-hit-rectangle (x box) (+ (y box) (/ (height box) 2)) (width box) (height box) (material-name box) *mgr*))))
+
 (defmethod animate :after ((obj displayed-box))
   (with-accessors ((x x) (y y) (radius radius) (width width) (height height) (display display)) obj
 		  (let ((display-node (get-parent-node display)))
 		    (set-position-f display-node x (median-y obj) 0.0)
 		    (set-scale display-node width height 1.0))))
+			
+(defun dbox-cleanup (box)
+	(destroy-entity *mgr* (display box)))
 
 (defmethod kill ((box displayed-box))
   (when (alive box)
@@ -256,7 +296,12 @@ in order to form the multibox.")))
 
 (defmethod animate ((anim uni-box))
   t)
+  
+(defmethod material-name ((obj uni-box))
+	"blue")
 
+#|
 (defmethod initialize-instance :after ((box uni-box) &key)
   (with-accessors ((display display)) box
-		  (setf display (make-hit-rectangle (x box) (+ (y box) (/ (height box) 2)) (width box) (height box) "blue" *mgr*))))
+		  (setf display (make-hit-rectangle (x box) (+ (y box) (/ (height box) 2)) (width box) (height box)  *mgr*))))
+		  |#

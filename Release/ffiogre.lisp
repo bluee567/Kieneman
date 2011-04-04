@@ -189,6 +189,12 @@ by anim-name. Returns a pointer to the animation state."
   (:name "reloadEntitySkeleton")
   (:arguments (ent entity))
   (:return-type ))
+  
+ ;Manual Object
+ 
+(def-call-out destroy-manual-object
+	(:name "destroy_manual_object")
+	(:arguments (mo manual-object)))
 
 ;Light
 

@@ -55,8 +55,8 @@ be drawn appropriately when the screen is rendered."))
 (defclass+ singlebox-state (rectangular-hitbox displayed-box)
   ())
 
-(defclass+ multibox-state (state multi-hitbox)
-  ())
+;;(defclass+ multibox-state (state multi-hitbox)
+;;  ())
 
 (defmethod print-state ((state state))
   (let ((fighter (parent state)))
@@ -248,14 +248,20 @@ If false, then sidesteps become effective."))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;For states, enter state should be used in place of initialise-instance.
-
+#|
 (defmethod enter-state :after ((f1 fighter) (state displayed-box))
   (with-accessors ((display display)) state
     (setf display (make-hit-rectangle (x state) (median-y state) (width state) (height state) "blue" *mgr*))))
+|#
 
+;;Hitbox methods
+	
 (defmethod exit-state :after ((f1 fighter) (state displayed-box))
   (with-accessors ((display display)) state
     (destroy-entity *mgr* display)))
+	
+(defmethod material-name ((state state))
+	"blue")
 
 (defmethod x ((state state))
   (x (parent state)))
@@ -300,10 +306,11 @@ If false, then sidesteps become effective."))
       ,@body)
      ,@meta))
 
+;;This macro should be called from within the body of a state's method.
 (defmacro switch-to-state (state-name &rest args)
   "Switches states. State neme must either be a list (which will be evaluated) or a
 single symbol which will be automatically quoted."
-  `(let ((new-state (make-instance ,state-name ,@args)))
+  `(let ((new-state (make-instance ,state-name :parent (parent state) ,@args)))
 	(change-state *fighter* new-state)))
 
 

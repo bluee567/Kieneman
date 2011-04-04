@@ -550,6 +550,10 @@ extern "C"
 		 ent->setVisible(vis);
 	 }
 
+	 //Manual Objects
+	DECLDIR void destroy_manual_object(SceneManager *mgr, ManualObject *mo)
+	{mgr->destroyManualObject(mo);}
+
 	 //NO COUNTERPART
 	DECLDIR SkeletonInstance* get_skeleton_inst(Entity *ent)
 	{

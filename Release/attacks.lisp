@@ -4,6 +4,7 @@
 ;;; attached-box
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
+;;Mixin
 (defclass+ attached-box ()
   ((:iea parent-state)))
 
@@ -30,10 +31,43 @@
 ;;; rec-attack-box
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(defclass+ rec-attack-box (attached-box default-hitbox mortal)
-  ((hit-objects
+(defclass+ attack-box (attached-box mortal)
+	((hit-objects
     :initform nil
     :accessor hit-objects)))
+	
+(defmethod initialize-instance :after ((box attack-box) &key)
+  (with-accessors ((parent-state parent-state)) box
+    (with-accessors((parent parent)) parent-state
+     (push parent (hit-objects box)))))
+;(setf display (make-hit-rectangle (x box) (+ (y box) (/ (height box) 2)) (width box) (height box) "red" *mgr*))
+	 
+(defmethod main-action ((rab attack-box))
+  t)
+
+(defmethod animate ((obj attack-box))
+  t)
+
+(defmethod material-name ((obj attack-box))
+	"red")
+
+;;If an attacks box hits a generic object, nothing happens.
+(defmethod handle-collision ((rab attack-box) thing)
+  t)
+(defmethod handle-collision (thing (rab attack-box))
+  t)
+
+(defmethod handle-collision ((rab attack-box) (fighter fighter))
+  (when (= 0 (loop for e in (hit-objects rab) count (eq e fighter)))
+    ;;When this hitbox has not previously hit the fighter.
+    (push fighter (hit-objects rab)) ;Add fighter to list of hit objects.
+    (handle-collision rab (state fighter))))
+
+(defmethod handle-collision ((fighter fighter) (rab attack-box))
+  (handle-collision rab fighter))
+
+(defclass+ rec-attack-box (attack-box default-hitbox)
+  ())
 
 (defmethod initialize-instance :after ((box rec-attack-box) &key)
   (with-accessors ((parent-state parent-state) (display display)) box
@@ -41,33 +75,12 @@
      (push parent (hit-objects box))
      (setf display (make-hit-rectangle (x box) (+ (y box) (/ (height box) 2)) (width box) (height box) "red" *mgr*)))))
 
-(defmethod main-action ((rab rec-attack-box))
-  t)
-
-(defmethod animate ((obj rec-attack-box))
-  t)
-
-;;If an attacks box hits a generic object, nothing happens.
-(defmethod handle-collision ((rab rec-attack-box) thing)
-  t)
-
-(defmethod handle-collision (thing (rab rec-attack-box))
-  (handle-collision rab thing))
-
-(defmethod handle-collision ((rab rec-attack-box) (fighter fighter))
-  (when (= 0 (loop for e in (hit-objects rab) count (eq e fighter)))
-    ;;When this hitbox has not previously hit the fighter.
-    (push fighter (hit-objects rab)) ;Add fighter to list of hit objects.
-    (handle-collision rab (state fighter))))
-
-(defmethod handle-collision ((fighter fighter) (rab rec-attack-box))
-  (handle-collision rab fighter))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;; rec-strike-box
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(defclass+ rec-strike-box (rec-attack-box)
+(defclass+ strike-box (attack-box)
   ((:iea damage)
    (:iea hitstun)
    (:ia hitspeed)
@@ -79,15 +92,17 @@
 ;;NOTE: The situation of ((state state) (rab rec-strike-box)) does not need
 ;;to be handled, as the handle-colision method on rec-attack-box and fighter
 ;;will always pass arguments here in the order of (rab state).
-(defmethod handle-collision ((rab rec-strike-box) (state state))
+(defmethod handle-collision ((rab strike-box) (state state))
   (with-accessors ((fighter parent)) state
    (decf (hp fighter) (damage rab))		;Hurt him!
-   (change-state fighter (make-hitstun rab))))
+   (change-state fighter (make-hitstun rab fighter))))
 
-(defmethod handle-collision ((rab rec-strike-box) (state high-block))
+(defmethod handle-collision ((rab strike-box) (state high-block))
      (with-accessors ((fighter parent)) state		
-       (change-state fighter (make-block-stun rab))
+       (change-state fighter (make-block-stun rab fighter))
        (attack-blocked (parent-state rab) state)))
+	   
+(defclass+ rec-strike-box (strike-box default-hitbox) ())
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -138,6 +153,7 @@
       ((= tpos 5)
        (decf (hp grabbed-entity) 80)
        (change-state grabbed-entity (make-instance 'stunned
+					:parent grabbed-entity
 				     :duration 15
 				     :kb-direction (get-direction parent)
 				     :kb-speed 3.0
@@ -157,16 +173,19 @@
     (with-accessors ((parent-state parent-state)) rab
       (setf (grabbed-entity parent-state) submitter)
       (change-state submitter (make-instance 'grabbed
+						:parent submitter
 					     :grabber parent-state)))))
 
 (defun clinch-break (ent1 ent2)
   (change-state ent1 (make-instance 'stunned
 				    :duration 10
+					:parent ent1
 				    :kb-direction (opposite (get-direction ent2))
 				    :kb-speed 3.0
 				    :decceleration 0.25))
   (change-state ent2 (make-instance 'stunned
 				    :duration 10
+					:parent ent2
 				    :kb-direction (get-direction ent1)
 				    :kb-speed 3.0
 				    :decceleration 0.25)))
@@ -220,9 +239,10 @@
 
 
 
-(defun make-hitstun (rab)
+(defun make-hitstun (rab fighter)
   (make-instance 'stunned
 		 :duration (hitstun rab)
+		 :parent fighter
 		 :kb-direction (get-direction (parent (parent-state rab)))
 		 :kb-speed (hitspeed rab)
 		 :decceleration (hitdeccel rab)))
@@ -239,14 +259,15 @@
 									   actual-dist min-hitdist)))
 						     (setf hitdeccel (/ (* 2 (float actual-dist)) (* hit-movement-time hit-movement-time)))
 						     (setf hitspeed (* hitdeccel hit-movement-time))
-						     (change-state fighter (make-hitstun rab)))))))
+						     (change-state fighter (make-hitstun rab fighter)))))))
 
 (defmethod handle-collision ((rab rec-attack-sdist-box) (state state))
   (hit-collision rab state))
 
-(defun make-block-stun (rab)
+(defun make-block-stun (rab fighter)
   (make-instance 'high-block-stun
 		    :duration (blockstun rab)
+			:parent fighter
 		    :kb-direction (get-direction (parent (parent-state rab)))
 		    :kb-speed (blockspeed rab)
 		    :decceleration (blockdeccel rab)))
@@ -267,7 +288,7 @@
 			      actual-dist min-blockdist)))
 	(setf blockdeccel (/ (* 2 (float actual-dist)) (* block-movement-time block-movement-time)))
 	(setf blockspeed (* blockdeccel block-movement-time))
-	(change-state fighter (make-block-stun rab))
+	(change-state fighter (make-block-stun rab fighter))
 	(attack-blocked (parent-state rab) state))))))
 
 (defmethod handle-collision ((rab unblockable-box) (state high-block))
@@ -343,7 +364,7 @@
   
    (defmethod handle-collision ((rab jab-box) (state idle))
      (with-accessors ((fighter parent)) state		
-		     (change-state fighter (make-block-stun rab))))
+		     (change-state fighter (make-block-stun rab fighter))))
 
    (defmethod animate ((sa jab))
      (let ((tp (/ (float (tpos sa)) 60.0))

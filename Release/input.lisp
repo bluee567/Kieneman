@@ -81,6 +81,10 @@
   (:name "axisVal")
   (:arguments (axis int) (joystick int))
   (:return-type single-float))
+  
+(def-call-out no-of-joysticks
+	(:name "noOfJoysticks")
+	(:return-type int))
 
 (def-call-out no-of-hats
   (:name "noOfHats")
@@ -309,7 +313,32 @@ passed to this function."
 ;; INPUT CONFIGURATIONS
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
+(defvar *k1-config*
+  (list
+   :a1 (get-kbi KC_H) "J"
+   :a2 (get-kbi KC_J) "K"
+   :defense (get-kbi KC_K) "L"
+   :dodge (get-kbi KC_U) "I"
+   :cancel (get-kbi KC_I) "O"
+   :down (get-kbi KC_S) "S"
+   :up (get-kbi KC_W) "W"
+   :r-left (get-kbi KC_A) "A"
+   :r-right (get-kbi KC_D) "D"))
+
+(defvar *k2-config*
+  (list
+   :a1 (get-kbi KC_L) "J"
+   :a2 (get-kbi KC_SEMICOLON) "K"
+   :defense (get-kbi KC_APOSTROPHE) "L"
+   :dodge (get-kbi KC_O) "I"
+   :cancel (get-kbi KC_P) "O"
+   :down (get-kbi KC_DOWN) "S"
+   :up (get-kbi KC_UP) "W"
+   :r-left (get-kbi KC_LEFT) "A"
+   :r-right (get-kbi KC_RIGHT) "D"))
+
 (defun make-PS3-defult-config (controler-num)
+  (if t ;(> (no-of-joysticks) controler-num)
   (let* ((pad controler-num)
 	 (xa 7)
 	 (ya 5)
@@ -347,7 +376,8 @@ passed to this function."
       "Left Arrow"
       :r-right
       (make-dir-func easta eastd)
-      "Right Arrow"))))
+      "Right Arrow")))
+	  (error "Not enough controlers are connected!")))
 	  
 (defun make-PS3-alt-config (pad)
 	(list
@@ -362,7 +392,7 @@ passed to this function."
    :r-right (get-ai 4 pad) "Right Arrow"))
 
 (defvar *c1-config*
-(make-PS3-alt-config 0))
+ nil)
 
 (defvar *c2-config*
   (let ((lf (get-ai 3 0 :dir -1.0))
@@ -389,32 +419,9 @@ passed to this function."
     (get-ai 3 0)
     "Right Arrow")))
 
-(defvar *k1-config*
-  (list
-   :a1 (get-kbi KC_H) "J"
-   :a2 (get-kbi KC_J) "K"
-   :defense (get-kbi KC_K) "L"
-   :dodge (get-kbi KC_U) "I"
-   :cancel (get-kbi KC_I) "O"
-   :down (get-kbi KC_S) "S"
-   :up (get-kbi KC_W) "W"
-   :r-left (get-kbi KC_A) "A"
-   :r-right (get-kbi KC_D) "D"))
-
-(defvar *k2-config*
-  (list
-   :a1 (get-kbi KC_L) "J"
-   :a2 (get-kbi KC_SEMICOLON) "K"
-   :defense (get-kbi KC_APOSTROPHE) "L"
-   :dodge (get-kbi KC_O) "I"
-   :cancel (get-kbi KC_P) "O"
-   :down (get-kbi KC_DOWN) "S"
-   :up (get-kbi KC_UP) "W"
-   :r-left (get-kbi KC_LEFT) "A"
-   :r-right (get-kbi KC_RIGHT) "D"))
-
 (defvar *1p-input*
-  *c1-config*)
+  ;(make-PS3-defult-config 0)
+  *k1-config*)
 
 (defvar *2p-input*
   *k2-config*)

@@ -13,4 +13,5 @@
   (setf (parent new-state) f1)
   (setf (state f1) new-state))
 
-(defmethod exit-state ((f1 fighter) (old-state state)))
+(defmethod exit-state ((f1 fighter) (old-state state))
+	())
