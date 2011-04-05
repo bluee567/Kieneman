@@ -1,70 +1,70 @@
-05/04/2011 03:16:28 (InfL1)	+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-05/04/2011 03:16:28 (InfL1)	+                     Crazy Eddie's GUI System - Event log                    +
-05/04/2011 03:16:28 (InfL1)	+                          (http://www.cegui.org.uk/)                         +
-05/04/2011 03:16:28 (InfL1)	+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+05/04/2011 16:33:18 (InfL1)	+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+05/04/2011 16:33:18 (InfL1)	+                     Crazy Eddie's GUI System - Event log                    +
+05/04/2011 16:33:18 (InfL1)	+                          (http://www.cegui.org.uk/)                         +
+05/04/2011 16:33:18 (InfL1)	+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 
-05/04/2011 03:16:28 (InfL1)	CEGUI::Logger singleton created.
-05/04/2011 03:16:28 (InfL1)	---- Begining CEGUI System initialisation ----
-05/04/2011 03:16:28 (InfL1)	CEGUI::ImagesetManager singleton created
-05/04/2011 03:16:28 (InfL1)	CEGUI::FontManager singleton created.
-05/04/2011 03:16:28 (InfL1)	CEGUI::WindowFactoryManager singleton created
-05/04/2011 03:16:28 (InfL1)	CEGUI::WindowManager singleton created
-05/04/2011 03:16:28 (InfL1)	CEGUI::SchemeManager singleton created.
-05/04/2011 03:16:28 (InfL1)	CEGUI::MouseCursor singleton created.
-05/04/2011 03:16:28 (InfL1)	CEGUI::GlobalEventSet singleton created.
-05/04/2011 03:16:28 (InfL1)	CEGUI::WidgetLookManager singleton created.
-05/04/2011 03:16:28 (InfL1)	CEGUI::WindowRendererManager singleton created
-05/04/2011 03:16:28 (InfL1)	WindowFactory for 'DefaultWindow' windows added.
-05/04/2011 03:16:28 (InfL1)	WindowFactory for 'DragContainer' windows added.
-05/04/2011 03:16:28 (InfL1)	WindowFactory for 'ScrolledContainer' windows added.
-05/04/2011 03:16:28 (InfL1)	WindowFactory for 'ClippedContainer' windows added.
-05/04/2011 03:16:28 (InfL1)	WindowFactory for 'CEGUI/Checkbox' windows added.
-05/04/2011 03:16:28 (InfL1)	WindowFactory for 'CEGUI/PushButton' windows added.
-05/04/2011 03:16:28 (InfL1)	WindowFactory for 'CEGUI/RadioButton' windows added.
-05/04/2011 03:16:28 (InfL1)	WindowFactory for 'CEGUI/Combobox' windows added.
-05/04/2011 03:16:28 (InfL1)	WindowFactory for 'CEGUI/ComboDropList' windows added.
-05/04/2011 03:16:28 (InfL1)	WindowFactory for 'CEGUI/Editbox' windows added.
-05/04/2011 03:16:28 (InfL1)	WindowFactory for 'CEGUI/FrameWindow' windows added.
-05/04/2011 03:16:28 (InfL1)	WindowFactory for 'CEGUI/ItemEntry' windows added.
-05/04/2011 03:16:28 (InfL1)	WindowFactory for 'CEGUI/Listbox' windows added.
-05/04/2011 03:16:28 (InfL1)	WindowFactory for 'CEGUI/ListHeader' windows added.
-05/04/2011 03:16:28 (InfL1)	WindowFactory for 'CEGUI/ListHeaderSegment' windows added.
-05/04/2011 03:16:28 (InfL1)	WindowFactory for 'CEGUI/Menubar' windows added.
-05/04/2011 03:16:28 (InfL1)	WindowFactory for 'CEGUI/PopupMenu' windows added.
-05/04/2011 03:16:28 (InfL1)	WindowFactory for 'CEGUI/MenuItem' windows added.
-05/04/2011 03:16:28 (InfL1)	WindowFactory for 'CEGUI/MultiColumnList' windows added.
-05/04/2011 03:16:28 (InfL1)	WindowFactory for 'CEGUI/MultiLineEditbox' windows added.
-05/04/2011 03:16:28 (InfL1)	WindowFactory for 'CEGUI/ProgressBar' windows added.
-05/04/2011 03:16:28 (InfL1)	WindowFactory for 'CEGUI/ScrollablePane' windows added.
-05/04/2011 03:16:28 (InfL1)	WindowFactory for 'CEGUI/Scrollbar' windows added.
-05/04/2011 03:16:28 (InfL1)	WindowFactory for 'CEGUI/Slider' windows added.
-05/04/2011 03:16:28 (InfL1)	WindowFactory for 'CEGUI/Spinner' windows added.
-05/04/2011 03:16:28 (InfL1)	WindowFactory for 'CEGUI/TabButton' windows added.
-05/04/2011 03:16:28 (InfL1)	WindowFactory for 'CEGUI/TabControl' windows added.
-05/04/2011 03:16:28 (InfL1)	WindowFactory for 'CEGUI/Thumb' windows added.
-05/04/2011 03:16:28 (InfL1)	WindowFactory for 'CEGUI/Titlebar' windows added.
-05/04/2011 03:16:28 (InfL1)	WindowFactory for 'CEGUI/Tooltip' windows added.
-05/04/2011 03:16:28 (InfL1)	WindowFactory for 'CEGUI/ItemListbox' windows added.
-05/04/2011 03:16:28 (InfL1)	Window type alias named 'DefaultGUISheet' added for window type 'DefaultWindow'.
-05/04/2011 03:16:28 (InfL1)	CEGUI::System singleton created.
-05/04/2011 03:16:28 (InfL1)	---- CEGUI System initialisation completed ----
-05/04/2011 03:16:28 (InfL1)	---- Version 0.5.1 ----
-05/04/2011 03:16:28 (InfL1)	---- Renderer module is: CEGUI::OgreRenderer - Official Ogre based renderer module for CEGUI ----
-05/04/2011 03:16:28 (InfL1)	---- XML Parser module is: CEGUI::ExpatParser - Official expat based parser module for CEGUI ----
-05/04/2011 03:16:28 (InfL1)	---- Scripting module is: None ----
-05/04/2011 03:16:43 (InfL1)	---- Begining CEGUI System destruction ----
-05/04/2011 03:16:43 (InfL1)	---- Begining cleanup of GUI Scheme system ----
-05/04/2011 03:16:43 (InfL1)	CEGUI::SchemeManager singleton destroyed.
-05/04/2011 03:16:43 (InfL1)	CEGUI::WindowManager singleton destroyed
-05/04/2011 03:16:43 (InfL1)	CEGUI::WindowFactoryManager singleton destroyed
-05/04/2011 03:16:43 (InfL1)	CEGUI::WidgetLookManager singleton destroyed.
-05/04/2011 03:16:43 (InfL1)	CEGUI::WindowRendererManager singleton destroyed
-05/04/2011 03:16:43 (InfL1)	---- Begining cleanup of Font system ----
-05/04/2011 03:16:43 (InfL1)	CEGUI::FontManager singleton destroyed.
-05/04/2011 03:16:43 (InfL1)	CEGUI::MouseCursor singleton destroyed.
-05/04/2011 03:16:43 (InfL1)	---- Begining cleanup of Imageset system ----
-05/04/2011 03:16:43 (InfL1)	CEGUI::ImagesetManager singleton destroyed
-05/04/2011 03:16:43 (InfL1)	CEGUI::GlobalEventSet singleton destroyed.
-05/04/2011 03:16:43 (InfL1)	CEGUI::System singleton destroyed.
-05/04/2011 03:16:43 (InfL1)	---- CEGUI System destruction completed ----
-05/04/2011 03:16:43 (InfL1)	CEGUI::Logger singleton destroyed.
+05/04/2011 16:33:18 (InfL1)	CEGUI::Logger singleton created.
+05/04/2011 16:33:18 (InfL1)	---- Begining CEGUI System initialisation ----
+05/04/2011 16:33:18 (InfL1)	CEGUI::ImagesetManager singleton created
+05/04/2011 16:33:18 (InfL1)	CEGUI::FontManager singleton created.
+05/04/2011 16:33:18 (InfL1)	CEGUI::WindowFactoryManager singleton created
+05/04/2011 16:33:18 (InfL1)	CEGUI::WindowManager singleton created
+05/04/2011 16:33:18 (InfL1)	CEGUI::SchemeManager singleton created.
+05/04/2011 16:33:18 (InfL1)	CEGUI::MouseCursor singleton created.
+05/04/2011 16:33:18 (InfL1)	CEGUI::GlobalEventSet singleton created.
+05/04/2011 16:33:18 (InfL1)	CEGUI::WidgetLookManager singleton created.
+05/04/2011 16:33:18 (InfL1)	CEGUI::WindowRendererManager singleton created
+05/04/2011 16:33:18 (InfL1)	WindowFactory for 'DefaultWindow' windows added.
+05/04/2011 16:33:18 (InfL1)	WindowFactory for 'DragContainer' windows added.
+05/04/2011 16:33:18 (InfL1)	WindowFactory for 'ScrolledContainer' windows added.
+05/04/2011 16:33:18 (InfL1)	WindowFactory for 'ClippedContainer' windows added.
+05/04/2011 16:33:18 (InfL1)	WindowFactory for 'CEGUI/Checkbox' windows added.
+05/04/2011 16:33:18 (InfL1)	WindowFactory for 'CEGUI/PushButton' windows added.
+05/04/2011 16:33:18 (InfL1)	WindowFactory for 'CEGUI/RadioButton' windows added.
+05/04/2011 16:33:18 (InfL1)	WindowFactory for 'CEGUI/Combobox' windows added.
+05/04/2011 16:33:18 (InfL1)	WindowFactory for 'CEGUI/ComboDropList' windows added.
+05/04/2011 16:33:18 (InfL1)	WindowFactory for 'CEGUI/Editbox' windows added.
+05/04/2011 16:33:18 (InfL1)	WindowFactory for 'CEGUI/FrameWindow' windows added.
+05/04/2011 16:33:18 (InfL1)	WindowFactory for 'CEGUI/ItemEntry' windows added.
+05/04/2011 16:33:18 (InfL1)	WindowFactory for 'CEGUI/Listbox' windows added.
+05/04/2011 16:33:18 (InfL1)	WindowFactory for 'CEGUI/ListHeader' windows added.
+05/04/2011 16:33:18 (InfL1)	WindowFactory for 'CEGUI/ListHeaderSegment' windows added.
+05/04/2011 16:33:18 (InfL1)	WindowFactory for 'CEGUI/Menubar' windows added.
+05/04/2011 16:33:18 (InfL1)	WindowFactory for 'CEGUI/PopupMenu' windows added.
+05/04/2011 16:33:18 (InfL1)	WindowFactory for 'CEGUI/MenuItem' windows added.
+05/04/2011 16:33:18 (InfL1)	WindowFactory for 'CEGUI/MultiColumnList' windows added.
+05/04/2011 16:33:18 (InfL1)	WindowFactory for 'CEGUI/MultiLineEditbox' windows added.
+05/04/2011 16:33:18 (InfL1)	WindowFactory for 'CEGUI/ProgressBar' windows added.
+05/04/2011 16:33:18 (InfL1)	WindowFactory for 'CEGUI/ScrollablePane' windows added.
+05/04/2011 16:33:18 (InfL1)	WindowFactory for 'CEGUI/Scrollbar' windows added.
+05/04/2011 16:33:18 (InfL1)	WindowFactory for 'CEGUI/Slider' windows added.
+05/04/2011 16:33:18 (InfL1)	WindowFactory for 'CEGUI/Spinner' windows added.
+05/04/2011 16:33:18 (InfL1)	WindowFactory for 'CEGUI/TabButton' windows added.
+05/04/2011 16:33:18 (InfL1)	WindowFactory for 'CEGUI/TabControl' windows added.
+05/04/2011 16:33:18 (InfL1)	WindowFactory for 'CEGUI/Thumb' windows added.
+05/04/2011 16:33:18 (InfL1)	WindowFactory for 'CEGUI/Titlebar' windows added.
+05/04/2011 16:33:18 (InfL1)	WindowFactory for 'CEGUI/Tooltip' windows added.
+05/04/2011 16:33:18 (InfL1)	WindowFactory for 'CEGUI/ItemListbox' windows added.
+05/04/2011 16:33:18 (InfL1)	Window type alias named 'DefaultGUISheet' added for window type 'DefaultWindow'.
+05/04/2011 16:33:18 (InfL1)	CEGUI::System singleton created.
+05/04/2011 16:33:18 (InfL1)	---- CEGUI System initialisation completed ----
+05/04/2011 16:33:18 (InfL1)	---- Version 0.5.1 ----
+05/04/2011 16:33:18 (InfL1)	---- Renderer module is: CEGUI::OgreRenderer - Official Ogre based renderer module for CEGUI ----
+05/04/2011 16:33:18 (InfL1)	---- XML Parser module is: CEGUI::ExpatParser - Official expat based parser module for CEGUI ----
+05/04/2011 16:33:18 (InfL1)	---- Scripting module is: None ----
+05/04/2011 16:33:27 (InfL1)	---- Begining CEGUI System destruction ----
+05/04/2011 16:33:27 (InfL1)	---- Begining cleanup of GUI Scheme system ----
+05/04/2011 16:33:27 (InfL1)	CEGUI::SchemeManager singleton destroyed.
+05/04/2011 16:33:27 (InfL1)	CEGUI::WindowManager singleton destroyed
+05/04/2011 16:33:27 (InfL1)	CEGUI::WindowFactoryManager singleton destroyed
+05/04/2011 16:33:27 (InfL1)	CEGUI::WidgetLookManager singleton destroyed.
+05/04/2011 16:33:27 (InfL1)	CEGUI::WindowRendererManager singleton destroyed
+05/04/2011 16:33:27 (InfL1)	---- Begining cleanup of Font system ----
+05/04/2011 16:33:27 (InfL1)	CEGUI::FontManager singleton destroyed.
+05/04/2011 16:33:27 (InfL1)	CEGUI::MouseCursor singleton destroyed.
+05/04/2011 16:33:27 (InfL1)	---- Begining cleanup of Imageset system ----
+05/04/2011 16:33:27 (InfL1)	CEGUI::ImagesetManager singleton destroyed
+05/04/2011 16:33:27 (InfL1)	CEGUI::GlobalEventSet singleton destroyed.
+05/04/2011 16:33:27 (InfL1)	CEGUI::System singleton destroyed.
+05/04/2011 16:33:27 (InfL1)	---- CEGUI System destruction completed ----
+05/04/2011 16:33:27 (InfL1)	CEGUI::Logger singleton destroyed.

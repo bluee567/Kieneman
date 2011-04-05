@@ -552,18 +552,18 @@
       |COMMON-LISP|::|NIL|)
     |KIENEMAN|::|FIGHTER|)
    (|COMMON-LISP|::|T| |COMMON-LISP|::|T| |COMMON-LISP|::|T|))
-#Y(#:|215 224 (DEFCLASS+ HIGH-BLOCK-STUN (HIGH-BLOCK) ...)-13-1-1|
+#Y(#:|215 259 (DEFCLASS+ HIGH-BLOCK-STUN (HIGH-BLOCK) ...)-13-1-1|
    #18Y(00 00 00 00 00 00 00 00 00 01 DA DB DC 32 89 3E 19 01)
    (|KIENEMAN|::|HIGH-BLOCK-STUN| |KIENEMAN|::|SLOTS|
     (|KIENEMAN|::|TIME-POS| |KIENEMAN|::|DURATION| |KIENEMAN|::|KB-DIRECTION|
      |KIENEMAN|::|KB-SPEED| |KIENEMAN|::|DECCELERATION|))
    (|COMMON-LISP|::|T| |COMMON-LISP|::|T| |COMMON-LISP|::|T|))
-#Y(#:|215 224 (DEFCLASS+ HIGH-BLOCK-STUN (HIGH-BLOCK) ...)-13-1-2|
+#Y(#:|215 259 (DEFCLASS+ HIGH-BLOCK-STUN (HIGH-BLOCK) ...)-13-1-2|
    #18Y(00 00 00 00 00 00 00 00 00 01 DA DB DC 32 89 3E 19 01)
    (|KIENEMAN|::|HIGH-BLOCK-STUN| |KIENEMAN|::|SUPERS|
     (|KIENEMAN|::|HIGH-BLOCK|))
    (|COMMON-LISP|::|T| |COMMON-LISP|::|T| |COMMON-LISP|::|T|))
-#Y(#:|215 224 (DEFCLASS+ HIGH-BLOCK-STUN (HIGH-BLOCK) ...)-13-2|
+#Y(#:|215 259 (DEFCLASS+ HIGH-BLOCK-STUN (HIGH-BLOCK) ...)-13-2|
    #136Y(00 00 00 00 00 00 00 00 00 01 6B 00 99 01 DC DD DE 7B 01 DF E0 E1 E2
          E3 E4 E5 E6 E7 E8 E9 EA E9 6F 11 7B 0C E0 EC E2 ED E4 EE E6 EF E8 F0
          EA F1 7B 0C E0 F2 E2 F3 E4 F4 E6 F5 E8 F6 EA F7 7B 0C E0 65 1E E2 65
@@ -607,25 +607,25 @@
     :|METACLASS| (:|FIXED-SLOT-LOCATIONS| |COMMON-LISP|::|NIL|)
     :|DIRECT-DEFAULT-INITARGS| :|DOCUMENTATION| :|GENERIC-ACCESSORS|)
    (|COMMON-LISP|::|T| |COMMON-LISP|::|T| |COMMON-LISP|::|T|))
-#Y(#:|226 251 (DEFMETHOD MAIN-ACTION (#) ...)-14|
+#Y(#:|261 286 (DEFMETHOD MAIN-ACTION (#) ...)-14|
    #43Y(00 00 00 00 00 00 00 00 00 01 DA DB 38 01 8F 85 03 DA 2F 02 DA DD DE 63
         DF E0 E1 E2 E3 E4 38 02 72 2A 7B 01 7B 08 2D 03 0B 19 01)
    (|KIENEMAN|::|MAIN-ACTION| |SYSTEM|::|TRACED-DEFINITION|
     |SYSTEM|::|UNTRACE1|
-    #Y(#:|226 251 (DEFMETHOD MAIN-ACTION (#) ...)-14-1|
+    #Y(#:|261 286 (DEFMETHOD MAIN-ACTION (#) ...)-14-1|
        #15Y(00 00 00 00 01 00 00 00 00 02 DA C6 5D 19 02)
-       (#Y(#:|226 251 (DEFMETHOD MAIN-ACTION (#) ...)-14-1-1|
-           #219Y(00 00 00 00 01 00 00 00 00 02 AD 6F 00 72 97 AC AF 30 01 16 01
+       (#Y(#:|261 286 (DEFMETHOD MAIN-ACTION (#) ...)-14-1-1|
+           #216Y(00 00 00 00 01 00 00 00 00 02 AD 6F 00 72 97 AC AF 30 01 16 01
                  AD 6F 02 72 98 AC AF 30 03 16 01 AD 6F 04 AE 6F 05 AF 6F 04 E0
                  91 01 30 19 AF 6F 04 AD 73 01 36 AC B1 30 07 16 01 AF 6F 04 E0
                  91 01 2F 04 E0 B0 30 07 AF 2F 04 16 01 E2 AD B0 6F 04 73 02 35
                  73 02 37 2F 09 16 01 E4 89 0B 0B AD 6F 0C E4 E7 64 E8 63 2D 06
                  0F EA 89 0B 0B AD 6F 0C EA E7 64 E8 63 2D 06 0F AD 6F 0C EB E7
                  63 E8 63 2D 06 12 1D 0B AD 6F 0C EB E7 63 E8 63 2D 06 0F ED 89
-                 14 0B AD 6F 0C 63 E7 63 E8 63 2D 06 0F AD 6F 02 8E 93 32 ED 89
-                 15 0D AD 6F 0C 63 E7 63 E8 63 2D 06 12 1C 17 65 1E F1 6B 18 6F
-                 19 03 1A 14 B1 6F 0C 6E 05 1B 6B 1C AD 30 1D 19 03 F0 F1 6B 18
-                 6F 19 03 1A 1B 68 00 19 02)
+                 14 0B AD 6F 0C 63 E7 63 E8 63 2D 06 0F AD 6F 02 8E 93 2F ED 89
+                 15 0D AD 6F 0C 63 E7 63 E8 63 2D 06 12 1C 15 F7 F1 AF 6F 18 03
+                 19 14 B1 6F 0C 6E 05 1A 6B 1B AD 30 1C 19 03 F0 F1 AF 6F 18 03
+                 19 1B 69 00 19 02)
            (|KIENEMAN|::|TIME-POS|
             #.(|SYSTEM|::|GET-SETF-SYMBOL| '|KIENEMAN|::|TIME-POS|)
             |KIENEMAN|::|DURATION|
@@ -636,20 +636,18 @@
             |KIENEMAN|::|KEY-BUFFER| :|RELEASED| :|OTHERS|
             |KIENEMAN|::|SET-TAPPEDF| :|A2| :|DOWN| |KIENEMAN|::|GET-TAPPEDF|
             :|DEFENSE| |KIENEMAN|::|GET-PRESSED| |KIENEMAN|::|GET-HELD|
-            |KIENEMAN|::|HIGH-BLOCK| :|PARENT| |KIENEMAN|::|STATE|
-            |KIENEMAN|::|PARENT| :|KEY-BUFFER| |CLOS|::|MAKE-INSTANCE|
-            |KIENEMAN|::|*FIGHTER*| |KIENEMAN|::|CHANGE-STATE|
-            |KIENEMAN|::|IDLE|)
+            |KIENEMAN|::|HIGH-BLOCK| :|PARENT| |KIENEMAN|::|PARENT|
+            :|KEY-BUFFER| |CLOS|::|MAKE-INSTANCE| |KIENEMAN|::|*FIGHTER*|
+            |KIENEMAN|::|CHANGE-STATE| |KIENEMAN|::|IDLE|)
            (|COMMON-LISP|::|T| |COMMON-LISP|::|T| |COMMON-LISP|::|T|))
         (|COMMON-LISP|::|T|))
        (|COMMON-LISP|::|NIL| |COMMON-LISP|::|NIL| |COMMON-LISP|::|NIL|))
-    :|QUALIFIERS| :|LAMBDA-LIST| (|KIENEMAN|::|HIGH-BLOCK-STUN|)
-    |CLOS|::|SIGNATURE|
+    :|QUALIFIERS| :|LAMBDA-LIST| (|KIENEMAN|::|STATE|) |CLOS|::|SIGNATURE|
     #(1. 0. |COMMON-LISP|::|NIL| |COMMON-LISP|::|NIL| |COMMON-LISP|::|NIL|
       |COMMON-LISP|::|NIL|)
     :|SPECIALIZERS| |KIENEMAN|::|HIGH-BLOCK-STUN| |CLOS|::|DO-DEFMETHOD|)
    (|COMMON-LISP|::|T| |COMMON-LISP|::|T| |COMMON-LISP|::|T|))
-#Y(#:|254 265 (DEFSTATE "grabbed" :ALT-NAME ...)-15|
+#Y(#:|289 300 (DEFSTATE "grabbed" :ALT-NAME ...)-15|
    #164Y(00 00 00 00 00 00 00 00 00 01 DA DB DC 32 89 DA DD DE 32 89 6B 05 99
          06 DA E1 E2 E3 E4 E5 7B 04 E6 E7 E8 E9 EA EB EC 7B 06 E7 ED EE EF F0
          F1 F2 F3 7B 08 7B 02 F4 B3 F5 F6 63 F7 63 65 1E 64 7B 06 33 02 22 37
@@ -675,9 +673,9 @@
     :|DIRECT-DEFAULT-INITARGS| :|DOCUMENTATION| :|GENERIC-ACCESSORS|
     |KIENEMAN|::|MAIN-ACTION| |SYSTEM|::|TRACED-DEFINITION|
     |SYSTEM|::|UNTRACE1|
-    #Y(#:|254 265 (DEFSTATE "grabbed" :ALT-NAME ...)-15-1|
+    #Y(#:|289 300 (DEFSTATE "grabbed" :ALT-NAME ...)-15-1|
        #15Y(00 00 00 00 01 00 00 00 00 02 DA C6 5D 19 02)
-       (#Y(#:|254 265 (DEFSTATE "grabbed" :ALT-NAME ...)-15-1-1|
+       (#Y(#:|289 300 (DEFSTATE "grabbed" :ALT-NAME ...)-15-1-1|
            #16Y(00 00 00 00 01 00 00 00 00 02 AD 2F 00 00 19 02)
            (|KIENEMAN|::|PARENT|)
            (|COMMON-LISP|::|T| |COMMON-LISP|::|T| |COMMON-LISP|::|T|))
@@ -687,10 +685,10 @@
     #(1. 0. |COMMON-LISP|::|NIL| |COMMON-LISP|::|NIL| |COMMON-LISP|::|NIL|
       |COMMON-LISP|::|NIL|)
     :|SPECIALIZERS| |CLOS|::|DO-DEFMETHOD| |KIENEMAN|::|PRINT-STATE|
-    #Y(#:|254 265 (DEFSTATE "grabbed" :ALT-NAME ...)-15-2|
+    #Y(#:|289 300 (DEFSTATE "grabbed" :ALT-NAME ...)-15-2|
        #25Y(00 00 00 00 01 00 00 00 00 02 00 2B 01 7F 02 00 00 AC 6D 00 01 C6
             5D 19 03)
-       (#Y(#:|254 265 (DEFSTATE "grabbed" :ALT-NAME ...)-15-2-1|
+       (#Y(#:|289 300 (DEFSTATE "grabbed" :ALT-NAME ...)-15-2-1|
            #242Y(00 00 00 00 02 00 00 00 00 03 AD 2F 01 38 02 72 76 93 03 04 14
                  AF 36 01 14 AF 6F 01 B0 6F 03 B1 6F 04 B2 6F 05 B3 6F 03 B4 6F
                  04 B5 6F 06 B6 6F 07 B7 6F 08 B8 6F 09 B9 6F 0A BA 6F 0B BB 6F
@@ -720,7 +718,7 @@
     #(1. 0. |COMMON-LISP|::|NIL| |COMMON-LISP|::|NIL| |COMMON-LISP|::|NIL|
       |COMMON-LISP|::|NIL|))
    (|COMMON-LISP|::|T| |COMMON-LISP|::|T| |COMMON-LISP|::|T|))
-#Y(#:|268 283 (DEFUN STOPPING-POSSIBLE-P (VEL DECCELERATION DISTANCE-LEFT) ...)-16|
+#Y(#:|303 318 (DEFUN STOPPING-POSSIBLE-P (VEL DECCELERATION DISTANCE-LEFT) ...)-16|
    #20Y(00 00 00 00 00 00 00 00 00 01 DA 2F 01 DA DC 32 83 C5 19 01)
    (|KIENEMAN|::|STOPPING-POSSIBLE-P| |SYSTEM|::|REMOVE-OLD-DEFINITIONS|
     #Y(|KIENEMAN|::|STOPPING-POSSIBLE-P|
@@ -734,7 +732,7 @@
        "Given a velocity, a deccel parameter and a distance that must not be
 traveled beyond, returns whether stopping is possible within that distance."))
    (|COMMON-LISP|::|T| |COMMON-LISP|::|T| |COMMON-LISP|::|T|))
-#Y(#:|285 297 (DEFUN SLOWING-POSSIBLE-P (VEL DECELL-FUNC FOOT-POS ...) ...)-17|
+#Y(#:|320 332 (DEFUN SLOWING-POSSIBLE-P (VEL DECELL-FUNC FOOT-POS ...) ...)-17|
    #20Y(00 00 00 00 00 00 00 00 00 01 DA 2F 01 DA DC 32 83 C5 19 01)
    (|KIENEMAN|::|SLOWING-POSSIBLE-P| |SYSTEM|::|REMOVE-OLD-DEFINITIONS|
     #Y(|KIENEMAN|::|SLOWING-POSSIBLE-P|
@@ -751,7 +749,7 @@ traveled beyond, returns whether stopping is possible within that distance."))
 return a positive real number.
 foot-pos and no-pass-pos must be positive."))
    (|COMMON-LISP|::|T| |COMMON-LISP|::|T| |COMMON-LISP|::|T|))
-#Y(#:|299 311 (DEFUN SLOWING-POSSIBLE-B-P (VEL DECELL-FUNC FOOT-POS ...) ...)-18|
+#Y(#:|334 346 (DEFUN SLOWING-POSSIBLE-B-P (VEL DECELL-FUNC FOOT-POS ...) ...)-18|
    #20Y(00 00 00 00 00 00 00 00 00 01 DA 2F 01 DA DC 32 83 C5 19 01)
    (|KIENEMAN|::|SLOWING-POSSIBLE-B-P| |SYSTEM|::|REMOVE-OLD-DEFINITIONS|
     #Y(|KIENEMAN|::|SLOWING-POSSIBLE-B-P|
@@ -769,7 +767,7 @@ return a positive real number.
 foot-pos and no-pass-pos must be positive.
 In this function the new foot pos is affected by the new velocity instead of the old one."))
    (|COMMON-LISP|::|T| |COMMON-LISP|::|T| |COMMON-LISP|::|T|))
-#Y(#:|313 328 (DEFUN STOPPING-DISTANCE (VEL DECELL-FUNC FOOT-POS ...) ...)-19|
+#Y(#:|348 363 (DEFUN STOPPING-DISTANCE (VEL DECELL-FUNC FOOT-POS ...) ...)-19|
    #20Y(00 00 00 00 00 00 00 00 00 01 DA 2F 01 DA DC 32 83 C5 19 01)
    (|KIENEMAN|::|STOPPING-DISTANCE| |SYSTEM|::|REMOVE-OLD-DEFINITIONS|
     #Y(|KIENEMAN|::|STOPPING-DISTANCE|
@@ -787,7 +785,7 @@ return a positive real number.
 foot-pos and no-pass-pos must be positive.
 In this function the new foot pos is affected by the new velocity instead of the old one."))
    (|COMMON-LISP|::|T| |COMMON-LISP|::|T| |COMMON-LISP|::|T|))
-#Y(#:|330 331 (DEFUN TEST-SLOWING-POSSIBLE-P NIL ...)-20|
+#Y(#:|365 366 (DEFUN TEST-SLOWING-POSSIBLE-P NIL ...)-20|
    #20Y(00 00 00 00 00 00 00 00 00 01 DA 2F 01 DA DC 32 83 C5 19 01)
    (|KIENEMAN|::|TEST-SLOWING-POSSIBLE-P| |SYSTEM|::|REMOVE-OLD-DEFINITIONS|
     #Y(|KIENEMAN|::|TEST-SLOWING-POSSIBLE-P|
@@ -806,7 +804,7 @@ In this function the new foot pos is affected by the new velocity instead of the
        (|COMMON-LISP|::|T| |COMMON-LISP|::|T| |COMMON-LISP|::|T|) ()
        |COMMON-LISP|::|NIL|))
    (|COMMON-LISP|::|T| |COMMON-LISP|::|T| |COMMON-LISP|::|T|))
-#Y(#:|333 334 (DEFUN TIME-TILL-STOP (DECCEL-FUNC VEL FOOT-POS ...) ...)-21|
+#Y(#:|368 369 (DEFUN TIME-TILL-STOP (DECCEL-FUNC VEL FOOT-POS ...) ...)-21|
    #20Y(00 00 00 00 00 00 00 00 00 01 DA 2F 01 DA DC 32 83 C5 19 01)
    (|KIENEMAN|::|TIME-TILL-STOP| |SYSTEM|::|REMOVE-OLD-DEFINITIONS|
     #Y(|KIENEMAN|::|TIME-TILL-STOP|
@@ -816,7 +814,7 @@ In this function the new foot pos is affected by the new velocity instead of the
         |COMMON-LISP|::|&OPTIONAL| (|KIENEMAN|::|MIN-SPEED-LIMIT| 0.0f0))
        |COMMON-LISP|::|NIL|))
    (|COMMON-LISP|::|T| |COMMON-LISP|::|T| |COMMON-LISP|::|T|))
-#Y(#:|336 353 (DEFMACRO PUSH-COMMON-TRANSITIONS NIL ...)-22|
+#Y(#:|371 388 (DEFMACRO PUSH-COMMON-TRANSITIONS NIL ...)-22|
    #23Y(00 00 00 00 00 00 00 00 00 01 DA 2F 01 DA DC 63 70 03 32 83 C5 19 01)
    (|KIENEMAN|::|PUSH-COMMON-TRANSITIONS| |SYSTEM|::|REMOVE-OLD-DEFINITIONS|
     #Y(|KIENEMAN|::|PUSH-COMMON-TRANSITIONS|
@@ -854,7 +852,7 @@ In this function the new foot pos is affected by the new velocity instead of the
        (|COMMON-LISP|::|T| |COMMON-LISP|::|T| |COMMON-LISP|::|T|))
     |SYSTEM|::|MAKE-MACRO|)
    (|COMMON-LISP|::|T| |COMMON-LISP|::|T| |COMMON-LISP|::|T|))
-#Y(#:|355 366 (DEFUN CREATE-STOPPAGE-FORM (VEL FOOT-POS BODY-DEPTH) ...)-23|
+#Y(#:|390 401 (DEFUN CREATE-STOPPAGE-FORM (VEL FOOT-POS BODY-DEPTH) ...)-23|
    #20Y(00 00 00 00 00 00 00 00 00 01 DA 2F 01 DA DC 32 83 C5 19 01)
    (|KIENEMAN|::|CREATE-STOPPAGE-FORM| |SYSTEM|::|REMOVE-OLD-DEFINITIONS|
     #Y(|KIENEMAN|::|CREATE-STOPPAGE-FORM|
@@ -870,7 +868,7 @@ In this function the new foot pos is affected by the new velocity instead of the
        (|KIENEMAN|::|VEL| |KIENEMAN|::|FOOT-POS| |KIENEMAN|::|BODY-DEPTH|)
        |COMMON-LISP|::|NIL|))
    (|COMMON-LISP|::|T| |COMMON-LISP|::|T| |COMMON-LISP|::|T|))
-#Y(#:|368 369 (DEFUN CREATE-GLIDE-FORM (FOOT-POS) ...)-24|
+#Y(#:|403 404 (DEFUN CREATE-GLIDE-FORM (FOOT-POS) ...)-24|
    #20Y(00 00 00 00 00 00 00 00 00 01 DA 2F 01 DA DC 32 83 C5 19 01)
    (|KIENEMAN|::|CREATE-GLIDE-FORM| |SYSTEM|::|REMOVE-OLD-DEFINITIONS|
     #Y(|KIENEMAN|::|CREATE-GLIDE-FORM|
@@ -878,28 +876,28 @@ In this function the new foot pos is affected by the new velocity instead of the
        (|COMMON-LISP|::|NIL| |COMMON-LISP|::|NIL| |COMMON-LISP|::|NIL|)
        (|KIENEMAN|::|FOOT-POS|) |COMMON-LISP|::|NIL|))
    (|COMMON-LISP|::|T| |COMMON-LISP|::|T| |COMMON-LISP|::|T|))
-#Y(#:|372 375 (DEFCONSTANT *MAX-STRIDE-VEL* 1.9)-25|
+#Y(#:|407 410 (DEFCONSTANT *MAX-STRIDE-VEL* 1.9)-25|
    #34Y(00 00 00 00 00 00 00 00 00 01 DA 38 01 8D 5E 0B DB DA 71 4E 8E 03 04 DA
         DC 30 03 DA DB 32 84 C5 19 01)
    (|KIENEMAN|::|*MAX-STRIDE-VEL*| #1=1.9f0
     (|COMMON-LISP|::|DEFCONSTANT| |KIENEMAN|::|*MAX-STRIDE-VEL*| #1#)
     |SYSTEM|::|CONSTANT-WARNING|)
    (|COMMON-LISP|::|T| |COMMON-LISP|::|T| |COMMON-LISP|::|T|))
-#Y(#:|376 376 (DEFCONSTANT *MAX-STRIDE-ACCEL* 0.2)-26|
+#Y(#:|411 411 (DEFCONSTANT *MAX-STRIDE-ACCEL* 0.2)-26|
    #34Y(00 00 00 00 00 00 00 00 00 01 DA 38 01 8D 5E 0B DB DA 71 4E 8E 03 04 DA
         DC 30 03 DA DB 32 84 C5 19 01)
    (|KIENEMAN|::|*MAX-STRIDE-ACCEL*| #1=0.2f0
     (|COMMON-LISP|::|DEFCONSTANT| |KIENEMAN|::|*MAX-STRIDE-ACCEL*| #1#)
     |SYSTEM|::|CONSTANT-WARNING|)
    (|COMMON-LISP|::|T| |COMMON-LISP|::|T| |COMMON-LISP|::|T|))
-#Y(#:|377 377 (DEFCONSTANT *MAX-HDASH-SPD* 1.68)-27|
+#Y(#:|412 412 (DEFCONSTANT *MAX-HDASH-SPD* 1.68)-27|
    #34Y(00 00 00 00 00 00 00 00 00 01 DA 38 01 8D 5E 0B DB DA 71 4E 8E 03 04 DA
         DC 30 03 DA DB 32 84 C5 19 01)
    (|KIENEMAN|::|*MAX-HDASH-SPD*| #1=1.68f0
     (|COMMON-LISP|::|DEFCONSTANT| |KIENEMAN|::|*MAX-HDASH-SPD*| #1#)
     |SYSTEM|::|CONSTANT-WARNING|)
    (|COMMON-LISP|::|T| |COMMON-LISP|::|T| |COMMON-LISP|::|T|))
-#Y(#:|378 378 (DEFCONSTANT *MIN-MAX-LEG-SPACE* (+ 7.0 *NEUTRAL-LEG-SPACE*))-28|
+#Y(#:|413 413 (DEFCONSTANT *MIN-MAX-LEG-SPACE* (+ 7.0 *NEUTRAL-LEG-SPACE*))-28|
    #34Y(00 00 00 00 00 00 00 00 00 01 DA 38 01 8D 5E 0B DB DA 71 4E 8E 03 04 DA
         DC 30 03 DA DB 32 84 C5 19 01)
    (|KIENEMAN|::|*MIN-MAX-LEG-SPACE*| 15.0f0
@@ -907,7 +905,7 @@ In this function the new foot pos is affected by the new velocity instead of the
      (|COMMON-LISP|::|+| 7.0f0 |KIENEMAN|::|*NEUTRAL-LEG-SPACE*|))
     |SYSTEM|::|CONSTANT-WARNING|)
    (|COMMON-LISP|::|T| |COMMON-LISP|::|T| |COMMON-LISP|::|T|))
-#Y(#:|380 383 (DEFUN MAX-FOOT-POS-PER-SPEED (SPD) ...)-29|
+#Y(#:|415 418 (DEFUN MAX-FOOT-POS-PER-SPEED (SPD) ...)-29|
    #20Y(00 00 00 00 00 00 00 00 00 01 DA 2F 01 DA DC 32 83 C5 19 01)
    (|KIENEMAN|::|MAX-FOOT-POS-PER-SPEED| |SYSTEM|::|REMOVE-OLD-DEFINITIONS|
     #Y(|KIENEMAN|::|MAX-FOOT-POS-PER-SPEED|
@@ -917,7 +915,7 @@ In this function the new foot pos is affected by the new velocity instead of the
        (|COMMON-LISP|::|T| |COMMON-LISP|::|NIL| |COMMON-LISP|::|NIL|)
        (|KIENEMAN|::|SPD|) |COMMON-LISP|::|NIL|))
    (|COMMON-LISP|::|T| |COMMON-LISP|::|T| |COMMON-LISP|::|T|))
-#Y(#:|385 387 (DEFUN HS-ACCEL (VEL FP) ...)-30|
+#Y(#:|420 422 (DEFUN HS-ACCEL (VEL FP) ...)-30|
    #20Y(00 00 00 00 00 00 00 00 00 01 DA 2F 01 DA DC 32 83 C5 19 01)
    (|KIENEMAN|::|HS-ACCEL| |SYSTEM|::|REMOVE-OLD-DEFINITIONS|
     #Y(|KIENEMAN|::|HS-ACCEL|
@@ -928,7 +926,7 @@ In this function the new foot pos is affected by the new velocity instead of the
        (|KIENEMAN|::|VEL| |KIENEMAN|::|FP|)
        "Returns a positive acceleration value."))
    (|COMMON-LISP|::|T| |COMMON-LISP|::|T| |COMMON-LISP|::|T|))
-#Y(#:|390 546 (DEFSTATE "high-stride" :CONSTANTS ...)-31|
+#Y(#:|425 581 (DEFSTATE "high-stride" :CONSTANTS ...)-31|
    #452Y(00 00 00 00 00 00 00 00 00 01 DA DB DC 32 89 DA DD DE 32 89 6B 05 99
          06 DA E1 E2 E3 E4 E5 7B 04 E6 E7 E8 E9 EA EB EC 7B 06 E7 ED EE EF F0
          F1 F2 F3 E9 63 EB 63 6F 1A 7B 0C E7 F5 EE F6 F0 F7 F2 65 1E E9 63 EB
@@ -990,10 +988,10 @@ In this function the new foot pos is affected by the new velocity instead of the
     :|DIRECT-DEFAULT-INITARGS| :|DOCUMENTATION| :|GENERIC-ACCESSORS|
     |KIENEMAN|::|MAIN-ACTION| |SYSTEM|::|TRACED-DEFINITION|
     |SYSTEM|::|UNTRACE1|
-    #Y(#:|390 546 (DEFSTATE "high-stride" :CONSTANTS ...)-31-1|
+    #Y(#:|425 581 (DEFSTATE "high-stride" :CONSTANTS ...)-31-1|
        #19Y(00 00 00 00 01 00 00 00 00 02 2A 14 6D 01 01 C7 5D 19 02)
        (|COMMON-LISP|::|NIL|
-        #Y(#:|390 546 (DEFSTATE "high-stride" :CONSTANTS ...)-31-1-1|
+        #Y(#:|425 581 (DEFSTATE "high-stride" :CONSTANTS ...)-31-1-1|
            #850Y(00 00 00 00 01 00 00 00 00 02 2A 2B 01 7F 02 00 00 14 2F 01 68
                  00 00 6F 02 8F 94 81 29 2E 04 14 68 01 00 6F 02 8F 93 06 2E 03
                  14 88 05 0B AF CB 74 8F 94 05 2E 04 14 2F 05 14 68 02 00 6F 07
@@ -1060,7 +1058,7 @@ In this function the new foot pos is affected by the new velocity instead of the
                (|COMMON-LISP|::|T| |COMMON-LISP|::|T| |COMMON-LISP|::|T|) ()
                |COMMON-LISP|::|NIL|)
             |KIENEMAN|::|POSITIVE|
-            #Y(#:|390 546 (DEFSTATE "high-stride" :CONSTANTS ...)-31-1-1-1|
+            #Y(#:|425 581 (DEFSTATE "high-stride" :CONSTANTS ...)-31-1-1-1|
                #19Y(00 00 00 00 01 00 00 00 01 17 DA AF 38 02 31 8B 9E 19 03)
                ("C1")
                (|COMMON-LISP|::|T| |COMMON-LISP|::|T| |COMMON-LISP|::|T|))
@@ -1069,7 +1067,7 @@ In this function the new foot pos is affected by the new velocity instead of the
             |KIENEMAN|::|MOVE-FORWARD| |KIENEMAN|::|GOAL-ACTION|
             #.(|SYSTEM|::|GET-SETF-SYMBOL| '|KIENEMAN|::|SPD|)
             #.(|SYSTEM|::|GET-SETF-SYMBOL| '|KIENEMAN|::|SPEED-LOCK|)
-            #Y(#:|390 546 (DEFSTATE "high-stride" :CONSTANTS ...)-31-1-1-2|
+            #Y(#:|425 581 (DEFSTATE "high-stride" :CONSTANTS ...)-31-1-1-2|
                #19Y(00 00 00 00 01 00 00 00 01 17 DA AF 38 02 31 8B 9E 19 03)
                ("C2")
                (|COMMON-LISP|::|T| |COMMON-LISP|::|T| |COMMON-LISP|::|T|))
@@ -1081,41 +1079,41 @@ In this function the new foot pos is affected by the new velocity instead of the
             :|LEG-SPACE| :|JAB|
             #.(|SYSTEM|::|GET-SETF-SYMBOL| '|KIENEMAN|::|GOAL-ACTION|) :|A2|
             |KIENEMAN|::|SIDEKICKW| :|CANCEL|
-            #Y(#:|390 546 (DEFSTATE "high-stride" :CONSTANTS ...)-31-1-1-3|
+            #Y(#:|425 581 (DEFSTATE "high-stride" :CONSTANTS ...)-31-1-1-3|
                #19Y(00 00 00 00 01 00 00 00 01 17 DA AF 38 02 31 8B 9E 19 03)
                ("CA1")
                (|COMMON-LISP|::|T| |COMMON-LISP|::|T| |COMMON-LISP|::|T|))
             |KIENEMAN|::|GLIDE-IN|
             #.(|SYSTEM|::|GET-SETF-SYMBOL| '|KIENEMAN|::|GLIDE-ASAP|)
-            #Y(#:|390 546 (DEFSTATE "high-stride" :CONSTANTS ...)-31-1-1-4|
+            #Y(#:|425 581 (DEFSTATE "high-stride" :CONSTANTS ...)-31-1-1-4|
                #23Y(00 00 00 00 02 00 00 00 01 18 DA B0 38 02 31 8B AE B0 31 86
                     9E 19 04)
                ("TN1 cdh:")
                (|COMMON-LISP|::|T| |COMMON-LISP|::|T| |COMMON-LISP|::|T|))
-            #Y(#:|390 546 (DEFSTATE "high-stride" :CONSTANTS ...)-31-1-1-5|
+            #Y(#:|425 581 (DEFSTATE "high-stride" :CONSTANTS ...)-31-1-1-5|
                #19Y(00 00 00 00 01 00 00 00 01 17 DA AF 38 02 31 8B 9E 19 03)
                ("D1")
                (|COMMON-LISP|::|T| |COMMON-LISP|::|T| |COMMON-LISP|::|T|))
-            #Y(#:|390 546 (DEFSTATE "high-stride" :CONSTANTS ...)-31-1-1-6|
+            #Y(#:|425 581 (DEFSTATE "high-stride" :CONSTANTS ...)-31-1-1-6|
                #19Y(00 00 00 00 01 00 00 00 01 17 DA AF 38 02 31 8B 9E 19 03)
                ("D2")
                (|COMMON-LISP|::|T| |COMMON-LISP|::|T| |COMMON-LISP|::|T|))
-            #Y(#:|390 546 (DEFSTATE "high-stride" :CONSTANTS ...)-31-1-1-7|
+            #Y(#:|425 581 (DEFSTATE "high-stride" :CONSTANTS ...)-31-1-1-7|
                #25Y(00 00 00 00 01 00 00 00 01 17 AE 31 8E DA AF 38 02 31 8B AE
                     31 8E 9E 19 03)
                ("******* TO GLIDE-IN *******")
                (|COMMON-LISP|::|T| |COMMON-LISP|::|T| |COMMON-LISP|::|T|))
-            #Y(#:|390 546 (DEFSTATE "high-stride" :CONSTANTS ...)-31-1-1-8|
+            #Y(#:|425 581 (DEFSTATE "high-stride" :CONSTANTS ...)-31-1-1-8|
                #19Y(00 00 00 00 01 00 00 00 01 17 DA AF 38 02 31 8B 9E 19 03)
                ("I1")
                (|COMMON-LISP|::|T| |COMMON-LISP|::|T| |COMMON-LISP|::|T|))
             |KIENEMAN|::|IDLE|
-            #Y(#:|390 546 (DEFSTATE "high-stride" :CONSTANTS ...)-31-1-1-9|
+            #Y(#:|425 581 (DEFSTATE "high-stride" :CONSTANTS ...)-31-1-1-9|
                #25Y(00 00 00 00 01 00 00 00 01 17 AE 31 8E DA AF 38 02 31 8B AE
                     31 8E 9E 19 03)
                ("**************************")
                (|COMMON-LISP|::|T| |COMMON-LISP|::|T| |COMMON-LISP|::|T|))
-            #Y(#:|390 546 (DEFSTATE "high-stride" :CONSTANTS ...)-31-1-1-10|
+            #Y(#:|425 581 (DEFSTATE "high-stride" :CONSTANTS ...)-31-1-1-10|
                #79Y(00 00 00 00 06 00 00 00 01 00 B3 31 8E DA B4 38 02 31 8B B2
                     B4 31 86 DB B4 38 02 31 8B B1 B4 31 86 DC B4 31 8A B3 31 8E
                     DD B4 38 02 31 8B B0 B4 31 86 DE B4 38 02 31 8B AF B4 31 86
@@ -1131,10 +1129,10 @@ In this function the new foot pos is affected by the new velocity instead of the
     #(1. 0. |COMMON-LISP|::|NIL| |COMMON-LISP|::|NIL| |COMMON-LISP|::|NIL|
       |COMMON-LISP|::|NIL|)
     :|SPECIALIZERS| |CLOS|::|DO-DEFMETHOD| |KIENEMAN|::|PRINT-STATE|
-    #Y(#:|390 546 (DEFSTATE "high-stride" :CONSTANTS ...)-31-2|
+    #Y(#:|425 581 (DEFSTATE "high-stride" :CONSTANTS ...)-31-2|
        #25Y(00 00 00 00 01 00 00 00 00 02 00 2B 01 7F 02 00 00 AC 6D 00 01 C6
             5D 19 03)
-       (#Y(#:|390 546 (DEFSTATE "high-stride" :CONSTANTS ...)-31-2-1|
+       (#Y(#:|425 581 (DEFSTATE "high-stride" :CONSTANTS ...)-31-2-1|
            #347Y(00 00 00 00 02 00 00 00 00 03 AD 2F 01 38 02 72 76 93 03 04 14
                  AF 36 01 14 AF 6F 01 B0 6F 03 B1 6F 04 B2 6F 05 B3 6F 03 B4 6F
                  04 B5 6F 06 B6 6F 07 B7 6F 08 B8 6F 09 B9 6F 0A BA 6F 0B BB 6F
@@ -1173,11 +1171,11 @@ In this function the new foot pos is affected by the new velocity instead of the
     #(1. 0. |COMMON-LISP|::|NIL| |COMMON-LISP|::|NIL| |COMMON-LISP|::|NIL|
       |COMMON-LISP|::|NIL|)
     |CLOS|::|INITIALIZE-INSTANCE|
-    #Y(#:|390 546 (DEFSTATE "high-stride" :CONSTANTS ...)-31-3|
+    #Y(#:|425 581 (DEFSTATE "high-stride" :CONSTANTS ...)-31-3|
        #15Y(00 00 00 00 01 00 00 00 00 02 DA C6 5D 19 02)
-       (#Y(#:|390 546 (DEFSTATE "high-stride" :CONSTANTS ...)-31-3-1|
+       (#Y(#:|425 581 (DEFSTATE "high-stride" :CONSTANTS ...)-31-3-1|
            #16Y(00 00 00 00 01 00 00 00 01 17 DA AF A0 9B 01 03)
-           (#Y(#:|390 546 (DEFSTATE "high-stride" :CONSTANTS ...)-31-3-1-1|
+           (#Y(#:|425 581 (DEFSTATE "high-stride" :CONSTANTS ...)-31-3-1-1|
                #54Y(00 00 00 00 01 00 00 00 C0 1C 01 00 00 00 3B 01 07 7D 01 9E
                     1F 1E 1B 03 9E 1F 19 14 72 9F AC B0 30 01 16 01 AD DC 32 03
                     59 1F 09 AD 72 A1 AC B0 30 03 19 04 19 03)
@@ -1191,10 +1189,10 @@ In this function the new foot pos is affected by the new velocity instead of the
     #(1. 0. |COMMON-LISP|::|T| |COMMON-LISP|::|T| (:|VEL|)
       |COMMON-LISP|::|NIL|)
     |KIENEMAN|::|ENTER-STATE|
-    #Y(#:|390 546 (DEFSTATE "high-stride" :CONSTANTS ...)-31-4|
+    #Y(#:|425 581 (DEFSTATE "high-stride" :CONSTANTS ...)-31-4|
        #19Y(00 00 00 00 01 00 00 00 00 02 2A 14 6D 01 01 C7 5D 19 02)
        (|COMMON-LISP|::|NIL|
-        #Y(#:|390 546 (DEFSTATE "high-stride" :CONSTANTS ...)-31-4-1|
+        #Y(#:|425 581 (DEFSTATE "high-stride" :CONSTANTS ...)-31-4-1|
            #31Y(00 00 00 00 02 00 00 00 00 03 AD 2F 01 59 1F 0D AD C7 74 DD 73
                 01 34 AC AF 30 04 19 04 19 03)
            (|COMMON-LISP|::|NIL| |KIENEMAN|::|SPD|
@@ -1229,10 +1227,10 @@ In this function the new foot pos is affected by the new velocity instead of the
     #(2. 0. |COMMON-LISP|::|NIL| |COMMON-LISP|::|NIL| |COMMON-LISP|::|NIL|
       |COMMON-LISP|::|NIL|)
     |KIENEMAN|::|FIGHTER| |KIENEMAN|::|ANIMATE|
-    #Y(#:|390 546 (DEFSTATE "high-stride" :CONSTANTS ...)-31-5|
+    #Y(#:|425 581 (DEFSTATE "high-stride" :CONSTANTS ...)-31-5|
        #25Y(00 00 00 00 01 00 00 00 00 02 00 2B 01 7F 02 00 00 AC 6D 00 01 C6
             5D 19 03)
-       (#Y(#:|390 546 (DEFSTATE "high-stride" :CONSTANTS ...)-31-5-1|
+       (#Y(#:|425 581 (DEFSTATE "high-stride" :CONSTANTS ...)-31-5-1|
            #34Y(00 00 00 00 02 00 00 00 00 03 AD 2F 01 93 02 04 14 AE 36 01 AD
                 6F 03 DE AF 6F 05 73 02 37 30 06 19 03)
            (|COMMON-LISP|::|NIL| |KIENEMAN|::|PARENT| |CLOS|::|%NO-NEXT-METHOD|
@@ -1245,7 +1243,7 @@ In this function the new foot pos is affected by the new velocity instead of the
     #(1. 0. |COMMON-LISP|::|NIL| |COMMON-LISP|::|NIL| |COMMON-LISP|::|NIL|
       |COMMON-LISP|::|NIL|))
    (|COMMON-LISP|::|T| |COMMON-LISP|::|T| |COMMON-LISP|::|T|))
-#Y(#:|548 620 (DEFSTATE "high-dodge" :SLOTS ...)-32|
+#Y(#:|583 655 (DEFSTATE "high-dodge" :SLOTS ...)-32|
    #394Y(00 00 00 00 00 00 00 00 00 01 DA DB DC 32 89 DA DD DE 32 89 6B 05 99
          06 DA E1 E2 E3 E4 E5 7B 04 E6 E7 E8 E9 EA EB EC 7B 06 E7 ED EE EF F0
          F1 F2 F3 E9 F4 EB F4 6F 1B 7B 0C E7 F6 EE F7 F0 65 1E F2 65 1F 7B 08
@@ -1305,9 +1303,9 @@ In this function the new foot pos is affected by the new velocity instead of the
     :|DIRECT-DEFAULT-INITARGS| :|DOCUMENTATION| :|GENERIC-ACCESSORS|
     |KIENEMAN|::|MAIN-ACTION| |SYSTEM|::|TRACED-DEFINITION|
     |SYSTEM|::|UNTRACE1|
-    #Y(#:|548 620 (DEFSTATE "high-dodge" :SLOTS ...)-32-1|
+    #Y(#:|583 655 (DEFSTATE "high-dodge" :SLOTS ...)-32-1|
        #15Y(00 00 00 00 01 00 00 00 00 02 DA C6 5D 19 02)
-       (#Y(#:|548 620 (DEFSTATE "high-dodge" :SLOTS ...)-32-1-1|
+       (#Y(#:|583 655 (DEFSTATE "high-dodge" :SLOTS ...)-32-1-1|
            #351Y(00 00 00 00 01 00 00 00 00 02 AD 2F 00 AD 88 01 39 AD 6F 02 8E
                  93 80 C4 AD 6F 13 8E 93 80 E0 F1 F2 AF 6F 00 F3 B1 6F 1A 6E 05
                  1B 6B 1C AD 30 1D 16 01 65 1E 6B 1F AF 6F 20 B0 6F 06 B1 6F 08
@@ -1360,7 +1358,7 @@ In this function the new foot pos is affected by the new velocity instead of the
             #.|KIENEMAN|::|*NEUTRAL-LEG-SPACE*| |KIENEMAN|::|IDLE| :|PARENT|
             :|KEY-BUFFER| |KIENEMAN|::|KEY-BUFFER| |CLOS|::|MAKE-INSTANCE|
             |KIENEMAN|::|*FIGHTER*| |KIENEMAN|::|CHANGE-STATE|
-            #Y(#:|548 620 (DEFSTATE "high-dodge" :SLOTS ...)-32-1-1-1|
+            #Y(#:|583 655 (DEFSTATE "high-dodge" :SLOTS ...)-32-1-1-1|
                #93Y(00 00 00 00 06 00 00 00 01 00 B3 31 8E DA B4 38 02 31 8B B2
                     B4 31 86 DB B4 38 02 31 8B B1 B4 31 86 DC B4 31 8A B3 01 02
                     DD 63 2D 05 04 DF B4 38 02 31 8B B0 B4 31 86 B3 31 8E E0 B4
@@ -1377,10 +1375,10 @@ In this function the new foot pos is affected by the new velocity instead of the
     #(1. 0. |COMMON-LISP|::|NIL| |COMMON-LISP|::|NIL| |COMMON-LISP|::|NIL|
       |COMMON-LISP|::|NIL|)
     :|SPECIALIZERS| |CLOS|::|DO-DEFMETHOD| |KIENEMAN|::|PRINT-STATE|
-    #Y(#:|548 620 (DEFSTATE "high-dodge" :SLOTS ...)-32-2|
+    #Y(#:|583 655 (DEFSTATE "high-dodge" :SLOTS ...)-32-2|
        #25Y(00 00 00 00 01 00 00 00 00 02 00 2B 01 7F 02 00 00 AC 6D 00 01 C6
             5D 19 03)
-       (#Y(#:|548 620 (DEFSTATE "high-dodge" :SLOTS ...)-32-2-1|
+       (#Y(#:|583 655 (DEFSTATE "high-dodge" :SLOTS ...)-32-2-1|
            #302Y(00 00 00 00 02 00 00 00 00 03 AD 2F 01 38 02 72 76 93 03 04 14
                  AF 36 01 14 AF 6F 01 B0 6F 03 B1 6F 04 B2 6F 05 B3 6F 03 B4 6F
                  04 B5 6F 06 B6 6F 07 B7 6F 08 B8 6F 09 B9 6F 0A BA 6F 0B BB 6F
@@ -1414,23 +1412,23 @@ In this function the new foot pos is affected by the new velocity instead of the
     #(1. 0. |COMMON-LISP|::|NIL| |COMMON-LISP|::|NIL| |COMMON-LISP|::|NIL|
       |COMMON-LISP|::|NIL|)
     |CLOS|::|INITIALIZE-INSTANCE|
-    #Y(#:|548 620 (DEFSTATE "high-dodge" :SLOTS ...)-32-3|
+    #Y(#:|583 655 (DEFSTATE "high-dodge" :SLOTS ...)-32-3|
        #15Y(00 00 00 00 01 00 00 00 00 02 DA C6 5D 19 02)
-       (#Y(#:|548 620 (DEFSTATE "high-dodge" :SLOTS ...)-32-3-1|
+       (#Y(#:|583 655 (DEFSTATE "high-dodge" :SLOTS ...)-32-3-1|
            #16Y(00 00 00 00 01 00 00 00 01 17 DA AF A0 9B 01 03)
-           (#Y(#:|548 620 (DEFSTATE "high-dodge" :SLOTS ...)-32-3-1-1|
+           (#Y(#:|583 655 (DEFSTATE "high-dodge" :SLOTS ...)-32-3-1-1|
                #43Y(00 00 00 00 01 00 00 00 C0 1C 01 00 00 00 3B 01 02 C6 F9 DC
                     6B 03 33 01 15 AE DE AF 32 3F AE DF AF 32 3F E0 6B 03 33 01
                     15 19 03)
                (:|INTSPEED| #2=0.15f0
-                #Y(#:|548 620 (DEFSTATE "high-dodge" :SLOTS ...)-32-3-1-1-1|
+                #Y(#:|583 655 (DEFSTATE "high-dodge" :SLOTS ...)-32-3-1-1-1|
                    #19Y(00 00 00 00 01 00 00 00 01 17 DA AF 38 02 31 8B 9E 19
                         03)
                    ("in")
                    (|COMMON-LISP|::|T| |COMMON-LISP|::|T| |COMMON-LISP|::|T|))
                 |COMMON-LISP|::|*STANDARD-OUTPUT*| |KIENEMAN|::|SPD|
                 |KIENEMAN|::|START-SPEED|
-                #Y(#:|548 620 (DEFSTATE "high-dodge" :SLOTS ...)-32-3-1-1-2|
+                #Y(#:|583 655 (DEFSTATE "high-dodge" :SLOTS ...)-32-3-1-1-2|
                    #19Y(00 00 00 00 01 00 00 00 01 17 DA AF 38 02 31 8B 9E 19
                         03)
                    ("out")
@@ -1444,9 +1442,9 @@ In this function the new foot pos is affected by the new velocity instead of the
     #(1. 0. |COMMON-LISP|::|T| |COMMON-LISP|::|T| (:|INTSPEED|)
       |COMMON-LISP|::|NIL|)
     |KIENEMAN|::|ANIMATE|
-    #Y(#:|548 620 (DEFSTATE "high-dodge" :SLOTS ...)-32-4|
+    #Y(#:|583 655 (DEFSTATE "high-dodge" :SLOTS ...)-32-4|
        #15Y(00 00 00 00 01 00 00 00 00 02 DA C6 5D 19 02)
-       (#Y(#:|548 620 (DEFSTATE "high-dodge" :SLOTS ...)-32-4-1|
+       (#Y(#:|583 655 (DEFSTATE "high-dodge" :SLOTS ...)-32-4-1|
            #27Y(00 00 00 00 01 00 00 00 00 02 AD 2F 00 AD 6F 01 DC AF 6F 03 73
                 02 37 30 04 19 02)
            (|KIENEMAN|::|PARENT| |KIENEMAN|::|ANIMATION| 0.016666668f0
@@ -1458,7 +1456,7 @@ In this function the new foot pos is affected by the new velocity instead of the
     #(1. 0. |COMMON-LISP|::|NIL| |COMMON-LISP|::|NIL| |COMMON-LISP|::|NIL|
       |COMMON-LISP|::|NIL|))
    (|COMMON-LISP|::|T| |COMMON-LISP|::|T| |COMMON-LISP|::|T|))
-#Y(#:|622 783 (DEFSTATE "running" :SUPERS ...)-33|
+#Y(#:|657 818 (DEFSTATE "running" :SUPERS ...)-33|
    #274Y(00 00 00 00 00 00 00 00 00 01 DA DB DC 32 89 DA DD DE 32 89 6B 05 99
          06 DA E1 E2 E3 E4 E5 E6 7B 05 E7 E8 E9 EA EB EC ED 7B 06 E8 EE EF F0
          F1 F2 F3 F4 7B 08 E8 F5 EF F6 F1 F7 F3 65 1E EA 65 1F EC 63 6D 20 01
@@ -1511,10 +1509,10 @@ In this function the new foot pos is affected by the new velocity instead of the
     :|DIRECT-DEFAULT-INITARGS| :|DOCUMENTATION| :|GENERIC-ACCESSORS|
     |KIENEMAN|::|MAIN-ACTION| |SYSTEM|::|TRACED-DEFINITION|
     |SYSTEM|::|UNTRACE1|
-    #Y(#:|622 783 (DEFSTATE "running" :SUPERS ...)-33-1|
+    #Y(#:|657 818 (DEFSTATE "running" :SUPERS ...)-33-1|
        #19Y(00 00 00 00 01 00 00 00 00 02 2A 14 6D 01 01 C7 5D 19 02)
        (|COMMON-LISP|::|NIL|
-        #Y(#:|622 783 (DEFSTATE "running" :SUPERS ...)-33-1-1|
+        #Y(#:|657 818 (DEFSTATE "running" :SUPERS ...)-33-1-1|
            #1186Y(00 00 00 00 01 00 00 00 00 02 2A 2B 01 7F 02 00 00 14 2F 01
                   68 00 00 6F 02 8E 93 81 4C 2E 04 14 DF E0 DF 73 01 36 68 03
                   00 6F 07 E2 73 01 38 73 02 37 73 02 35 38 01 72 B7 68 02 00
@@ -1654,7 +1652,7 @@ In this function the new foot pos is affected by the new velocity instead of the
             #.(|SYSTEM|::|GET-SETF-SYMBOL| '|KIENEMAN|::|RUNNING-WEIGHT|)
             #.(|SYSTEM|::|GET-SETF-SYMBOL| '|KIENEMAN|::|WEIGHT-LIMIT-MET|)
             |KIENEMAN|::|WEIGHT-LIMIT-MET|
-            #Y(#:|622 783 (DEFSTATE "running" :SUPERS ...)-33-1-1-1|
+            #Y(#:|657 818 (DEFSTATE "running" :SUPERS ...)-33-1-1-1|
                #49Y(00 00 00 00 04 00 00 00 01 1A B1 31 8E DA B2 38 02 31 8B B0
                     B2 31 86 DB B2 38 02 31 8B AF B2 31 86 DC B2 38 02 31 8B AE
                     B2 31 86 B1 31 8E 9E 19 06)
@@ -1672,12 +1670,12 @@ In this function the new foot pos is affected by the new velocity instead of the
             |KIENEMAN|::|SIDEKICK| :|START-VEL| :|TO-GLIDE-IN|
             |KIENEMAN|::|GLIDE-IN| 13.0f0 0.5f0
             #.(|SYSTEM|::|GET-SETF-SYMBOL| '|KIENEMAN|::|ANIMATION-INCR|)
-            #Y(#:|622 783 (DEFSTATE "running" :SUPERS ...)-33-1-1-2|
+            #Y(#:|657 818 (DEFSTATE "running" :SUPERS ...)-33-1-1-2|
                #25Y(00 00 00 00 01 00 00 00 01 17 AE 31 8E DA AF 38 02 31 8B AE
                     31 8E 9E 19 03)
                ("**********************************")
                (|COMMON-LISP|::|T| |COMMON-LISP|::|T| |COMMON-LISP|::|T|))
-            #Y(#:|622 783 (DEFSTATE "running" :SUPERS ...)-33-1-1-3|
+            #Y(#:|657 818 (DEFSTATE "running" :SUPERS ...)-33-1-1-3|
                #132Y(00 00 00 00 08 00 00 00 01 00 DA B6 38 02 31 8B B4 B6 31
                      86 DB B6 31 8A B5 01 02 DC 63 2D 05 03 DE B6 38 02 31 8B
                      B3 B6 31 86 B5 31 8E DF B6 38 02 31 8B B2 B6 31 86 DB B6
@@ -1696,10 +1694,10 @@ In this function the new foot pos is affected by the new velocity instead of the
     #(1. 0. |COMMON-LISP|::|NIL| |COMMON-LISP|::|NIL| |COMMON-LISP|::|NIL|
       |COMMON-LISP|::|NIL|)
     :|SPECIALIZERS| |CLOS|::|DO-DEFMETHOD| |KIENEMAN|::|PRINT-STATE|
-    #Y(#:|622 783 (DEFSTATE "running" :SUPERS ...)-33-2|
+    #Y(#:|657 818 (DEFSTATE "running" :SUPERS ...)-33-2|
        #25Y(00 00 00 00 01 00 00 00 00 02 00 2B 01 7F 02 00 00 AC 6D 00 01 C6
             5D 19 03)
-       (#Y(#:|622 783 (DEFSTATE "running" :SUPERS ...)-33-2-1|
+       (#Y(#:|657 818 (DEFSTATE "running" :SUPERS ...)-33-2-1|
            #346Y(00 00 00 00 02 00 00 00 00 03 AD 2F 01 38 02 72 76 93 03 04 14
                  AF 36 01 14 AF 6F 01 B0 6F 03 B1 6F 04 B2 6F 05 B3 6F 03 B4 6F
                  04 B5 6F 06 B6 6F 07 B7 6F 08 B8 6F 09 B9 6F 0A BA 6F 0B BB 6F
@@ -1739,14 +1737,14 @@ In this function the new foot pos is affected by the new velocity instead of the
     #(1. 0. |COMMON-LISP|::|NIL| |COMMON-LISP|::|NIL| |COMMON-LISP|::|NIL|
       |COMMON-LISP|::|NIL|))
    (|COMMON-LISP|::|T| |COMMON-LISP|::|T| |COMMON-LISP|::|T|))
-#Y(#:|785 785 (DEFCONSTANT *MIN-FOOT-POS* 1.0)-34|
+#Y(#:|820 820 (DEFCONSTANT *MIN-FOOT-POS* 1.0)-34|
    #34Y(00 00 00 00 00 00 00 00 00 01 DA 38 01 8D 5E 0B DB DA 71 4E 8E 03 04 DA
         DC 30 03 DA DB 32 84 C5 19 01)
    (|KIENEMAN|::|*MIN-FOOT-POS*| #1=1.0f0
     (|COMMON-LISP|::|DEFCONSTANT| |KIENEMAN|::|*MIN-FOOT-POS*| #1#)
     |SYSTEM|::|CONSTANT-WARNING|)
    (|COMMON-LISP|::|T| |COMMON-LISP|::|T| |COMMON-LISP|::|T|))
-#Y(#:|787 875 (DEFSTATE "glide-in" :SLOTS ...)-35|
+#Y(#:|822 910 (DEFSTATE "glide-in" :SLOTS ...)-35|
    #324Y(00 00 00 00 00 00 00 00 00 01 DA DB DC 32 89 DA DD DE 32 89 6B 05 99
          06 DA E1 E2 E3 E4 E5 7B 04 E6 E7 E8 E9 EA EB EC 7B 06 E7 ED EE EF F0
          F1 F2 F3 7B 08 E7 F4 EE F5 F0 F6 F2 F7 7B 08 E7 65 1E EE 65 1F F0 65
@@ -1796,9 +1794,9 @@ In this function the new foot pos is affected by the new velocity instead of the
     :|DIRECT-DEFAULT-INITARGS| :|DOCUMENTATION| :|GENERIC-ACCESSORS|
     |KIENEMAN|::|MAIN-ACTION| |SYSTEM|::|TRACED-DEFINITION|
     |SYSTEM|::|UNTRACE1|
-    #Y(#:|787 875 (DEFSTATE "glide-in" :SLOTS ...)-35-1|
+    #Y(#:|822 910 (DEFSTATE "glide-in" :SLOTS ...)-35-1|
        #15Y(00 00 00 00 01 00 00 00 00 02 DA C6 5D 19 02)
-       (#Y(#:|787 875 (DEFSTATE "glide-in" :SLOTS ...)-35-1-1|
+       (#Y(#:|822 910 (DEFSTATE "glide-in" :SLOTS ...)-35-1-1|
            #518Y(00 00 00 00 01 00 00 00 00 02 AD 2F 00 AD 6F 01 2F 02 DD 89 04
                  0B AD 6F 05 DD E0 63 E1 63 2D 06 08 E3 89 04 0B AD 6F 05 E3 E0
                  63 E1 63 2D 06 08 E4 89 04 0B AD 6F 05 E4 E0 63 E1 63 2D 06 08
@@ -1828,7 +1826,7 @@ In this function the new foot pos is affected by the new velocity instead of the
             :|A1| |KIENEMAN|::|GET-PRESSED| |KIENEMAN|::|KEY-BUFFER|
             :|RELEASED| :|OTHERS| |KIENEMAN|::|SET-TAPPEDF| :|A2| :|DODGE|
             :|CANCEL| 0.8f0 0.125f0 #2=8.0f0 |KIENEMAN|::|MIN-FOOT-POS|
-            #Y(#:|787 875 (DEFSTATE "glide-in" :SLOTS ...)-35-1-1-1|
+            #Y(#:|822 910 (DEFSTATE "glide-in" :SLOTS ...)-35-1-1-1|
                #35Y(00 00 00 00 02 00 00 00 01 18 AF 31 8E DA B0 38 02 31 8B AE
                     B0 31 86 DB B0 38 02 31 8B AF 31 8E 9E 19 04)
                ("** Min-Spd " " **")
@@ -1867,7 +1865,7 @@ In this function the new foot pos is affected by the new velocity instead of the
             0.06f0 #.(|SYSTEM|::|GET-SETF-SYMBOL| '|KIENEMAN|::|VEL|) -1.4f0
             |KIENEMAN|::|STATUS| :|HORI| |KIENEMAN|::|FOOT-POS|
             #.(|SYSTEM|::|GET-SETF-SYMBOL| '|KIENEMAN|::|FOOT-POS|)
-            #Y(#:|787 875 (DEFSTATE "glide-in" :SLOTS ...)-35-1-1-2|
+            #Y(#:|822 910 (DEFSTATE "glide-in" :SLOTS ...)-35-1-1-2|
                #22Y(00 00 00 00 01 00 00 00 01 17 DA AF 38 02 31 8B AE 31 8E 9E
                     19 03)
                ("Min leg pos reached.")
@@ -1879,12 +1877,12 @@ In this function the new foot pos is affected by the new velocity instead of the
             :|FOOT-POS| :|ENTRY-HEIGHT| |KIENEMAN|::|EXIT-HEIGHT|
             :|MAX-FOOT-POS| 19.0f0 :|KEY-BUFFER| |CLOS|::|MAKE-INSTANCE|
             |KIENEMAN|::|*FIGHTER*| |KIENEMAN|::|CHANGE-STATE|
-            #Y(#:|787 875 (DEFSTATE "glide-in" :SLOTS ...)-35-1-1-3|
+            #Y(#:|822 910 (DEFSTATE "glide-in" :SLOTS ...)-35-1-1-3|
                #25Y(00 00 00 00 01 00 00 00 01 17 AE 31 8E DA AF 38 02 31 8B AE
                     31 8E 9E 19 03)
                ("**************************")
                (|COMMON-LISP|::|T| |COMMON-LISP|::|T| |COMMON-LISP|::|T|))
-            #Y(#:|787 875 (DEFSTATE "glide-in" :SLOTS ...)-35-1-1-4|
+            #Y(#:|822 910 (DEFSTATE "glide-in" :SLOTS ...)-35-1-1-4|
                #66Y(00 00 00 00 05 00 00 00 01 00 B2 31 8E DA B3 38 02 31 8B B1
                     B3 31 86 DB B3 38 02 31 8B B0 B3 31 86 DC B3 31 8A B2 31 8E
                     DD B3 38 02 31 8B AF B3 31 86 DE B3 38 02 31 8B AE B3 31 86
@@ -1899,10 +1897,10 @@ In this function the new foot pos is affected by the new velocity instead of the
     #(1. 0. |COMMON-LISP|::|NIL| |COMMON-LISP|::|NIL| |COMMON-LISP|::|NIL|
       |COMMON-LISP|::|NIL|)
     :|SPECIALIZERS| |CLOS|::|DO-DEFMETHOD| |KIENEMAN|::|PRINT-STATE|
-    #Y(#:|787 875 (DEFSTATE "glide-in" :SLOTS ...)-35-2|
+    #Y(#:|822 910 (DEFSTATE "glide-in" :SLOTS ...)-35-2|
        #25Y(00 00 00 00 01 00 00 00 00 02 00 2B 01 7F 02 00 00 AC 6D 00 01 C6
             5D 19 03)
-       (#Y(#:|787 875 (DEFSTATE "glide-in" :SLOTS ...)-35-2-1|
+       (#Y(#:|822 910 (DEFSTATE "glide-in" :SLOTS ...)-35-2-1|
            #257Y(00 00 00 00 02 00 00 00 00 03 AD 2F 01 38 02 72 76 93 03 04 14
                  AF 36 01 14 AF 6F 01 B0 6F 03 B1 6F 04 B2 6F 05 B3 6F 03 B4 6F
                  04 B5 6F 06 B6 6F 07 B7 6F 08 B8 6F 09 B9 6F 0A BA 6F 0B BB 6F
@@ -1933,16 +1931,16 @@ In this function the new foot pos is affected by the new velocity instead of the
     #(1. 0. |COMMON-LISP|::|NIL| |COMMON-LISP|::|NIL| |COMMON-LISP|::|NIL|
       |COMMON-LISP|::|NIL|)
     |CLOS|::|INITIALIZE-INSTANCE|
-    #Y(#:|787 875 (DEFSTATE "glide-in" :SLOTS ...)-35-3|
+    #Y(#:|822 910 (DEFSTATE "glide-in" :SLOTS ...)-35-3|
        #15Y(00 00 00 00 01 00 00 00 00 02 DA C6 5D 19 02)
-       (#Y(#:|787 875 (DEFSTATE "glide-in" :SLOTS ...)-35-3-1|
+       (#Y(#:|822 910 (DEFSTATE "glide-in" :SLOTS ...)-35-3-1|
            #16Y(00 00 00 00 01 00 00 00 01 17 DA AF A0 9B 01 03)
-           (#Y(#:|787 875 (DEFSTATE "glide-in" :SLOTS ...)-35-3-1-1|
+           (#Y(#:|822 910 (DEFSTATE "glide-in" :SLOTS ...)-35-3-1-1|
                #78Y(00 00 00 00 01 00 00 00 C0 1C 00 00 00 00 DA 6B 01 AF 6F 02
                     33 02 15 AD 6F 02 DD 90 01 31 25 DD DD E2 B0 6F 02 73 02 35
                     E3 73 01 38 E4 B1 6F 0B 72 9F 73 02 37 73 01 33 73 02 37 73
                     01 36 AC AF 30 07 19 03 DE AE 30 05 E0 AE 30 07 19 02)
-               (#Y(#:|787 875 (DEFSTATE "glide-in" :SLOTS ...)-35-3-1-1-1|
+               (#Y(#:|822 910 (DEFSTATE "glide-in" :SLOTS ...)-35-3-1-1-1|
                    #35Y(00 00 00 00 02 00 00 00 01 18 AF 31 8E DA B0 38 02 31
                         8B AE B0 31 86 DB B0 38 02 31 8B AF 31 8E 9E 19 04)
                    ("** fp: " " **~&*")
@@ -1960,9 +1958,9 @@ In this function the new foot pos is affected by the new velocity instead of the
     #(1. 0. |COMMON-LISP|::|T| |COMMON-LISP|::|T| |COMMON-LISP|::|NIL|
       |COMMON-LISP|::|NIL|)
     |KIENEMAN|::|ANIMATE|
-    #Y(#:|787 875 (DEFSTATE "glide-in" :SLOTS ...)-35-4|
+    #Y(#:|822 910 (DEFSTATE "glide-in" :SLOTS ...)-35-4|
        #15Y(00 00 00 00 01 00 00 00 00 02 DA C6 5D 19 02)
-       (#Y(#:|787 875 (DEFSTATE "glide-in" :SLOTS ...)-35-4-1|
+       (#Y(#:|822 910 (DEFSTATE "glide-in" :SLOTS ...)-35-4-1|
            #27Y(00 00 00 00 01 00 00 00 00 02 AD 2F 00 AD 6F 01 DC AF 6F 03 73
                 02 37 30 04 19 02)
            (|KIENEMAN|::|PARENT| |KIENEMAN|::|ANIMATION| 0.016666668f0
@@ -1974,7 +1972,7 @@ In this function the new foot pos is affected by the new velocity instead of the
     #(1. 0. |COMMON-LISP|::|NIL| |COMMON-LISP|::|NIL| |COMMON-LISP|::|NIL|
       |COMMON-LISP|::|NIL|))
    (|COMMON-LISP|::|T| |COMMON-LISP|::|T| |COMMON-LISP|::|T|))
-#Y(#:|877 939 (DEFSTATE "glide-out" :ALT-NAME ...)-36|
+#Y(#:|912 974 (DEFSTATE "glide-out" :ALT-NAME ...)-36|
    #247Y(00 00 00 00 00 00 00 00 00 01 DA DB DC 32 89 DA DD DE 32 89 6B 05 99
          06 DA E1 E2 E3 E4 E5 7B 04 E6 E7 E8 E9 EA EB EC 7B 06 E7 ED EE EF F0
          F1 F2 F3 7B 08 E7 F4 EE F5 F0 F6 F2 F7 7B 08 E7 65 1E EE 65 1F F0 65
@@ -2011,9 +2009,9 @@ In this function the new foot pos is affected by the new velocity instead of the
     :|DIRECT-DEFAULT-INITARGS| :|DOCUMENTATION| :|GENERIC-ACCESSORS|
     |KIENEMAN|::|MAIN-ACTION| |SYSTEM|::|TRACED-DEFINITION|
     |SYSTEM|::|UNTRACE1|
-    #Y(#:|877 939 (DEFSTATE "glide-out" :ALT-NAME ...)-36-1|
+    #Y(#:|912 974 (DEFSTATE "glide-out" :ALT-NAME ...)-36-1|
        #15Y(00 00 00 00 01 00 00 00 00 02 DA C6 5D 19 02)
-       (#Y(#:|877 939 (DEFSTATE "glide-out" :ALT-NAME ...)-36-1-1|
+       (#Y(#:|912 974 (DEFSTATE "glide-out" :ALT-NAME ...)-36-1-1|
            #357Y(00 00 00 00 01 00 00 00 00 02 AD 2F 00 AD 6F 01 8F 94 80 58 2E
                  03 14 AE 6F 01 72 9F AF 6F 04 AD 73 02 35 AC B1 30 05 16 02 AE
                  6F 01 2F 06 AC 89 07 80 85 AE 6F 01 8E 93 38 AE CD 74 73 00 36
@@ -2072,7 +2070,7 @@ In this function the new foot pos is affected by the new velocity instead of the
             |KIENEMAN|::|KEY-BUFFER| :|RELEASED| :|OTHERS|
             |KIENEMAN|::|SET-TAPPEDF| :|A2| :|DODGE| :|CANCEL|
             |KIENEMAN|::|MAX-FOOT-POS|
-            #Y(#:|877 939 (DEFSTATE "glide-out" :ALT-NAME ...)-36-1-1-1|
+            #Y(#:|912 974 (DEFSTATE "glide-out" :ALT-NAME ...)-36-1-1-1|
                #22Y(00 00 00 00 01 00 00 00 01 17 DA AF 38 02 31 8B AE 31 8E 9E
                     19 03)
                ("Min leg pos reached.")
@@ -2080,12 +2078,12 @@ In this function the new foot pos is affected by the new velocity instead of the
             |COMMON-LISP|::|*STANDARD-OUTPUT*| |KIENEMAN|::|HIGH-STRIDE|
             :|PARENT| :|VEL| :|FOOT-POS| :|KEY-BUFFER| |CLOS|::|MAKE-INSTANCE|
             |KIENEMAN|::|*FIGHTER*| |KIENEMAN|::|CHANGE-STATE|
-            #Y(#:|877 939 (DEFSTATE "glide-out" :ALT-NAME ...)-36-1-1-2|
+            #Y(#:|912 974 (DEFSTATE "glide-out" :ALT-NAME ...)-36-1-1-2|
                #25Y(00 00 00 00 01 00 00 00 01 17 AE 31 8E DA AF 38 02 31 8B AE
                     31 8E 9E 19 03)
                ("**************************")
                (|COMMON-LISP|::|T| |COMMON-LISP|::|T| |COMMON-LISP|::|T|))
-            #Y(#:|877 939 (DEFSTATE "glide-out" :ALT-NAME ...)-36-1-1-3|
+            #Y(#:|912 974 (DEFSTATE "glide-out" :ALT-NAME ...)-36-1-1-3|
                #56Y(00 00 00 00 04 00 00 00 01 1A B1 31 8E DA B2 38 02 31 8B B0
                     B2 31 86 DB B2 38 02 31 8B AF B2 31 86 DC B2 31 8A B1 31 8E
                     DD B2 38 02 31 8B AE B2 31 86 B1 31 8E 9E 19 06)
@@ -2099,10 +2097,10 @@ In this function the new foot pos is affected by the new velocity instead of the
     #(1. 0. |COMMON-LISP|::|NIL| |COMMON-LISP|::|NIL| |COMMON-LISP|::|NIL|
       |COMMON-LISP|::|NIL|)
     :|SPECIALIZERS| |CLOS|::|DO-DEFMETHOD| |KIENEMAN|::|PRINT-STATE|
-    #Y(#:|877 939 (DEFSTATE "glide-out" :ALT-NAME ...)-36-2|
+    #Y(#:|912 974 (DEFSTATE "glide-out" :ALT-NAME ...)-36-2|
        #25Y(00 00 00 00 01 00 00 00 00 02 00 2B 01 7F 02 00 00 AC 6D 00 01 C6
             5D 19 03)
-       (#Y(#:|877 939 (DEFSTATE "glide-out" :ALT-NAME ...)-36-2-1|
+       (#Y(#:|912 974 (DEFSTATE "glide-out" :ALT-NAME ...)-36-2-1|
            #242Y(00 00 00 00 02 00 00 00 00 03 AD 2F 01 38 02 72 76 93 03 04 14
                  AF 36 01 14 AF 6F 01 B0 6F 03 B1 6F 04 B2 6F 05 B3 6F 03 B4 6F
                  04 B5 6F 06 B6 6F 07 B7 6F 08 B8 6F 09 B9 6F 0A BA 6F 0B BB 6F
@@ -2131,9 +2129,9 @@ In this function the new foot pos is affected by the new velocity instead of the
     #(1. 0. |COMMON-LISP|::|NIL| |COMMON-LISP|::|NIL| |COMMON-LISP|::|NIL|
       |COMMON-LISP|::|NIL|)
     |KIENEMAN|::|ANIMATE|
-    #Y(#:|877 939 (DEFSTATE "glide-out" :ALT-NAME ...)-36-3|
+    #Y(#:|912 974 (DEFSTATE "glide-out" :ALT-NAME ...)-36-3|
        #15Y(00 00 00 00 01 00 00 00 00 02 DA C6 5D 19 02)
-       (#Y(#:|877 939 (DEFSTATE "glide-out" :ALT-NAME ...)-36-3-1|
+       (#Y(#:|912 974 (DEFSTATE "glide-out" :ALT-NAME ...)-36-3-1|
            #27Y(00 00 00 00 01 00 00 00 00 02 AD 2F 00 AD 6F 01 DC AF 6F 03 73
                 02 37 30 04 19 02)
            (|KIENEMAN|::|PARENT| |KIENEMAN|::|ANIMATION| 0.016666668f0
@@ -2145,7 +2143,7 @@ In this function the new foot pos is affected by the new velocity instead of the
     #(1. 0. |COMMON-LISP|::|NIL| |COMMON-LISP|::|NIL| |COMMON-LISP|::|NIL|
       |COMMON-LISP|::|NIL|))
    (|COMMON-LISP|::|T| |COMMON-LISP|::|T| |COMMON-LISP|::|T|))
-#Y(#:|942 960 (DEFSTATE "sidestep" :FUNCS ...)-37|
+#Y(#:|977 995 (DEFSTATE "sidestep" :FUNCS ...)-37|
    #213Y(00 00 00 00 00 00 00 00 00 01 DA DB DC 32 89 DA DD DE 32 89 6B 05 99
          06 DA E1 E2 E3 E4 E5 7B 04 E6 E7 E8 E9 EA EB EC 7B 06 E7 ED EE EF F0
          F1 F2 F3 E9 F4 EB F4 6F 1B 7B 0C 7B 02 F6 B3 F7 65 1E 63 65 1F 63 65
@@ -2175,9 +2173,9 @@ In this function the new foot pos is affected by the new velocity instead of the
     (:|FIXED-SLOT-LOCATIONS| |COMMON-LISP|::|NIL|) :|DIRECT-DEFAULT-INITARGS|
     :|DOCUMENTATION| :|GENERIC-ACCESSORS| |KIENEMAN|::|MAIN-ACTION|
     |SYSTEM|::|TRACED-DEFINITION| |SYSTEM|::|UNTRACE1|
-    #Y(#:|942 960 (DEFSTATE "sidestep" :FUNCS ...)-37-1|
+    #Y(#:|977 995 (DEFSTATE "sidestep" :FUNCS ...)-37-1|
        #15Y(00 00 00 00 01 00 00 00 00 02 DA C6 5D 19 02)
-       (#Y(#:|942 960 (DEFSTATE "sidestep" :FUNCS ...)-37-1-1|
+       (#Y(#:|977 995 (DEFSTATE "sidestep" :FUNCS ...)-37-1-1|
            #48Y(00 00 00 00 01 00 00 00 00 02 AD 2F 00 AD C6 74 2F 02 AD 6F 03
                 DE 33 01 32 1F 13 DF E0 AF 6F 00 E1 B1 6F 08 6E 05 09 6B 0A AD
                 30 0B 19 03 19 02)
@@ -2199,10 +2197,10 @@ In this function the new foot pos is affected by the new velocity instead of the
     #(1. 0. |COMMON-LISP|::|NIL| |COMMON-LISP|::|NIL| |COMMON-LISP|::|NIL|
       |COMMON-LISP|::|NIL|)
     :|SPECIALIZERS| |CLOS|::|DO-DEFMETHOD| |KIENEMAN|::|PRINT-STATE|
-    #Y(#:|942 960 (DEFSTATE "sidestep" :FUNCS ...)-37-2|
+    #Y(#:|977 995 (DEFSTATE "sidestep" :FUNCS ...)-37-2|
        #25Y(00 00 00 00 01 00 00 00 00 02 00 2B 01 7F 02 00 00 AC 6D 00 01 C6
             5D 19 03)
-       (#Y(#:|942 960 (DEFSTATE "sidestep" :FUNCS ...)-37-2-1|
+       (#Y(#:|977 995 (DEFSTATE "sidestep" :FUNCS ...)-37-2-1|
            #242Y(00 00 00 00 02 00 00 00 00 03 AD 2F 01 38 02 72 76 93 03 04 14
                  AF 36 01 14 AF 6F 01 B0 6F 03 B1 6F 04 B2 6F 05 B3 6F 03 B4 6F
                  04 B5 6F 06 B6 6F 07 B7 6F 08 B8 6F 09 B9 6F 0A BA 6F 0B BB 6F
@@ -2232,9 +2230,9 @@ In this function the new foot pos is affected by the new velocity instead of the
     #(1. 0. |COMMON-LISP|::|NIL| |COMMON-LISP|::|NIL| |COMMON-LISP|::|NIL|
       |COMMON-LISP|::|NIL|)
     |KIENEMAN|::|SIDE-SPD|
-    #Y(#:|942 960 (DEFSTATE "sidestep" :FUNCS ...)-37-3|
+    #Y(#:|977 995 (DEFSTATE "sidestep" :FUNCS ...)-37-3|
        #15Y(00 00 00 00 01 00 00 00 00 02 DA C6 5D 19 02)
-       (#Y(#:|942 960 (DEFSTATE "sidestep" :FUNCS ...)-37-3-1|
+       (#Y(#:|977 995 (DEFSTATE "sidestep" :FUNCS ...)-37-3-1|
            #16Y(00 00 00 00 01 00 00 00 00 02 AD 2F 00 C6 19 02)
            (|KIENEMAN|::|PARENT| 2.0f0)
            (|COMMON-LISP|::|T| |COMMON-LISP|::|T| |COMMON-LISP|::|T|))
@@ -2244,7 +2242,7 @@ In this function the new foot pos is affected by the new velocity instead of the
     #(1. 0. |COMMON-LISP|::|NIL| |COMMON-LISP|::|NIL| |COMMON-LISP|::|NIL|
       |COMMON-LISP|::|NIL|))
    (|COMMON-LISP|::|T| |COMMON-LISP|::|T| |COMMON-LISP|::|T|))
-#Y(#:|963 993 (DEFSTATE "backflip" :CONSTANTS ...)-38|
+#Y(#:|998 1028 (DEFSTATE "backflip" :CONSTANTS ...)-38|
    #226Y(00 00 00 00 00 00 00 00 00 01 DA DB DC 32 89 DA DD DE 32 89 6B 05 99
          06 DA E1 E2 E3 E4 E5 7B 04 E6 E7 E8 E9 EA EB EC 7B 06 7B 01 ED B3 EE
          EF 63 F0 63 F1 64 7B 06 33 02 22 37 07 16 01 DA 38 02 32 2A F2 F3 38
@@ -2272,10 +2270,10 @@ In this function the new foot pos is affected by the new velocity instead of the
     :|DIRECT-DEFAULT-INITARGS| :|DOCUMENTATION| :|GENERIC-ACCESSORS|
     |KIENEMAN|::|MAIN-ACTION| |SYSTEM|::|TRACED-DEFINITION|
     |SYSTEM|::|UNTRACE1|
-    #Y(#:|963 993 (DEFSTATE "backflip" :CONSTANTS ...)-38-1|
+    #Y(#:|998 1028 (DEFSTATE "backflip" :CONSTANTS ...)-38-1|
        #19Y(00 00 00 00 01 00 00 00 00 02 2A 14 6D 01 01 C7 5D 19 02)
        (|COMMON-LISP|::|NIL|
-        #Y(#:|963 993 (DEFSTATE "backflip" :CONSTANTS ...)-38-1-1|
+        #Y(#:|998 1028 (DEFSTATE "backflip" :CONSTANTS ...)-38-1-1|
            #56Y(00 00 00 00 01 00 00 00 00 02 AD 2F 01 AD 6F 02 DD 91 01 32 0B
                 AD 6F 02 DE 91 01 31 03 DF 2F 06 AD 6F 02 CC 5A 1F 0F E2 E3 AF
                 6F 01 6E 03 0A 6B 0B AD 30 0C 19 03 19 02)
@@ -2290,10 +2288,10 @@ In this function the new foot pos is affected by the new velocity instead of the
     #(1. 0. |COMMON-LISP|::|NIL| |COMMON-LISP|::|NIL| |COMMON-LISP|::|NIL|
       |COMMON-LISP|::|NIL|)
     :|SPECIALIZERS| |CLOS|::|DO-DEFMETHOD| |KIENEMAN|::|PRINT-STATE|
-    #Y(#:|963 993 (DEFSTATE "backflip" :CONSTANTS ...)-38-2|
+    #Y(#:|998 1028 (DEFSTATE "backflip" :CONSTANTS ...)-38-2|
        #25Y(00 00 00 00 01 00 00 00 00 02 00 2B 01 7F 02 00 00 AC 6D 00 01 C6
             5D 19 03)
-       (#Y(#:|963 993 (DEFSTATE "backflip" :CONSTANTS ...)-38-2-1|
+       (#Y(#:|998 1028 (DEFSTATE "backflip" :CONSTANTS ...)-38-2-1|
            #176Y(00 00 00 00 02 00 00 00 00 03 AD 2F 01 38 02 72 76 93 03 04 14
                  AF 36 01 14 AF 6F 01 B0 6F 03 B1 6F 04 B2 6F 05 B3 6F 03 B4 6F
                  04 B5 6F 06 B6 6F 07 B7 6F 08 B8 6F 09 B6 B8 31 86 B7 31 8E E4
@@ -2317,11 +2315,11 @@ In this function the new foot pos is affected by the new velocity instead of the
     #(1. 0. |COMMON-LISP|::|NIL| |COMMON-LISP|::|NIL| |COMMON-LISP|::|NIL|
       |COMMON-LISP|::|NIL|)
     |CLOS|::|INITIALIZE-INSTANCE|
-    #Y(#:|963 993 (DEFSTATE "backflip" :CONSTANTS ...)-38-3|
+    #Y(#:|998 1028 (DEFSTATE "backflip" :CONSTANTS ...)-38-3|
        #15Y(00 00 00 00 01 00 00 00 00 02 DA C6 5D 19 02)
-       (#Y(#:|963 993 (DEFSTATE "backflip" :CONSTANTS ...)-38-3-1|
+       (#Y(#:|998 1028 (DEFSTATE "backflip" :CONSTANTS ...)-38-3-1|
            #16Y(00 00 00 00 01 00 00 00 01 17 DA AF A0 9B 01 03)
-           (#Y(#:|963 993 (DEFSTATE "backflip" :CONSTANTS ...)-38-3-1-1|
+           (#Y(#:|998 1028 (DEFSTATE "backflip" :CONSTANTS ...)-38-3-1-1|
                #29Y(00 00 00 00 01 00 00 00 C0 1C 00 00 00 00 DA DB DC DD 6E 03
                     04 7B 02 AC AF 30 05 19 03)
                (:|ANIM| |KIENEMAN|::|SINGLE-ANIMATION| :|NAME| "backflip"
@@ -2335,11 +2333,11 @@ In this function the new foot pos is affected by the new velocity instead of the
     #(1. 0. |COMMON-LISP|::|T| |COMMON-LISP|::|T| |COMMON-LISP|::|NIL|
       |COMMON-LISP|::|NIL|)
     |KIENEMAN|::|Y|
-    #Y(#:|963 993 (DEFSTATE "backflip" :CONSTANTS ...)-38-4|
+    #Y(#:|998 1028 (DEFSTATE "backflip" :CONSTANTS ...)-38-4|
        #25Y(00 00 00 00 01 00 00 00 00 02 2A 2B 01 7F 02 00 00 AC 6D 01 01 C7
             5D 19 03)
        (|COMMON-LISP|::|NIL|
-        #Y(#:|963 993 (DEFSTATE "backflip" :CONSTANTS ...)-38-4-1|
+        #Y(#:|998 1028 (DEFSTATE "backflip" :CONSTANTS ...)-38-4-1|
            #74Y(00 00 00 00 02 00 00 00 00 03 AD 2F 01 AD 6F 02 DD 91 01 32 08
                 AD 6F 02 DE 90 01 31 11 92 02 24 69 00 01 AE 30 05 19 03 14 AE
                 36 01 1B 09 92 02 77 69 00 01 AE 30 05 14 E0 AF 6F 07 73 02 37
@@ -2353,7 +2351,7 @@ In this function the new foot pos is affected by the new velocity instead of the
     #(1. 0. |COMMON-LISP|::|NIL| |COMMON-LISP|::|NIL| |COMMON-LISP|::|NIL|
       |COMMON-LISP|::|NIL|))
    (|COMMON-LISP|::|T| |COMMON-LISP|::|T| |COMMON-LISP|::|T|))
-#Y(#:|996 1019 (DEFSTATE "duck" :FUNCS ...)-39|
+#Y(#:|1031 1054 (DEFSTATE "duck" :FUNCS ...)-39|
    #220Y(00 00 00 00 00 00 00 00 00 01 DA DB DC 32 89 DA DD DE 32 89 6B 05 99
          06 DA E1 E2 E3 E4 E5 7B 04 E6 E7 E8 E9 EA EB EC 7B 06 7B 01 ED B3 EE
          EF 63 F0 63 F1 64 7B 06 33 02 22 37 07 16 01 DA 38 02 32 2A F2 F3 38
@@ -2380,9 +2378,9 @@ In this function the new foot pos is affected by the new velocity instead of the
     :|DIRECT-DEFAULT-INITARGS| :|DOCUMENTATION| :|GENERIC-ACCESSORS|
     |KIENEMAN|::|MAIN-ACTION| |SYSTEM|::|TRACED-DEFINITION|
     |SYSTEM|::|UNTRACE1|
-    #Y(#:|996 1019 (DEFSTATE "duck" :FUNCS ...)-39-1|
+    #Y(#:|1031 1054 (DEFSTATE "duck" :FUNCS ...)-39-1|
        #15Y(00 00 00 00 01 00 00 00 00 02 DA C6 5D 19 02)
-       (#Y(#:|996 1019 (DEFSTATE "duck" :FUNCS ...)-39-1-1|
+       (#Y(#:|1031 1054 (DEFSTATE "duck" :FUNCS ...)-39-1-1|
            #60Y(00 00 00 00 01 00 00 00 00 02 AD 2F 00 DB AE 6F 02 91 01 2D 09
                 AD C8 34 1D 04 DE AE 30 05 AD 6F 02 E0 33 01 2D 1F 13 E1 E2 AF
                 6F 00 E3 B1 6F 0A 6E 05 0B 6B 0C AD 30 0D 19 03 19 02)
@@ -2403,10 +2401,10 @@ In this function the new foot pos is affected by the new velocity instead of the
     #(1. 0. |COMMON-LISP|::|NIL| |COMMON-LISP|::|NIL| |COMMON-LISP|::|NIL|
       |COMMON-LISP|::|NIL|)
     :|SPECIALIZERS| |CLOS|::|DO-DEFMETHOD| |KIENEMAN|::|PRINT-STATE|
-    #Y(#:|996 1019 (DEFSTATE "duck" :FUNCS ...)-39-2|
+    #Y(#:|1031 1054 (DEFSTATE "duck" :FUNCS ...)-39-2|
        #25Y(00 00 00 00 01 00 00 00 00 02 00 2B 01 7F 02 00 00 AC 6D 00 01 C6
             5D 19 03)
-       (#Y(#:|996 1019 (DEFSTATE "duck" :FUNCS ...)-39-2-1|
+       (#Y(#:|1031 1054 (DEFSTATE "duck" :FUNCS ...)-39-2-1|
            #228Y(00 00 00 00 02 00 00 00 00 03 AD 2F 01 38 02 72 76 93 03 04 14
                  AF 36 01 14 AF 6F 01 B0 6F 03 B1 6F 04 B2 6F 05 B3 6F 03 B4 6F
                  04 B5 6F 06 B6 6F 07 B7 6F 08 B8 6F 09 B9 6F 0A BA 6F 0B BB 6F
@@ -2434,10 +2432,10 @@ In this function the new foot pos is affected by the new velocity instead of the
     #(1. 0. |COMMON-LISP|::|NIL| |COMMON-LISP|::|NIL| |COMMON-LISP|::|NIL|
       |COMMON-LISP|::|NIL|)
     |KIENEMAN|::|HEIGHT|
-    #Y(#:|996 1019 (DEFSTATE "duck" :FUNCS ...)-39-3|
+    #Y(#:|1031 1054 (DEFSTATE "duck" :FUNCS ...)-39-3|
        #25Y(00 00 00 00 01 00 00 00 00 02 00 2B 01 7F 02 00 00 AC 6D 00 01 C6
             5D 19 03)
-       (#Y(#:|996 1019 (DEFSTATE "duck" :FUNCS ...)-39-3-1|
+       (#Y(#:|1031 1054 (DEFSTATE "duck" :FUNCS ...)-39-3-1|
            #68Y(00 00 00 00 02 00 00 00 00 03 AD 2F 01 AD 6F 02 DD 91 01 30 08
                 AD 6F 02 DE 90 01 2F 11 92 02 1E 69 00 01 AE 30 06 19 03 14 AF
                 36 01 1B 0A DF 92 03 76 69 00 01 AF 30 06 14 33 02 35 19 03 14
@@ -2451,10 +2449,10 @@ In this function the new foot pos is affected by the new velocity instead of the
     #(1. 0. |COMMON-LISP|::|NIL| |COMMON-LISP|::|NIL| |COMMON-LISP|::|NIL|
       |COMMON-LISP|::|NIL|)
     |KIENEMAN|::|ANIMATE|
-    #Y(#:|996 1019 (DEFSTATE "duck" :FUNCS ...)-39-4|
+    #Y(#:|1031 1054 (DEFSTATE "duck" :FUNCS ...)-39-4|
        #25Y(00 00 00 00 01 00 00 00 00 02 00 2B 01 7F 02 00 00 AC 6D 00 01 C6
             5D 19 03)
-       (#Y(#:|996 1019 (DEFSTATE "duck" :FUNCS ...)-39-4-1|
+       (#Y(#:|1031 1054 (DEFSTATE "duck" :FUNCS ...)-39-4-1|
            #38Y(00 00 00 00 02 00 00 00 00 03 AD 2F 01 93 02 04 14 AE 36 01 AD
                 6F 03 DE AF 6F 05 73 02 37 38 01 72 AF 30 06 19 03)
            (|COMMON-LISP|::|NIL| |KIENEMAN|::|PARENT| |CLOS|::|%NO-NEXT-METHOD|

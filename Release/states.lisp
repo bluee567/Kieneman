@@ -215,6 +215,41 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; High Block Stun
 
+#|
+(defstate "high-block-stun"
+
+	:supers
+	(high-block)
+	
+	:slots
+	((duration)
+   (kb-direction);;KB stands for knockback
+   (kb-speed)
+   (decceleration))
+   
+   :main-action
+   ((decf duration)
+     (let ((prev-speed kb-speed))
+      (decf-to kb-speed 0.0 decceleration)
+      (move-forward (/ (+ prev-speed kb-speed) -2.0)))
+     
+
+     (when (get-released :a1)
+       (set-untapped :a1))
+     (when (get-released :a2)
+       (set-untapped :a2))
+     (when (get-tapped :down)
+       (set-tapped :down))
+     (when (get-pressed :defense)
+       (set-tapped nil))
+      
+     (cond
+      ((<= duration 0)
+       ;;Add key-buffer transition to idle
+       (if (and (get-held :defense) (get-tapped nil))
+	   (switch-to-state 'high-block :key-buffer key-buffer)
+	 (switch-to-state 'idle :key-buffer key-buffer))))))|#
+
 (defclass+ high-block-stun (high-block)
   ((:ia time-pos
 	:initform 0)
@@ -223,10 +258,10 @@
    (:iea kb-speed)
    (:iea decceleration)))
 
-(defmethod main-action ((high-block-stun high-block-stun))    
+(defmethod main-action ((state high-block-stun))
     (with-accessors
      ((time-pos time-pos) (duration duration) (kb-speed kb-speed)
-      (kb-direction kb-direction) (decceleration decceleration) (key-buffer key-buffer)) high-block-stun
+      (kb-direction kb-direction) (decceleration decceleration) (key-buffer key-buffer)) state
      (incf time-pos)
      (decf duration)
      (let ((prev-speed kb-speed))

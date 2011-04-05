@@ -69,12 +69,13 @@
 (defclass+ rec-attack-box (attack-box default-hitbox)
   ())
 
+  #|
 (defmethod initialize-instance :after ((box rec-attack-box) &key)
   (with-accessors ((parent-state parent-state) (display display)) box
     (with-accessors((parent parent)) parent-state
      (push parent (hit-objects box))
      (setf display (make-hit-rectangle (x box) (+ (y box) (/ (height box) 2)) (width box) (height box) "red" *mgr*)))))
-
+|#
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;; rec-strike-box
@@ -140,7 +141,7 @@
 
       ((and (> tpos 3) (not grabbed-entity))
        (when (not (get-held :a1))
-	 (switch-to-state 'idle)))
+		(switch-to-state 'idle)))
 
       ((and (> tpos 3) grabbed-entity)
        (when (get-pressed (direction-symbol))

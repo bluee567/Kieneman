@@ -279,12 +279,13 @@ in order to form the multibox.")))
 		    (set-scale display-node width height 1.0))))
 			
 (defun dbox-cleanup (box)
-	(destroy-entity *mgr* (display box)))
+	(destroy-entity *mgr* (display box))
+	(setf (display box) nil))
 
-(defmethod kill ((box displayed-box))
-  (when (alive box)
-    (destroy-entity *mgr* (display box)))
-  (call-next-method))
+(defmethod kill :after ((box displayed-box))
+  (when (display box)
+    (destroy-entity *mgr* (display box))
+	(setf (display box) nil)))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
