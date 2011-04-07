@@ -1,19 +1,6 @@
 (in-package "KIENEMAN")
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;; Constants
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
-(defconstant right 1)
-(defconstant left -1)
-(defconstant up 1)
-(defconstant down -1)
-(defconstant open 1)
-(defconstant closed -1)
-(defconstant positive 1)
-(defconstant negative -1)
-
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;; Actions
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -151,6 +138,14 @@ current position."
 		  (with-accessors ((tx x)) (target fighter)
 		   (if (> x tx)
 		       left right))))
+
+;;This pair of methods will redirect any call to 'direction'
+;;to the parent of that object, until the parent happens to be a fighter.			 
+(defmethod direction (obj)
+  (direction (parent obj)))
+  
+(defmethod direction ((obj fighter))
+  (get-direction obj))
 
 (defun direction-to-symbol (dir)
   (if (= dir 1)

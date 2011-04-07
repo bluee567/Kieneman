@@ -194,7 +194,7 @@ by anim-name. Returns a pointer to the animation state."
  
 (def-call-out destroy-manual-object
 	(:name "destroy_manual_object")
-	(:arguments (mo manual-object)))
+	(:arguments (sm scene-manager) (mo manual-object)))
 
 ;Light
 

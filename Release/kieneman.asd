@@ -6,7 +6,8 @@
 	       (:file "KienemanMain"
 		      :depends-on ("Kieneman" "misc-macros" "defclass+" "ffitypes" "input" "mortal" "hitboxes"))
 	       (:file "run-kieneman"
-		      :depends-on ("Kieneman" "KienemanMain" "ffiOgreNode" "CreateFighterObjs"))
+		      :depends-on ("Kieneman" "KienemanMain" "ffiOgreNode" "CreateFighterObjs"
+			  ))
 	       (:file "misc-macros"
 		      :depends-on ("Kieneman"))
 	       
@@ -46,6 +47,7 @@
 		      :depends-on ("Kieneman" "state-init" "state-transitions" "hitboxes"))
 
 	       (:file "CreateFighterObjs"
-		      :depends-on ("Kieneman" "KienemanMain" "attacks" "input")))
+		      :depends-on ("Kieneman" "KienemanMain" "attacks" "input"))
+			)
   
   :depends-on ("cl-store" "premutations" "infix"))

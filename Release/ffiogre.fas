@@ -389,7 +389,8 @@ by anim-name. Returns a pointer to the animation state."))
         07 E0 2F 07 E0 AD 32 83 CB 19 02)
    (#1="destroy_manual_object"
     #2=((:|NAME| #1#)
-        (:|ARGUMENTS| (|KIENEMAN|::|MO| |KIENEMAN|::|MANUAL-OBJECT|)))
+        (:|ARGUMENTS| (|KIENEMAN|::|SM| |KIENEMAN|::|SCENE-MANAGER|)
+         (|KIENEMAN|::|MO| |KIENEMAN|::|MANUAL-OBJECT|)))
     (|FFI|::|DEF-CALL-OUT| |KIENEMAN|::|DESTROY-MANUAL-OBJECT| . #2#)
     |FFI|::|PARSE-C-FUNCTION| |FFI|::|*FOREIGN-LIBRARY*|
     |FFI|::|FIND-FOREIGN-FUNCTION| |KIENEMAN|::|DESTROY-MANUAL-OBJECT|

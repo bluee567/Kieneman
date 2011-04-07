@@ -33,11 +33,21 @@ left and right)."))
   ((:iea x)
    (:iea y)))
    
+(defclass+ child-vector (2d-vector)
+  ((:iea parent)))
+
+(defmethod x ((v child-vector))
+  (+ (* (direction (parent v)) (slot-value v 'x)) (x (parent v))))
+
+(defmethod y ((v child-vector))
+  (+ (slot-value v 'y) (y (parent v))))
+   
 (defun vector2 (ax ay)
    (make-instance '2d-vector
    :x ax :y ay))
    
  (defmethod print-object ((2d-vector 2d-vector) stream)
+	(call-next-method)
   (format stream "[x: ~a y: ~a]" (x 2d-vector) (y 2d-vector)))
 
 ;;
@@ -179,13 +189,21 @@ in order to form the multibox.")))
 	(;A list of 2d-vectors.
 	(:ia point-list)))
 	
-(defclass+ displayed-tribox (triangular-hitbox)
+(defclass+ displayed-tribox (triangular-hitbox 2d-vector)
   ((:ia display)))
+
+(defmethod initialize-instance :after ((box displayed-tribox) &key scalar-list)
+  (with-accessors ((display display) (point-list point-list)) box
+  (destructuring-bind (x1 y1 x2 y2 x3 y3) scalar-list
+	(setf point-list (list (make-instance 'child-vector :x x1 :y y1 :parent box)
+					(make-instance 'child-vector :x x2 :y y2 :parent box)
+					(make-instance 'child-vector :x x3 :y y3 :parent box)))
+    (setf display (make-hit-triangle x1 y1 x2 y2 x3 y3 (material-name box) *mgr*)))))
   
 (defun make-displayed-tribox (scalar-list material-name &optional (class 'displayed-tribox))
-	(destructuring-bind (x1 y1 x2 y2 x3 y3) scalar-list 
+	(destructuring-bind (x1 y1 x2 y2 x3 y3) scalar-list
 	(make-instance class
-		:point-list (list (vector2d x1 y1) (vector2d x2 y2) (vector2d x3 y3))
+		:point-list (list (vector2 x1 y1) (vector2 x2 y2) (vector2 x3 y3))
 		:display (make-hit-triangle x1 y1 x2 y2 x3 y3 material-name *mgr*))))
   
 (defmethod animate :after ((obj displayed-tribox))
@@ -238,7 +256,7 @@ in order to form the multibox.")))
 			(triangle-collision (point-list t1) (list tr bl br))))))
 		
 	(defmethod collision ((r1 rectangular-hitbox) (t1 triangular-hitbox))
-		(triangle-collision t1 r1))
+		(collision t1 r1))
 		
 	(defun t-collision-example (a1x a1y a2x a2y a3x a3y  b1x b1y b2x b2y b3x b3y)
 				(triangle-collision
@@ -284,8 +302,7 @@ in order to form the multibox.")))
 
 (defmethod kill :after ((box displayed-box))
   (when (display box)
-    (destroy-entity *mgr* (display box))
-	(setf (display box) nil)))
+    (dbox-cleanup box)))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 

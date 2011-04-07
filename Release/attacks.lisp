@@ -6,17 +6,18 @@
 
 ;;Mixin
 (defclass+ attached-box ()
-  ((:iea parent-state)))
+  ((:iea parent)))
 
 (defmethod x ((box attached-box))
-  (+ (slot-value box 'x) (x (parent (parent-state box)))))
+  (+ (slot-value box 'x) (x (parent (parent box)))))
 
 (defmethod y ((box attached-box))
-  (+ (slot-value box 'y) (y (parent (parent-state box)))))
+  (+ (slot-value box 'y) (y (parent (parent box)))))
+
 
 
 (defun attached-box-v-fighter (ab fighter)
-  (let ((state (parent-state ab)))
+  (let ((state (parent ab)))
     (if (linear-tracking state)
 	t
       (< (side-dist state) (radius fighter)))))
@@ -37,7 +38,7 @@
     :accessor hit-objects)))
 	
 (defmethod initialize-instance :after ((box attack-box) &key)
-  (with-accessors ((parent-state parent-state)) box
+  (with-accessors ((parent-state parent)) box
     (with-accessors((parent parent)) parent-state
      (push parent (hit-objects box)))))
 ;(setf display (make-hit-rectangle (x box) (+ (y box) (/ (height box) 2)) (width box) (height box) "red" *mgr*))
@@ -69,14 +70,6 @@
 (defclass+ rec-attack-box (attack-box default-hitbox)
   ())
 
-  #|
-(defmethod initialize-instance :after ((box rec-attack-box) &key)
-  (with-accessors ((parent-state parent-state) (display display)) box
-    (with-accessors((parent parent)) parent-state
-     (push parent (hit-objects box))
-     (setf display (make-hit-rectangle (x box) (+ (y box) (/ (height box) 2)) (width box) (height box) "red" *mgr*)))))
-|#
-
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;; rec-strike-box
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -101,20 +94,24 @@
 (defmethod handle-collision ((rab strike-box) (state high-block))
      (with-accessors ((fighter parent)) state		
        (change-state fighter (make-block-stun rab fighter))
-       (attack-blocked (parent-state rab) state)))
+       (attack-blocked (parent rab) state)))
 	   
 (defclass+ rec-strike-box (strike-box default-hitbox) ())
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 ;;Leaves the defender a set distance away from the attacker on a hit.
-(defclass+ rec-attack-sdist-box (rec-strike-box)
+(defclass+ attack-sdist-box (strike-box)
   ((:iea hitdist)
    (:ia hit-movement-time)
    (:iea min-hitdist)
    (:iea blockdist)
    (:ia block-movement-time)
    (:iea min-blockdist)))
+
+(defclass+ rec-attack-sdist-box (attack-sdist-box default-hitbox) ())
+
+(defclass+ tri-attack-sdist-box (attack-sdist-box displayed-tribox) ())
 
 (defclass+ unblockable-box (rec-attack-sdist-box)
   ())
@@ -135,7 +132,7 @@
       ((= tpos 3)
        (set-hitbox
 	(make-instance 'grab-hitbox
-		       :parent-state state
+		       :parent state
 		       :x (* (+ 2.0 radius) (get-direction fighter)) :y 30.0
 		       :radius 2.0 :height 25.0)))
 
@@ -171,7 +168,7 @@
 
 (defun grabbing (rab state)
   (with-accessors ((submitter parent)) state	
-    (with-accessors ((parent-state parent-state)) rab
+    (with-accessors ((parent-state parent)) rab
       (setf (grabbed-entity parent-state) submitter)
       (change-state submitter (make-instance 'grabbed
 						:parent submitter
@@ -195,7 +192,7 @@
   (grabbing rab state))
 
 (defmethod handle-collision ((rab grab-hitbox) (state grab))
-  (with-accessors ((parent-state parent-state)) rab		
+  (with-accessors ((parent-state parent)) rab		
     (let ((hitbox-entity (parent parent-state))
 	  (grabbed-entity (grabbed-entity state))
 	  (other-entity (parent state)))
@@ -206,7 +203,7 @@
 
 (defun make-static-dist-rab (&key
 			     (class 'rec-attack-sdist-box)
-			     parent-state
+			     parent
 			     damage
 			     hitstun
 			     hit-movement-time
@@ -225,7 +222,7 @@
     (if (not hit-movement-time) (setf hit-movement-time hitstun))
     (if (not block-movement-time) (setf block-movement-time hitstun))
    (make-instance class
-		  :parent-state parent-state
+		  :parent parent
 		  :damage damage
 		  :hitstun hitstun
 		  :hit-movement-time hit-movement-time
@@ -238,19 +235,54 @@
 		  :x x :Y y
 		  :radius radius :height height)))
 
+		  
+		 ;;HORRIBLE CODE DUPLICATION HERE, REFACTOR.
+(defun make-tri-static-dist-rab (&key
+			     (class 'tri-attack-sdist-box)
+			     parent
+			     damage
+			     hitstun
+			     hit-movement-time
+			     hitdist
+			     (min-hitdist 0)
+			     blockstun
+			     block-movement-time
+			     blockdist
+			     (min-blockdist 0)
+			     scalar-list
+				 x y)
+  (let* ((hit-deccel (/ (* 2 (float hitdist)) (* hitstun hitstun)))
+	 (hit-init-vel (* hit-deccel hitstun))
+	 (block-deccel (/ (* 2 (float blockdist)) (* blockstun blockstun)))
+	 (block-init-vel (* block-deccel blockstun)))
+    (if (not hit-movement-time) (setf hit-movement-time hitstun))
+    (if (not block-movement-time) (setf block-movement-time hitstun))
+   (make-instance class
+		  :parent parent
+		  :damage damage
+		  :hitstun hitstun
+		  :hit-movement-time hit-movement-time
+		  :hitdist hitdist
+		  :min-hitdist min-hitdist
+		  :blockstun blockstun
+		  :block-movement-time block-movement-time
+		  :blockdist blockdist
+		  :min-blockdist min-blockdist
+		  :x x :y y
+		  :scalar-list scalar-list)))
 
 
 (defun make-hitstun (rab fighter)
   (make-instance 'stunned
 		 :duration (hitstun rab)
 		 :parent fighter
-		 :kb-direction (get-direction (parent (parent-state rab)))
+		 :kb-direction (get-direction (parent (parent rab)))
 		 :kb-speed (hitspeed rab)
 		 :decceleration (hitdeccel rab)))
 
 (defun hit-collision (rab state)
   (with-accessors ((fighter parent)) state
-		  (with-accessors ((attack-state parent-state) (hitdist hitdist)
+		  (with-accessors ((attack-state parent) (hitdist hitdist)
 				   (hitstun hitstun) (hitdeccel hitdeccel) (hit-movement-time hit-movement-time)
 				   (hitspeed hitspeed) (min-hitdist min-hitdist)) rab
 				   (with-accessors ((attacker parent)) attack-state
@@ -262,24 +294,24 @@
 						     (setf hitspeed (* hitdeccel hit-movement-time))
 						     (change-state fighter (make-hitstun rab fighter)))))))
 
-(defmethod handle-collision ((rab rec-attack-sdist-box) (state state))
+(defmethod handle-collision ((rab attack-sdist-box) (state state))
   (hit-collision rab state))
 
 (defun make-block-stun (rab fighter)
   (make-instance 'high-block-stun
 		    :duration (blockstun rab)
 			:parent fighter
-		    :kb-direction (get-direction (parent (parent-state rab)))
+		    :kb-direction (get-direction (parent (parent rab)))
 		    :kb-speed (blockspeed rab)
 		    :decceleration (blockdeccel rab)))
 
 
 
-(defmethod handle-collision ((rab rec-attack-sdist-box) (state high-block))
+(defmethod handle-collision ((rab attack-sdist-box) (state high-block))
   (with-accessors
    ((fighter parent)) state
    (with-accessors
-    ((attack-state parent-state) (blockdist blockdist)
+    ((attack-state parent) (blockdist blockdist)
      (blockstun blockstun) (blockdeccel blockdeccel) (block-movement-time block-movement-time)
      (blockspeed blockspeed) (min-blockdist min-blockdist)) rab
      (with-accessors
@@ -290,7 +322,7 @@
 	(setf blockdeccel (/ (* 2 (float actual-dist)) (* block-movement-time block-movement-time)))
 	(setf blockspeed (* blockdeccel block-movement-time))
 	(change-state fighter (make-block-stun rab fighter))
-	(attack-blocked (parent-state rab) state))))))
+	(attack-blocked (parent rab) state))))))
 
 (defmethod handle-collision ((rab unblockable-box) (state high-block))
   (hit-collision rab state))
@@ -338,9 +370,8 @@
 	 (set-tapped :a2 :released t))))
    ;bink
    (case tpos
-     (6 (set-hitbox (;; make-instance 'jab-box
-		     make-static-dist-rab
-				   :parent-state state
+     (6 (set-hitbox (make-tri-static-dist-rab
+				   :parent state
 				   :damage 50
 				   :hitstun 18
 				   :hit-movement-time 14
@@ -350,7 +381,19 @@
 				   :block-movement-time 6
 				   :blockdist 30
 				   :x (* (get-direction fighter) 20.0) :Y 52.0
-				   :radius 5.0 :height 5.0)))
+				   :scalar-list (list -10.0 10.0  -10.0 0.0  10.0 10.0))
+				   #|(make-static-dist-rab
+				   :parent state
+				   :damage 50
+				   :hitstun 18
+				   :hit-movement-time 14
+				   :hitdist 38
+				   :min-hitdist 5
+				   :blockstun 8
+				   :block-movement-time 6
+				   :blockdist 30
+				   :x (* (get-direction fighter) 20.0) :Y 52.0
+				   :radius 5.0 :height 5.0)|#))
      (7 (remove-hitbox ))
      (25 (switch-to-state 'idle :key-buffer key-buffer)))
    
@@ -397,7 +440,7 @@
   :main-action
   ((lcase tpos
 	  (attack-time (set-hitbox (make-static-dist-rab
-			   :parent-state state
+			   :parent state
 			   :damage 70
 			   :hitstun 15
 			   :hitdist 45
@@ -454,7 +497,7 @@
 	  (< (abs vel) 0.15))
      (setf attacked-time tpos)
      (set-hitbox (make-static-dist-rab 
-		  :parent-state state
+		  :parent state
 		  :damage 40
 		  :hitstun 15
 		  :hitdist 45
@@ -520,7 +563,7 @@
    (lcase tpos
      (attack-time (set-hitbox
 	  (make-static-dist-rab
-			 :parent-state state
+			 :parent state
 			 :damage 90
 			 :hitstun 20
 			 :hitdist 48
@@ -642,7 +685,7 @@ is possible from the foot position of the previous state.
 	  ;;Sets the hitbox.
 	  (set-hitbox
 	    (make-instance 'rec-strike-box
-			   :parent-state state
+			   :parent state
 			   :damage base-damage
 			   :hitstun (+ 2 reco-time)
 			   :hitspeed 1.6
@@ -753,7 +796,7 @@ is possible from the foot position of the previous state.
      (decf-to vel 0.0 0.5)
      (set-hitbox
       (make-static-dist-rab
-       :parent-state state
+       :parent state
        :damage 100
        :hitstun 32
        :hitdist 70
@@ -805,7 +848,7 @@ is possible from the foot position of the previous state.
 	  (attack-time
 	   (set-hitbox
 	    (make-static-dist-rab 
-	     :parent-state state
+	     :parent state
 	     :damage 100
 	     :hitstun (- (+ end-time 10) tpos)
 	     :hit-movement-time 25
@@ -878,7 +921,7 @@ is possible from the foot position of the previous state.
 	  (attack-time
 	   (set-hitbox
 	    (make-static-dist-rab 
-	     :parent-state state
+	     :parent state
 	     :damage 160
 	     :hitstun (- (+ 28 end-time) tpos)
 	     :hit-movement-time 25
@@ -969,7 +1012,7 @@ is possible from the foot position of the previous state.
 	  (< (abs vel) 0.15))
      (setf attack-time tpos)
      (set-hitbox (make-static-dist-rab 
-		  :parent-state state
+		  :parent state
 		  :damage 60
 		  :hitstun (- (+ 40 attack-time 2) tpos)
 		  :hit-movement-time 10
@@ -1032,7 +1075,7 @@ is possible from the foot position of the previous state.
 	  (attack-time
 	   (set-hitbox
 	    (make-static-dist-rab 
-	     :parent-state state
+	     :parent state
 	     :damage 60
 	     :hitstun (- end-time tpos)
 	     :hitdist 25
@@ -1085,7 +1128,7 @@ is possible from the foot position of the previous state.
 	  (attack-point (set-hitbox
 			 (make-static-dist-rab
 			  :class 'unblockable-box
-			  :parent-state state
+			  :parent state
 			  :damage 140
 			  :hitstun 40
 			  :hitdist 100
