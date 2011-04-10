@@ -192,13 +192,23 @@ in order to form the multibox.")))
 (defclass+ displayed-tribox (triangular-hitbox 2d-vector)
   ((:ia display)))
 
+ ;;There exist two possible ways to initialise this tribox.
+ ;; 1. Directly pass in a list of premade points in the key :point-list.
+ ;;    This will create a list of vectors which are children of the box.
+ ;; 2. Pass a list containing 6 numbers through the key val :scalar-list.
+ ;; Only one of the two above mentioned key values can be used.
 (defmethod initialize-instance :after ((box displayed-tribox) &key scalar-list)
   (with-accessors ((display display) (point-list point-list)) box
+  (if (slot-boundp box 'point-list) (if scalar-list (error "Both :point-list and :scalar-list were passed as key values to initialize-instance :after.")
+					(destructuring-bind (v1 v2 v3) point-list
+					(setf display (make-hit-triangle (x v1) (y v1) (x v2) (y v2) (x v3) (y v3) (material-name box) *mgr*))))
+  (if scalar-list
   (destructuring-bind (x1 y1 x2 y2 x3 y3) scalar-list
 	(setf point-list (list (make-instance 'child-vector :x x1 :y y1 :parent box)
 					(make-instance 'child-vector :x x2 :y y2 :parent box)
 					(make-instance 'child-vector :x x3 :y y3 :parent box)))
-    (setf display (make-hit-triangle x1 y1 x2 y2 x3 y3 (material-name box) *mgr*)))))
+    (setf display (make-hit-triangle x1 y1 x2 y2 x3 y3 (material-name box) *mgr*)))
+	(error "Neither :point-list nor :scalar-list were passed as key values to initialize-instance :after.")))))
   
 (defun make-displayed-tribox (scalar-list material-name &optional (class 'displayed-tribox))
 	(destructuring-bind (x1 y1 x2 y2 x3 y3) scalar-list
