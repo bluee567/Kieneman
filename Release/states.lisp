@@ -5,6 +5,7 @@
 
 (defconstant *neutral-leg-space* 8.0)
 (defconstant *wide-leg-space* 27.0)
+(defconstant *trigger-radius* 0.75)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -13,12 +14,108 @@
 		   (0.0 (* 0.4 (height fighter)) 0.65 0.4)
 		   (0.0 (* 0.8 (height fighter)) 0.5 0.2)))
 
+(defmacro common-transitions ()
+  `(progn
+     ;; (when (get-pressed :a1)
+;;        (set-tapped :a1))
+     
+;;      (when (get-pressed :a2)
+;;        (set-tapped :a2))
+     
+;;      (when (get-pressed :dodge)
+;;        (set-tapped :dodge))
+     
+;;      (when (get-pressed :cancel)
+;;        (set-tapped :cancel))
+
+;;      (when (or (get-held :a1) (get-held :a2) (get-held :dodge))
+;;        (when (get-pressed :r-right)
+;; 	 (set-tapped :r-right))
+;;        (when (get-pressed :r-left)
+;; 	 (set-tapped :r-left)))
+
+     ;;Copy of the case statement in idle.
+     ;; (format t "~&**ba: ~a ad: ~a**~&" (get-butterfly-angle) (get-axis-dist))
+     (cond
+      ((and (get-pressed :a1))
+       (set-buffered-state (make-state 'jab)))
+      
+      ;;((or (and (get-tapped :a1) (get-held (direction-symbol))) (and (get-tapped (direction-symbol)) (get-held :a1)))
+       ;;(set-buffered-state (make-state 'Kpunch)))
+      
+      ((and (get-pressed :a2) (get-held :feint))
+       (set-buffered-state (make-state 'kick-feint)))
+      
+      ;; ((and (get-held :a2) (get-tapped (opposite-symbol)))
+;;        (set-buffered-state '(forward-hook-kick)))
+      
+      ((and (get-held :a2) ;; (get-tapped (direction-symbol)) (get-held :up)
+	    (region-entered-from-center :min-butterfly (/ (* pi 5) 8) :max-butterfly (/ (* pi 7) 8)
+				:min-axis-dist *trigger-radius*))
+       (set-buffered-state (make-state 'sidekickS)))
+      
+      ((and (get-held :a2) ;; (get-tapped (direction-symbol)) (get-held :down)
+	    (region-entered-from-center :min-butterfly (/ (* pi 1) 8) :max-butterfly (/ (* pi 3) 8)
+				:min-axis-dist *trigger-radius*))
+       (set-buffered-state (make-state 'sidekickW)))
+
+      #|((and (get-pressed :a2) ;; (get-tapped (direction-symbol))
+	    (get-in-region :min-butterfly (/ (* pi 3) 8) :max-butterfly (/ (* pi 5) 8)
+				:min-axis-dist *trigger-radius*))
+       (set-buffered-state (make-state 'sidekickM)))|#
+      
+      ((and (get-held :a2) ;; (get-tapped (direction-symbol))
+	    (region-entered-from-center :min-butterfly (/ (* pi 3) 8) :max-butterfly (/ (* pi 5) 8)
+				:min-axis-dist *trigger-radius*))
+       (set-buffered-state (make-state 'bodykick)))
+      
+      ((or (and (get-held :a2)  
+				    (region-entered-from-center :min-butterfly (/ (* pi 7) 8)
+							     :min-axis-dist *trigger-radius*))
+	   (and (get-pressed :a2) (get-in-region :min-butterfly (/ (* pi 7) 8)
+						     :min-axis-dist *trigger-radius*)))
+       (set-buffered-state (make-state 'roundhouse)))
+      
+      ((and (get-held :a2) (region-entered-from-center :min-butterfly (/ (* pi 3) 8) :max-butterfly (/ (* pi 5) 8)
+				:min-axis-dist *trigger-radius*))
+       (set-buffered-state (make-state 'bodykick)))
+      
+      ((and (get-held :a2) (region-entered-from-center :max-butterfly (/ (* pi 2) 8)
+				:min-axis-dist *trigger-radius*))
+       (set-buffered-state (make-state 'spinning-hook-kick)))
+      
+      ((and (get-held :defense) (get-held :a1))
+       (set-buffered-state (make-state 'grab)))
+      
+      ((and (get-pressed :defense) (get-held :down))
+       (set-buffered-state (make-state 'duck)))
+      
+      ((get-held :defense)
+       (set-buffered-state (make-state 'high-block)))
+
+      ((and (get-held :dodge) (get-tapped :up))
+       (set-buffered-state (make-state 'sidestep)))
+      
+      ;; ((and (get-held :dodge) (or (get-tapped :r-right) (get-tapped :r-left)))
+      ;; 		 (setf buffered-state 'high-dodge :dir dir :pressure (cond ((get-held :down) 0.2) ((get-held :up) 1.0) (t 0.6))
+      ;; 				  ;; (get-numeric :throttle)
+      ;; 				  ))
+      
+      ((and (region-entered-from-center :min-butterfly (/ (* pi 3) 8) :max-butterfly (/ (* pi 5) 8)
+				:min-axis-dist *trigger-radius*)  (not (get-held :a1)) (not (get-held :a2)))
+       (if (not (get-held :cancel))
+	   (set-buffered-state (make-state 'high-stride :dir dir))
+	 (set-buffered-state (make-state 'running
+				:vel (* dir 0.15)
+				:foot-pos (+ *neutral-leg-space* 4.0)))))
+      )))
+
 ;;Idle
-(let ((ht nil)
-		(va 0.0))
+
 (defstate "idle"
   :slots
-  ((tpos :initform 0))
+  ((tpos :initform 0)
+  (prone-time :initform 0))
 
   :hb
   multi-hitbox
@@ -32,7 +129,11 @@
 			    (get-tapped input :released t)
 			  (get-released input))))
      (let ((dir (if (get-held (direction-symbol)) positive negative)))
-       (cond
+		(common-transitions)
+		(let ((bs (get-buffered-state)))
+       (if bs
+	   (change-state *fighter* bs)
+	   #|(cond
 	((or
 	  (and (get-tapped :dodge) (get-held (opposite-symbol)) (get-held :up))
 	  (and (get-held :dodge)
@@ -42,10 +143,7 @@
 	 (switch-to-state 'backflip))
 
 	((get-untapped :a1)
-	 (switch-to-state 'jab)
-	 (if ht
-	 (progn (incf va 10.0) (update-hit-triangle (- va) 0.0  100.0 0.0  0.0 50.0 ht))
-	 (setf ht (make-hit-triangle 0.0 0.0  100.0 0.0  0.0 50.0 "red" *mgr*))))
+	 (switch-to-state 'jab))
 
 	((and (get-held :a2) (get-tapped (direction-symbol)))
 	 (switch-to-state 'sidekickW))
@@ -78,7 +176,9 @@
 	 (if (not (get-held :dodge))
 	     (switch-to-state 'high-stride :dir dir)
 	       
-	   (switch-to-state 'high-dodge :dir dir)))))))
+	   (switch-to-state 'high-dodge :dir dir))))|#)
+	   (set-buffered-state nil)
+	   (format t "~&b:~a d:~a mb:~a~&" (get-butterfly-angle) (get-axis-dist) (if (get-butterfly-angle) (<= 0.0 (get-butterfly-angle) (+ pi 0.1))))))))
 
   :entryfunc
   (default-hitboxes)
@@ -91,7 +191,7 @@
   
     (def-statemeth print-state ()
       (let ((fighter (parent state)))
-	(format nil "~at: ~a~%" (ccnm) tpos))))))
+	(format nil "~at: ~a~%" (ccnm) tpos)))))
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;

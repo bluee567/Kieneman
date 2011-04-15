@@ -49,14 +49,13 @@ be drawn appropriately when the screen is rendered."))
 	:initform 1.0)
    (:ia height
 	:initform 1.0)
+	(:ia state-buffer
+	:initform nil)
    (:ia key-buffer
 	:initform (make-instance 'key-bufferer))))
 
 (defclass+ singlebox-state (rectangular-hitbox displayed-box)
   ())
-
-;;(defclass+ multibox-state (state multi-hitbox)
-;;  ())
 
 (defmethod print-state ((state state))
   (let ((fighter (parent state)))
@@ -305,6 +304,9 @@ If false, then sidesteps become effective."))
      ((name :initform ,(string name))
       ,@body)
      ,@meta))
+
+(defmacro make-state (state-name &rest args)
+	`(make-instance ,state-name :parent *fighter* ,@args))
 
 ;;This macro should be called from within the body of a state's method.
 (defmacro switch-to-state (state-name &rest args)

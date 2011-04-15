@@ -291,23 +291,25 @@ RETURNS: nil or a value between 0.0 and PI inclusive."
 	 (ret-val (+ (* x-axis x-axis) (* y-axis y-axis))))
     (format t "~&x:~a y:~a" x-axis y-axis)
     (if (<= ret-val 1.0) ret-val 1.0)))
+	
+(let ((upper-butterfly (+ pi 0.1)))
 
-(defun get-in-region (&key (min-butterfly 0.0) (max-butterfly pi) (min-axis-dist 0.0) (max-axis-dist 2.0) (keymap *keymap*))
+(defun get-in-region (&key (min-butterfly 0.0) (max-butterfly upper-butterfly) (min-axis-dist 0.0) (max-axis-dist 2.0) (keymap *keymap*))
   "Returns true if the joystick is currently in the joystick region inclusively defined by the four values
 passed to this function."
   (and (get-butterfly-angle keymap) (<= min-butterfly (get-butterfly-angle keymap) max-butterfly) (<= min-axis-dist (get-axis-dist keymap) max-axis-dist)))
 
-(defun get-region-entered (&key (min-butterfly 0.0) (max-butterfly pi) (min-axis-dist 0.0) (max-axis-dist 2.0) (keymap *keymap*))
+(defun get-region-entered (&key (min-butterfly 0.0) (max-butterfly upper-butterfly) (min-axis-dist 0.0) (max-axis-dist 2.0) (keymap *keymap*))
   "Returns true if the joystick region inclusively defined by the four values has been entered in the current frame."
   (and
    (and (get-butterfly-angle keymap) (<= min-butterfly (get-butterfly-angle keymap) max-butterfly) (<= min-axis-dist (get-axis-dist keymap) max-axis-dist))
    (not (and (get-butterfly-angle keymap nil) (<= min-butterfly (get-butterfly-angle keymap nil) max-butterfly) (<= min-axis-dist (get-axis-dist keymap nil) max-axis-dist)))))
 
-(defun region-entered-from-center (&key (min-butterfly 0.0) (max-butterfly pi) (min-axis-dist 0.0) (max-axis-dist 2.0) (keymap *keymap*))
+(defun region-entered-from-center (&key (min-butterfly 0.0) (max-butterfly upper-butterfly) (min-axis-dist 0.0) (max-axis-dist 2.0) (keymap *keymap*))
   "Returns true if the joystick region inclusively defined by the four values has been entered in the current frame."
   (and
    (and (get-butterfly-angle keymap) (<= min-butterfly (get-butterfly-angle keymap) max-butterfly) (<= min-axis-dist (get-axis-dist keymap) max-axis-dist))
-   (not (<= min-axis-dist (get-axis-dist keymap nil) max-axis-dist))))
+   (not (<= min-axis-dist (get-axis-dist keymap nil) max-axis-dist)))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; INPUT CONFIGURATIONS
@@ -386,10 +388,10 @@ passed to this function."
    :defense (get-ji 3 pad) "NUM9"
    :dodge (get-ji 7  pad) "Button 8"
    :cancel (get-ji 2 pad) "Button 3"
-   :down (get-ai 5 pad) "Down Arrow"
-   :up (get-ai 5 pad :dir -1) "Up Arrow"
-   :r-left (get-ai 4 pad :dir -1) "Left Arrow"
-   :r-right (get-ai 4 pad) "Right Arrow"))
+   :down (get-ai 6 pad) "Down Arrow"
+   :up (get-ai 6 pad :dir -1) "Up Arrow"
+   :r-left (get-ai 7 pad :dir -1) "Left Arrow"
+   :r-right (get-ai 7 pad) "Right Arrow"))
 
 (defvar *c1-config*
  nil)
@@ -420,8 +422,9 @@ passed to this function."
     "Right Arrow")))
 
 (defvar *1p-input*
-  ;(make-PS3-defult-config 0)
-  *k1-config*)
+  (make-PS3-alt-config 0)
+  ;*k1-config*
+  )
 
 (defvar *2p-input*
   *k2-config*)

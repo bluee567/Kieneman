@@ -19,6 +19,7 @@
 (defconstant closed -1)
 (defconstant positive 1)
 (defconstant negative -1)
+(defconstant tau (* 2 pi))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;Setup Rendering

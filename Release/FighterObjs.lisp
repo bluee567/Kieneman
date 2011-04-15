@@ -33,7 +33,8 @@ collision functions) calling this function on them will resolve their collision 
   ((:iea name)
    (:ia state
 	:initform (make-instance 'idle))
-
+	(:ia buffered-state
+		:initform nil)
    (:ia radius)
    (:ia height)
    
@@ -149,8 +150,8 @@ current position."
 
 (defun direction-to-symbol (dir)
   (if (= dir 1)
-      :right
-    :left))
+      :r-right
+    :r-left))
 
 (defun direction-symbol (&optional (fighter *fighter*))
   "Gets the symbol of the direction the fighter is facing.
@@ -164,8 +165,13 @@ Values are :left or :right"
 (defun opposite-symbol (&optional (fighter *fighter*))
   (direction-to-symbol (opposite (get-direction fighter))))
 
+;;Moves the charater forward and returns the linear distance N moved.
 (defun move-forward (dist &optional (fighter *fighter*))
-  (incf (x fighter) (* (get-direction fighter) dist)))
+  (let* ((dir (get-direction fighter))
+	 (prev-pos (x fighter))
+	 (move-vel (* dir dist)))
+    (incf (x fighter) move-vel)
+    (* dir (- move-vel (- (x fighter) prev-pos)))))
 
 (defun move-up (dist &optional (fighter *fighter*))
   (incf (y fighter) dist))
@@ -185,6 +191,15 @@ Values are :left or :right"
 (defun stance-openness (fighter1 fighter2)
   (if (= (left-leg-pos fighter1) (left-leg-pos fighter2))
       open closed))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;; State Buffer
+
+(defmethod get-buffered-state (&optional (fighter *fighter*))
+  (buffered-state fighter))
+
+(defmethod set-buffered-state (val &optional (fighter *fighter*))
+  (setf (buffered-state fighter) val))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;; Control
