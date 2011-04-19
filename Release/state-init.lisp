@@ -145,6 +145,7 @@ If false, then sidesteps become effective."))
 (defmacro set-hitbox (box)
   `(let ((hb ,box))
      (setf hitbox hb)
+	 (setup-box-display hb)
      (add-actor hb)))
 
 (defmacro remove-hitbox ()
@@ -247,17 +248,15 @@ If false, then sidesteps become effective."))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;For states, enter state should be used in place of initialise-instance.
-#|
-(defmethod enter-state :after ((f1 fighter) (state displayed-box))
-  (with-accessors ((display display)) state
-    (setf display (make-hit-rectangle (x state) (median-y state) (width state) (height state) "blue" *mgr*))))
-|#
+
+(defmethod enter-state :after ((f1 fighter) (state hitbox))
+  (setup-box-display state))
+
 
 ;;Hitbox methods
 	
-(defmethod exit-state :after ((f1 fighter) (state displayed-box))
-  (with-accessors ((display display)) state
-    (destroy-entity *mgr* display)))
+(defmethod exit-state :after ((f1 fighter) (state hitbox))
+	(box-cleanup state))
 	
 (defmethod material-name ((state state))
 	"blue")
@@ -357,11 +356,12 @@ alt-name allows the default animation to be overridden and replaced with another
 		  slots)))
 
       (macrolet ((func-body (body)
-			    `(with-accessors
+			    `(let ((dir (if (get-held (direction-symbol (parent state)) (input-funcs (parent state))) positive negative)));;This should be overrided by the accessors if dir is a slot.
+				 (with-accessors
 			      ,',accessors state
 			      (with-accessors
 			       ((x x) (y y)) fighter
-			       ,@body)))
+			       ,@body))))
 		 
 		 (def-statemeth (title params &body body)
 		   `(defmethod ,title ((state ,',symbol-name) ,@params)
@@ -388,9 +388,9 @@ alt-name allows the default animation to be overridden and replaced with another
 
 	 ,(when initfunc
 	    (let ((keyargs (car initfunc))
-		  (bodyforms (cadr initfunc)))
+		  (bodyforms (cdr initfunc)))
 	      `(defmethod initialize-instance :after ((state ,symbol-name) ,@keyargs)
-		 ,@bodyforms)))
+		 (func-body ,bodyforms))))
 
 	 ,(when entryfunc
 	    `(defmethod enter-state :after ((fighter fighter) (state ,symbol-name))

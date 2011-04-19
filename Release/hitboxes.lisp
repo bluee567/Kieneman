@@ -132,7 +132,12 @@ in order to form the multibox.")))
 ;; (defmethod enter-state :after (fighter (obj multi-hitbox))
 ;;   (set-visible ( (parent obj))))
 
-(defmethod exit-state :after (fighter (obj multi-hitbox))
+ (defmethod setup-box-display ((obj multi-hitbox))
+ (format t "blag")
+	(loop for box in (hitbox-list obj)
+	do (setup-box-display box)))
+
+(defmethod box-cleanup ((obj multi-hitbox))
   (loop for box in (hitbox-list obj)
 	do (kill box)))
 
@@ -192,6 +197,10 @@ in order to form the multibox.")))
 (defclass+ displayed-tribox (triangular-hitbox 2d-vector)
   ((:ia display)))
 
+ (defmethod setup-box-display ((box displayed-tribox))
+	(destructuring-bind (v1 v2 v3) (point-list box)
+	(setf (display box) (make-hit-triangle (x v1) (y v1) (x v2) (y v2) (x v3) (y v3) (material-name box) *mgr*))))
+
  ;;There exist two possible ways to initialise this tribox.
  ;; 1. Directly pass in a list of premade points in the key :point-list.
  ;;    This will create a list of vectors which are children of the box.
@@ -201,13 +210,15 @@ in order to form the multibox.")))
   (with-accessors ((display display) (point-list point-list)) box
   (if (slot-boundp box 'point-list) (if scalar-list (error "Both :point-list and :scalar-list were passed as key values to initialize-instance :after.")
 					(destructuring-bind (v1 v2 v3) point-list
-					(setf display (make-hit-triangle (x v1) (y v1) (x v2) (y v2) (x v3) (y v3) (material-name box) *mgr*))))
+					;(setf display (make-hit-triangle (x v1) (y v1) (x v2) (y v2) (x v3) (y v3) (material-name box) *mgr*))
+					))
   (if scalar-list
   (destructuring-bind (x1 y1 x2 y2 x3 y3) scalar-list
 	(setf point-list (list (make-instance 'child-vector :x x1 :y y1 :parent box)
 					(make-instance 'child-vector :x x2 :y y2 :parent box)
 					(make-instance 'child-vector :x x3 :y y3 :parent box)))
-    (setf display (make-hit-triangle x1 y1 x2 y2 x3 y3 (material-name box) *mgr*)))
+    ;(setf display (make-hit-triangle x1 y1 x2 y2 x3 y3 (material-name box) *mgr*))
+	)
 	(error "Neither :point-list nor :scalar-list were passed as key values to initialize-instance :after.")))))
   
 (defun make-displayed-tribox (scalar-list material-name &optional (class 'displayed-tribox))
@@ -296,23 +307,31 @@ in order to form the multibox.")))
 (defclass+ displayed-box ()
   ((:ia display)))
 
-(defmethod initialize-instance :after ((box displayed-box) &key)
-  (with-accessors ((display display)) box
+ (defmethod setup-box-display ((box displayed-box))
+	(with-accessors ((display display)) box
      (setf display (make-hit-rectangle (x box) (+ (y box) (/ (height box) 2)) (width box) (height box) (material-name box) *mgr*))))
+  
+(defmethod initialize-instance :after ((box displayed-box) &key)
+  #|(with-accessors ((display display)) box
+     (setf display (make-hit-rectangle (x box) (+ (y box) (/ (height box) 2)) (width box) (height box) (material-name box) *mgr*)))
+	 |#)
 
 (defmethod animate :after ((obj displayed-box))
   (with-accessors ((x x) (y y) (radius radius) (width width) (height height) (display display)) obj
 		  (let ((display-node (get-parent-node display)))
 		    (set-position-f display-node x (median-y obj) 0.0)
 		    (set-scale display-node width height 1.0))))
+
+(defmethod box-cleanup ((box displayed-box))
+	(dbox-cleanup box))
 			
 (defun dbox-cleanup (box)
-	(destroy-entity *mgr* (display box))
+	(when (display box)
+	(destroy-entity *mgr* (display box)))
 	(setf (display box) nil))
 
 (defmethod kill :after ((box displayed-box))
-  (when (display box)
-    (dbox-cleanup box)))
+  (dbox-cleanup box))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 

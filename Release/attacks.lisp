@@ -355,19 +355,13 @@
      (setf tpos-delay 0)
      (setf tpos 14));Must eval to an integer to avoid type errors.
 
-   (if (or (get-held :down)
-	   (get-pressed :down) (get-pressed :defense))
-       (if (< tpos 4)
-	   (setf tpos-delay 1)
-	 (reset-key-buffer key-buffer))
-     (progn
-       (when (and ;; (get-held (direction-symbol))
-		  (get-pressed :a1))
-	 (setf to-second t))
-       (when (get-released :a1)
-	 (set-tapped :a1 :released t))
-       (when (get-released :a2)
-	 (set-tapped :a2 :released t))))
+   (if (and (get-held :cancel) (< tpos 4))
+       (setf tpos-delay 1))
+	   
+     (if (and (get-pressed :a1) (not to-second))
+	 (setf to-second t)
+	 (common-transitions))
+	 
    ;bink
    (case tpos
      (6 (set-hitbox (make-tri-static-dist-rab
@@ -438,7 +432,8 @@
   single-animation
 
   :main-action
-  ((lcase tpos
+  ((common-transitions)
+  (lcase tpos
 	  (attack-time (set-hitbox (make-static-dist-rab
 			   :parent state
 			   :damage 70
@@ -534,8 +529,8 @@
   :animation
   single-animation
 
-  :entryfunc
-  (progn
+  :initfunc
+  ((&key)
     (let ((hip (make-uni-box state 0.0 (* 0.4 (height fighter)) 0.65 0.3)))
      (setf (hip-box state) hip)
      (setf (hitbox-list state)
@@ -545,10 +540,7 @@
 	    (make-uni-box state 0.0 (* 0.7 (height fighter)) 0.5 0.3)))))
 
   :main-action
-  ((when (get-released :a1)
-       (set-tapped :a1 :released t))
-   (when (get-released :a2)
-     (set-tapped :a2 :released t))
+  ((common-transitions)
 
    (when (and (>= tpos block-time) (get-held :defense))
      (switch-to-state 'high-block-stun
@@ -833,17 +825,19 @@ is possible from the foot position of the previous state.
    (end-time 66)
    (move-speed 0.3))
 
-  :entryfunc
+  :initfunc
+  ((&key)
   (let ((hip (make-uni-box state 0.0 (* 0.4 (height fighter)) 0.65 0.3)))
     (setf (hip-box state) hip)
     (setf (hitbox-list state)
 	  (list
 	   (make-uni-box state 0.0 0.0 1.0 0.4)
 	   hip
-	   (make-uni-box state 0.0 (* 0.7 (height fighter)) 0.5 0.3))))
+	   (make-uni-box state 0.0 (* 0.7 (height fighter)) 0.5 0.3)))))
 
   :main-action
-  ((incf x (* move-speed (get-direction fighter)))
+  ((common-transitions)
+  (incf x (* move-speed (get-direction fighter)))
    (lcase tpos
 	  (attack-time
 	   (set-hitbox
@@ -894,17 +888,19 @@ is possible from the foot position of the previous state.
    (end-time 64)
    (move-speed 1.2))
 
-  :entryfunc
-  (let ((hip (make-uni-box state 0.0 (* 0.4 (height fighter)) 0.65 0.3)))
+  :initfunc
+  ((&key)
+	(let ((hip (make-uni-box state 0.0 (* 0.4 (height fighter)) 0.65 0.3)))
     (setf (hip-box state) hip)
     (setf (hitbox-list state)
 	  (list
 	   (make-uni-box state 0.0 0.0 1.0 0.4)
 	   hip
-	   (make-uni-box state 0.0 (* 0.7 (height fighter)) 0.5 0.3))))
+	   (make-uni-box state 0.0 (* 0.7 (height fighter)) 0.5 0.3)))))
 
   :main-action
-  ((labels (;; (animate-forward (dist)
+  ((common-transitions)
+  (labels (;; (animate-forward (dist)
 ;; 			     (let ((dist-vec (* dist (get-direction fighter))))
 ;; 			      (incf x dist-vec)
 ;; 			      (incf animation-distance dist-vec)))
@@ -961,25 +957,21 @@ is possible from the foot position of the previous state.
   ((end-time 23)
    (move-speed 1.2))
 
-  :entryfunc
-  (let ((hip (make-uni-box state 0.0 (* 0.4 (height fighter)) 0.65 0.3)))
+  :initfunc
+  ((&key)
+	(let ((hip (make-uni-box state 0.0 (* 0.4 (height fighter)) 0.65 0.3)))
     (setf (hitbox-list state)
 	  (list
 	   (make-uni-box state 0.0 0.0 1.0 0.4)
 	   hip))
-    (setf (tpos state) (entry-time state)))
+    (setf (tpos state) (entry-time state))))
 
   :main-action
-  ((animate-forward (if (< tpos 12) move-speed (* 0.3 move-speed)))
+  ((common-transitions)
+  (animate-forward (if (< tpos 12) move-speed (* 0.3 move-speed)))
    (lcase tpos
 	  (end-time
-	   (switch-to-state 'idle :key-buffer key-buffer))))
-
-  ;; :rest
-  ;; (def-statemeth animate ()
-;;     (ccnm)
-;;     (set-position-f (ogre-node parent) (- x (float (* (- tpos entry-time) move-speed (get-direction fighter)))) y 0.0))
-  )
+	   (switch-to-state 'idle :key-buffer key-buffer)))))
 
 
 (defstate "frontkick"
@@ -999,7 +991,8 @@ is possible from the foot position of the previous state.
    (kick-point (+ kick-start-point 6))) ;Earliest attack-time.
 
   :main-action
-  ((if (not (< (abs vel) 0.15))
+  ((common-transitions)
+  (if (not (< (abs vel) 0.15))
      (let ((dash-accel (* (signum vel) (hs-accel vel foot-pos))))
       (decf vel dash-accel)
       (decf foot-pos (abs vel))
@@ -1050,14 +1043,15 @@ is possible from the foot position of the previous state.
   ((hip-box)
    (end-time :initform 55))
 
-  :entryfunc
+  :initfunc
+  ((&key)
   (let ((hip (make-uni-box state 0.0 (* 0.4 (height fighter)) 0.65 0.3)))
     (setf (hip-box state) hip)
     (setf (hitbox-list state)
 	  (list
 	   (make-uni-box state 0.0 0.0 1.0 0.4)
 	   hip
-	   (make-uni-box state 0.0 (* 0.7 (height fighter)) 0.5 0.3))))
+	   (make-uni-box state 0.0 (* 0.7 (height fighter)) 0.5 0.3)))))
   
   :supers
   (single-attack-box)
@@ -1066,7 +1060,8 @@ is possible from the foot position of the previous state.
   ((attack-time 22))
 
   :main-action
-  ((when (<= 11 tpos attack-time)
+  ((common-transitions)
+  (when (<= 11 tpos attack-time)
     (incf (slot-value hip-box 'radius) 0.15))
    (when (<= (+ 6 attack-time) tpos (+ 16 attack-time))
     (decf (slot-value hip-box 'radius) 0.15))
@@ -1111,8 +1106,8 @@ is possible from the foot position of the previous state.
   :slots
   ((hip-box :initform nil))
 
-  :entryfunc
-  (progn
+  :initfunc
+  ((&key)
     (let ((hip (make-uni-box state 0.0 (* 0.4 (height fighter)) 0.65 0.3)))
      (setf (hip-box state) hip)
      (setf (hitbox-list state)
@@ -1121,7 +1116,8 @@ is possible from the foot position of the previous state.
 	    hip))))
 
   :main-action
-  ((when (<= tpos attack-point)
+  ((common-transitions)
+  (when (<= tpos attack-point)
      (setf (x hip-box)  (* 0.75 (get-direction) (/ tpos (float attack-point))))
      (setf (radius hip-box) (+ 0.65 (* 0.75 (/ tpos (float attack-point))))))
    (lcase tpos
@@ -1139,12 +1135,4 @@ is possible from the foot position of the previous state.
 	  
 	  ((+ 2 attack-point) (remove-hitbox))
 	  
-	  (end-point (switch-to-state 'idle :key-buffer key-buffer))))
-
-  ;; :rest
-;;   (progn
-;;     (def-statemeth height ()
-;;       (if (and (> tpos 10) (< tpos 35))
-;; 	      (- (call-next-method) 20)
-;; 	(call-next-method))))
-  )
+	  (end-point (switch-to-state 'idle :key-buffer key-buffer)))))
