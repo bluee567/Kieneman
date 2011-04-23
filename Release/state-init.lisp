@@ -356,7 +356,8 @@ alt-name allows the default animation to be overridden and replaced with another
 		  slots)))
 
       (macrolet ((func-body (body)
-			    `(let ((dir (if (get-held (direction-symbol (parent state)) (input-funcs (parent state))) positive negative)));;This should be overrided by the accessors if dir is a slot.
+			    `(let* ((held-dir (if (get-held (direction-symbol (parent state)) (input-funcs (parent state))) positive negative))
+						(dir held-dir));;This should be overrided by the accessors if dir is a slot.
 				 (with-accessors
 			      ,',accessors state
 			      (with-accessors

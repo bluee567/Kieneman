@@ -964,15 +964,16 @@ single symbol which will be automatically quoted."
               |KIENEMAN|::|SLOTS|)))
           (|COMMON-LISP|::|MACROLET|
            ((|KIENEMAN|::|FUNC-BODY| (|KIENEMAN|::|BODY|)
-             `(|COMMON-LISP|::|LET|
-               ((|KIENEMAN|::|DIR|
+             `(|COMMON-LISP|::|LET*|
+               ((|KIENEMAN|::|HELD-DIR|
                  (|COMMON-LISP|::|IF|
                   (|KIENEMAN|::|GET-HELD|
                    (|KIENEMAN|::|DIRECTION-SYMBOL|
                     (|KIENEMAN|::|PARENT| |KIENEMAN|::|STATE|))
                    (|KIENEMAN|::|INPUT-FUNCS|
                     (|KIENEMAN|::|PARENT| |KIENEMAN|::|STATE|)))
-                  |KIENEMAN|::|POSITIVE| |KIENEMAN|::|NEGATIVE|)))
+                  |KIENEMAN|::|POSITIVE| |KIENEMAN|::|NEGATIVE|))
+                (|KIENEMAN|::|DIR| |KIENEMAN|::|HELD-DIR|))
                (|CLOS|::|WITH-ACCESSORS| ,',|KIENEMAN|::|ACCESSORS|
                 |KIENEMAN|::|STATE|
                 (|CLOS|::|WITH-ACCESSORS|

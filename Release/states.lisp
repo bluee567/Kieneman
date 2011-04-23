@@ -36,10 +36,9 @@
 
      ;;Copy of the case statement in idle.
      ;; (format t "~&**ba: ~a ad: ~a**~&" (get-butterfly-angle) (get-axis-dist))
-     (cond
-		((get-pressed :cancel)
+	 (when (get-pressed :cancel)
 			(set-buffered-state nil))
-	 
+     (cond
       ((and (get-pressed :a1))
        (set-buffered-state (make-state 'jab)))
       
@@ -105,8 +104,8 @@
       ;; 				  ))
       
       ((and (get-in-region :min-butterfly (/ (* pi 3) 8) :max-butterfly (/ (* pi 5) 8))  (not (get-held :a1)) (not (get-held :a2)))
-       (if (get-held :cancel)
-	   (set-buffered-state (make-state 'high-stride :dir dir))
+       (if (get-pressed :cancel)
+	   (set-buffered-state (make-state 'freestep :dir held-dir :total-dist 15.0))
 	 #|(set-buffered-state (make-state 'running
 				:vel (* dir 0.15)
 				:foot-pos (+ *neutral-leg-space* 4.0)))|#
@@ -291,7 +290,7 @@
 
   :slots
   ((escape-time :initform nil) ;;The number of frames before blocking can return to idle.
-   (escape-func :initform nil)) ;;A lambda to be exacuted when escape time runs out.
+   (escape-func :initform nil)) ;;A lambda to be executed when escape time runs out.
 
   :initfunc
   ((&key)
@@ -302,6 +301,7 @@
   :main-action
   ((if escape-time
      (progn
+	   (common-transitions)
        (decf escape-time)
        (when (<= escape-time 0)
 	 (funcall escape-func)))
@@ -717,6 +717,49 @@ In this function the new foot pos is affected by the new velocity instead of the
     (def-statemeth animate ()
       (set-time-position animation (/ foot-pos 60.0)))))
 
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; freestep
+
+(defconstant max-step-dist 60.0)
+
+(defstate "freestep"
+	:animation
+  single-animation
+	:alt-name
+  "stride"
+  
+  :slots
+  ((dir)
+  (total-dist)
+  (covered-dist :initform 0.0)
+  (entrance-spd :initform 0.0)
+  (loseness :initform 0.7)
+  (foot-pos :initform *neutral-leg-space*))
+  
+  :funcs
+  ((pre-time 4)
+  (end-time 20)
+  (spd (if (< tpos pre-time)
+	0.05
+	(if (< tpos 5) (+ entrance-spd (+ 0.1 (* (- tpos pre-time) 0.4)))
+	 (if (< tpos 12)
+	 1.2
+	 0.0))))
+  (vel (* dir spd)))
+  
+  :main-action
+  ((move-forward vel)
+  (common-transitions)
+  (lcase tpos
+	(end-time
+	(switch-to-state 'idle))))
+  
+  :rest
+  (progn
+    (def-statemeth animate ()
+      (ccnm)
+      (set-time-position animation (/ foot-pos 60.0)))))
+	  
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; running
 
