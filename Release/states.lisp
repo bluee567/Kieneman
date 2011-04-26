@@ -732,13 +732,15 @@ In this function the new foot pos is affected by the new velocity instead of the
   ((dir)
   (total-dist)
   (covered-dist :initform 0.0)
+  (mid-time :initform nil)
   (entrance-spd :initform 0.0)
   (loseness :initform 0.7)
   (foot-pos :initform *neutral-leg-space*))
   
   :funcs
-  ((pre-time 4)
-  (end-time 20)
+  ((pre-time 3)
+  (end-time 22)
+  (max-spd (+ 0.6 (* (/ 1.0 max-step-dist) total-dist)))
   (spd (if (< tpos pre-time)
 	0.05
 	(if (< tpos 5) (+ entrance-spd (+ 0.1 (* (- tpos pre-time) 0.4)))
@@ -749,7 +751,8 @@ In this function the new foot pos is affected by the new velocity instead of the
   
   :main-action
   ((move-forward vel)
-  (common-transitions)
+  (cond
+  (t (common-transitions)))
   (lcase tpos
 	(end-time
 	(switch-to-state 'idle))))

@@ -162,6 +162,51 @@ If false, then sidesteps become effective."))
   ())
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;A mixin class which adds a single defense hitbox to a class.
+
+(defclass+ single-block-box ()
+  ((:ia blockbox :initform nil)))
+
+(defmacro set-blockbox (box)
+  `(let ((hb ,box))
+     (setf blockbox hb)
+	 (setup-box-display hb)
+     (add-actor hb)))
+
+(defmacro remove-blockbox ()
+  `(progn
+     (when blockbox
+	 (kill blockbox))
+     (setf blockbox nil)))
+
+(defmethod exit-state :after ((fighter fighter) (state single-block-box))
+  (when (blockbox state)
+    (kill (blockbox state))))
+	
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;A mixin class which adds a single clash hitbox to a class.
+
+(defclass+ single-clash-box ()
+  ((:ia clashbox :initform nil)))
+
+(defmacro set-clashbox (box)
+  `(let ((hb ,box))
+     (setf clashbox hb)
+	 (setup-box-display hb)
+     (add-actor hb)))
+
+(defmacro remove-clashbox ()
+  `(progn
+     (when clashbox
+	 (kill clashbox))
+     (setf clashbox nil)))
+
+(defmethod exit-state :after ((fighter fighter) (state single-clash-box))
+  (when (clashbox state)
+    (kill (clashbox state))))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;A mixin class which adds movement-independent-animation to a class.
 ;;This will move the root node backward the distance the character moves
 ;;forward.

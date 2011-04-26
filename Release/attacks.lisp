@@ -6,7 +6,19 @@
 
 ;;Mixin
 (defclass+ attached-box ()
-  ((:iea parent)))
+  ((:iea parent)
+  (hit-objects
+    :initform nil
+    :accessor hit-objects)))
+
+;;This method prevents attached hitboxes from colliding with the
+;;target box(es) of their own parent character by adding the parent to their
+;;list of hit objects.
+(defmethod initialize-instance :after ((box attached-box) &key)
+  (with-accessors ((parent-state parent)) box
+    (with-accessors((parent parent)) parent-state
+     (push parent (hit-objects box)))))
+
 
 (defmethod x ((box attached-box))
   (+ (slot-value box 'x) (x (parent (parent box)))))
@@ -22,26 +34,24 @@
 	t
       (< (side-dist state) (radius fighter)))))
 
+;;Makes sure that attached boxes posessing the same parent don't collide with each other.
+(defmethod collision :around ((hb1 attached-box) (hb2 attached-box))
+  (and (not (eql (parent hb1) (parent hb2))) (call-next-method)))
+
+;;For the sake of accounting for linear tracking.
 (defmethod collision :around ((ahb attached-box) (hb2 fighter))
   (and (attached-box-v-fighter ahb hb2) (call-next-method)))
 
 (defmethod collision :around ((hb2 fighter) (ahb attached-box))
   (and (attached-box-v-fighter ahb hb2) (call-next-method)))
+  
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;; rec-attack-box
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (defclass+ attack-box (attached-box mortal)
-	((hit-objects
-    :initform nil
-    :accessor hit-objects)))
-	
-(defmethod initialize-instance :after ((box attack-box) &key)
-  (with-accessors ((parent-state parent)) box
-    (with-accessors((parent parent)) parent-state
-     (push parent (hit-objects box)))))
-;(setf display (make-hit-rectangle (x box) (+ (y box) (/ (height box) 2)) (width box) (height box) "red" *mgr*))
+	())
 	 
 (defmethod main-action ((rab attack-box))
   t)
@@ -514,7 +524,7 @@
   multi-hitbox
   
   :supers
-  (single-attack-box)
+  (single-attack-box single-clash-box)
   
   :slots
   ((forward-speed :initform 0)
