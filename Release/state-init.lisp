@@ -140,7 +140,8 @@ If false, then sidesteps become effective."))
 ;;A mixin class which adds a single attack hitbox to a class.
 
 (defclass+ single-attack-box ()
-  ((:ia hitbox :initform nil)))
+  ((:ia hitbox :initform nil)
+  (:ia hitbox-nohit-obj-list :initform nil)))
 
 (defmacro set-hitbox (box)
   `(let ((hb ,box))
@@ -160,18 +161,22 @@ If false, then sidesteps become effective."))
 
 (defmethod attack-blocked ((state single-attack-box) opposing-state)
   ())
+  
+ (defun add-nohit (nohit-entity state)
+   (if (hitbox state) (push nohit-entity (hit-objects (hitbox state)))
+		(push nohit-entity (clashbox-nohit-obj-list state))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;A mixin class which adds a single defense hitbox to a class.
 
 (defclass+ single-block-box ()
-  ((:ia blockbox :initform nil)))
+  ((:ia blockbox :initform nil)
+  (:ia blockbox-nohit-obj-list :initform nil)))
 
 (defmacro set-blockbox (box)
   `(let ((hb ,box))
      (setf blockbox hb)
-	 (setup-box-display hb)
-     (add-actor hb)))
+	 (setup-box-display hb)))
 
 (defmacro remove-blockbox ()
   `(progn
@@ -188,13 +193,13 @@ If false, then sidesteps become effective."))
 ;;A mixin class which adds a single clash hitbox to a class.
 
 (defclass+ single-clash-box ()
-  ((:ia clashbox :initform nil)))
+  ((:ia clashbox :initform nil)
+  (:ia clashbox-nohit-obj-list :initform nil)))
 
 (defmacro set-clashbox (box)
   `(let ((hb ,box))
      (setf clashbox hb)
-	 (setup-box-display hb)
-     (add-actor hb)))
+	 (setup-box-display hb)))
 
 (defmacro remove-clashbox ()
   `(progn
@@ -205,7 +210,38 @@ If false, then sidesteps become effective."))
 (defmethod exit-state :after ((fighter fighter) (state single-clash-box))
   (when (clashbox state)
     (kill (clashbox state))))
+	
 
+#|
+Box Groups
+
+These are groupings of organisations of diffrent 'box holders' (defined immidiately above).
+These will allow the character-collision method to appropriately dispatch the method.
+|#
+
+(defclass+ clash-attack-box (single-attack-box single-clash-box) ())
+
+(defmethod mutual-clash (s1 s2)
+	(add-nohit (parent s2) s1)
+	(add-nohit (parent s1) s2))
+
+(defmethod character-collision ((s1 clash-attack-box) (s2 clash-attack-box))
+	(if (or (collision (clashbox s1) (clashbox s2)) (collision (hitbox s1) (hitbox s2)))
+		(mutual-clash s1 s2)
+		(if (and (collision (hitbox s1) (clashbox s2)) (not (collision (hitbox s2) (clashbox s1))))
+			(add-nohit (parent s1) s2)
+			(if (and (collision (hitbox s2) (clashbox s1)) (not (collision (hitbox s1) (clashbox s2))))
+				(add-nohit (parent s2) s1)))))
+		
+(defmethod-duel character-collision ((cab clash-attack-box) (sbb single-block-box))
+	(if (and (blockbox sbb) (hitbox cab) (or (and (clashbox cab) (collision (blockbox sbb) (clashbox cab))) (and  (collision (blockbox sbb) (hitbox cab)))))
+	(with-accessors ((fighter parent)) sbb
+		;;NOTE: A blocked attack may simply mean that a 'blocking-attack' method is dispatched on the defending state.
+       (change-state fighter (make-block-stun rab fighter))
+	   ;;NOTE: Handle no hitting within the attack blocked method later.
+	   (add-nohit fighter cab)
+       (attack-blocked cab sbb))))
+		
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;A mixin class which adds movement-independent-animation to a class.
 ;;This will move the root node backward the distance the character moves
@@ -409,9 +445,19 @@ alt-name allows the default animation to be overridden and replaced with another
 			       ((x x) (y y)) fighter
 			       ,@body))))
 		 
-		 (def-statemeth (title params &body body)
-		   `(defmethod ,title ((state ,',symbol-name) ,@params)
-		      (func-body ,body)))
+		 (def-statemeth (title &rest rest)
+			(if (not (listp (first rest)))
+				;;Given that a qualifier exists
+			 (let ((qualifier (first rest))
+					(params (second rest))
+					(body (cddr rest)))
+					`(defmethod ,title ,qualifier ((state ,',symbol-name) ,@params)
+						(func-body ,body)))
+				;;Given that a qualifier does not exist
+			 (let ((params (first rest))
+					(body (cdr rest)))
+					`(defmethod ,title ((state ,',symbol-name) ,@params)
+						(func-body ,body)))))
 		 
 		 (make-symbol-flet (flist &rest rest)
 				   (if flist

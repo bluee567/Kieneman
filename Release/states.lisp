@@ -66,25 +66,23 @@
 				:min-axis-dist *trigger-radius*))
        (set-buffered-state (make-state 'sidekickW)))
       
-      ((and (get-held :a2) ;; (get-tapped (direction-symbol))
-	    (region-entered-from-center :min-butterfly (/ (* pi 3) 8) :max-butterfly (/ (* pi 5) 8)
+      ((and (get-pressed :a2) ;; (get-tapped (direction-symbol))
+	    (get-in-region :min-butterfly (/ (* pi 7) 8)
 				:min-axis-dist *trigger-radius*))
        (set-buffered-state (make-state 'bodykick)))
       
-      ((or (and (get-held :a2)  
-				    (region-entered-from-center :min-butterfly (/ (* pi 7) 8)
-							     :min-axis-dist *trigger-radius*))
-	   (and (get-pressed :a2) (get-in-region :min-butterfly (/ (* pi 7) 8)
-						     :min-axis-dist *trigger-radius*)))
-       (set-buffered-state (make-state 'roundhouse)))
       
-      ((and (get-held :a2) (region-entered-from-center :min-butterfly (/ (* pi 3) 8) :max-butterfly (/ (* pi 5) 8)
+      
+      #|((and (get-pressed :a2) (region-entered-from-center :min-butterfly (/ (* pi 3) 8) :max-butterfly (/ (* pi 5) 8)
 				:min-axis-dist *trigger-radius*))
-       (set-buffered-state (make-state 'bodykick)))
+       (set-buffered-state (make-state 'bodykick)))|#
       
       ((and (get-pressed :a2) (get-in-region :max-butterfly (/ (* pi 2) 8)
 				:min-axis-dist *trigger-radius*))
        (set-buffered-state (make-state 'spinning-hook-kick)))
+	   
+	   ((get-pressed :a2)
+       (set-buffered-state (make-state 'roundhouse)))
       
       ((and (get-held :defense) (get-held :a1))
        (set-buffered-state (make-state 'grab)))
@@ -305,10 +303,10 @@
        (decf escape-time)
        (when (<= escape-time 0)
 	 (funcall escape-func)))
-     (when (> tpos 6)
+     (when (> tpos 10)
        (cond
 	((not (get-held :defense))
-	 (setf escape-time 4)
+	 (setf escape-time 10)
 	 (setf escape-func (λ (switch-to-state 'idle))))
 	
 	((get-held :a1)
@@ -729,24 +727,26 @@ In this function the new foot pos is affected by the new velocity instead of the
   "stride"
   
   :slots
-  ((dir)
+  (;;Input Slots
+  (dir)
   (total-dist)
-  (covered-dist :initform 0.0)
-  (mid-time :initform nil)
   (entrance-spd :initform 0.0)
   (loseness :initform 0.7)
+  ;;Reaction slots
+  (covered-dist :initform 0.0)
+  (mid-time :initform nil)
   (foot-pos :initform *neutral-leg-space*))
   
   :funcs
-  ((pre-time 3)
-  (end-time 22)
+  ((pre-time 4)
+  (end-time 24)
   (max-spd (+ 0.6 (* (/ 1.0 max-step-dist) total-dist)))
   (spd (if (< tpos pre-time)
-	0.05
-	(if (< tpos 5) (+ entrance-spd (+ 0.1 (* (- tpos pre-time) 0.4)))
+	0.1
+	(if (< tpos 5) 0.0 ;;(+ entrance-spd (+ 0.1 (* (- tpos pre-time) 0.4)))
 	 (if (< tpos 12)
-	 1.2
-	 0.0))))
+	 1.4
+	 (if (< tpos 18) 0.3 0.0)))))
   (vel (* dir spd)))
   
   :main-action

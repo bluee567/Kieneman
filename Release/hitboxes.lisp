@@ -1,8 +1,27 @@
 (in-package "KIENEMAN")
 
+(defgeneric character-collision (state1 state2)
+	(:documentation "Handles the special collisions that occur between two fighters before
+		the main collisions."))
+
+(defmethod character-collision (state1 state2)
+	t)
+		
 (defgeneric collision (hitbox1 hitbox2)
   (:documentation "Returns true if the two hitboxes have collided
 false otherwise."))
+
+;;By default, objects do not collide.
+(defmethod collision (hb1 hb2)
+	nil)
+
+(defgeneric handle-collision (entity1 entity2)
+  (:documentation "If there is a collision between two entities (based on their hitbox
+collision functions) calling this function on them will resolve their collision appropriately."))
+
+;;If an attacks box hits a generic object, nothing happens.
+(defmethod handle-collision (obj thing)
+  t)
 
 (defclass hitbox () ())
 
@@ -302,7 +321,8 @@ in order to form the multibox.")))
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;; displayed-box
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
+;;This is designed to be compatible with the rectangular hitbox.
+;;Not for triangular hitboxes.
 ;;Display must be an object that can be parented to an Ogre node.
 (defclass+ displayed-box ()
   ((:ia display)))
@@ -345,6 +365,17 @@ in order to form the multibox.")))
   t)
   
 (defmethod material-name ((obj uni-box))
+	"blue")
+	
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+(defclass+ tri-box (displayed-tribox child-hitbox mortal)
+  ())
+
+(defmethod animate ((anim tri-box))
+  t)
+  
+(defmethod material-name ((obj tri-box))
 	"blue")
 
 #|

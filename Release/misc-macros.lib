@@ -78,8 +78,8 @@ the second atom of the case form."
       (|SYSTEM|::|PROPER-LIST-LENGTH-IN-BOUNDS-P| |SYSTEM|::|<MACRO-FORM>| 2.))
      (|SYSTEM|::|MACRO-CALL-ERROR| |SYSTEM|::|<MACRO-FORM>|)
      (|COMMON-LISP|::|LET*|
-      ((#1=#:|G6036| (|COMMON-LISP|::|CADR| . #2=(|SYSTEM|::|<MACRO-FORM>|)))
-       (#3=#:|G6037|
+      ((#1=#:|G5496| (|COMMON-LISP|::|CADR| . #2=(|SYSTEM|::|<MACRO-FORM>|)))
+       (#3=#:|G5497|
         (|COMMON-LISP|::|IF|
          (|COMMON-LISP|::|NOT|
           (|SYSTEM|::|PROPER-LIST-LENGTH-IN-BOUNDS-P| #1# 2. 2.))
@@ -213,7 +213,7 @@ return values of these function calls are anded"
        (|KIENEMAN|::|DELTA|
         (|COMMON-LISP|::|IF| (|COMMON-LISP|::|CDDDR| . #1#)
          (|COMMON-LISP|::|CADDDR| . #1#) 1.))
-       (#2=#:|G6144| (|COMMON-LISP|::|CDDDDR| . #1#))
+       (#2=#:|G5604| (|COMMON-LISP|::|CDDDDR| . #1#))
        (|KIENEMAN|::|FORCE-TO-LIMIT|
         (|COMMON-LISP|::|GETF| #2# ':|FORCE-TO-LIMIT| |COMMON-LISP|::|NIL|)))
       (|SYSTEM|::|KEYWORD-TEST| #2# '(:|FORCE-TO-LIMIT|))
@@ -257,7 +257,7 @@ return values of these function calls are anded"
        (|KIENEMAN|::|DELTA|
         (|COMMON-LISP|::|IF| (|COMMON-LISP|::|CDDDR| . #1#)
          (|COMMON-LISP|::|CADDDR| . #1#) 1.))
-       (#2=#:|G6160| (|COMMON-LISP|::|CDDDDR| . #1#))
+       (#2=#:|G5620| (|COMMON-LISP|::|CDDDDR| . #1#))
        (|KIENEMAN|::|FORCE-TO-LIMIT|
         (|COMMON-LISP|::|GETF| #2# ':|FORCE-TO-LIMIT| |COMMON-LISP|::|NIL|)))
       (|SYSTEM|::|KEYWORD-TEST| #2# '(:|FORCE-TO-LIMIT|))
@@ -301,7 +301,7 @@ return values of these function calls are anded"
        (|KIENEMAN|::|DELTA|
         (|COMMON-LISP|::|IF| (|COMMON-LISP|::|CDDDR| . #1#)
          (|COMMON-LISP|::|CADDDR| . #1#) 1.))
-       (#2=#:|G6176| (|COMMON-LISP|::|CDDDDR| . #1#))
+       (#2=#:|G5636| (|COMMON-LISP|::|CDDDDR| . #1#))
        (|KIENEMAN|::|FORCE-TO-LIMIT|
         (|COMMON-LISP|::|GETF| #2# ':|FORCE-TO-LIMIT| |COMMON-LISP|::|NIL|)))
       (|SYSTEM|::|KEYWORD-TEST| #2# '(:|FORCE-TO-LIMIT|))
@@ -315,6 +315,11 @@ return values of these function calls are anded"
   '(|KIENEMAN|::|PLACE| |KIENEMAN|::|LIMIT| |COMMON-LISP|::|&OPTIONAL|
     (|KIENEMAN|::|DELTA| 1.) |COMMON-LISP|::|&KEY|
     |KIENEMAN|::|FORCE-TO-LIMIT|)))
+(|SYSTEM|::|C-DEFUN| '|KIENEMAN|::|SQR|
+ (|SYSTEM|::|LAMBDA-LIST-TO-SIGNATURE| '(|KIENEMAN|::|VAL|)))
+(|SYSTEM|::|C-DEFUN| '|KIENEMAN|::|MAP-THROUGH-RANGE|
+ (|SYSTEM|::|LAMBDA-LIST-TO-SIGNATURE|
+  '(|KIENEMAN|::|NUM| |KIENEMAN|::|A| |KIENEMAN|::|B|)))
 (|SYSTEM|::|REMOVE-OLD-DEFINITIONS| '|KIENEMAN|::|DEF-CALL-OUT+|)
 (|SYSTEM|::|%PUTD| '|KIENEMAN|::|DEF-CALL-OUT+|
  (|SYSTEM|::|MAKE-MACRO|
@@ -354,8 +359,6 @@ a CLISP ffi callout can be used with polymorphism."
           (|CLOS|::|DEFMETHOD| ,|KIENEMAN|::|NAME| ,|KIENEMAN|::|ARG-LIST|
            (,|KIENEMAN|::|-NAME| ,@|KIENEMAN|::|ARG-LIST|)))))))))
   '(|KIENEMAN|::|NAME| |COMMON-LISP|::|&BODY| |KIENEMAN|::|FORMS|)))
-(|SYSTEM|::|C-DEFUN| '|KIENEMAN|::|PREMUTATIONS|
- (|SYSTEM|::|LAMBDA-LIST-TO-SIGNATURE| '(|COMMON-LISP|::|LIST|)))
 (|SYSTEM|::|REMOVE-OLD-DEFINITIONS| '|KIENEMAN|::|DEFPREMETHOD|)
 (|SYSTEM|::|%PUTD| '|KIENEMAN|::|DEFPREMETHOD|
  (|SYSTEM|::|MAKE-MACRO|
@@ -375,6 +378,32 @@ premutations of all the possible orders of the arguments."
        (|KIENEMAN|::|ARGS| (|COMMON-LISP|::|CADDR| . #1#))
        (|KIENEMAN|::|BODY| (|COMMON-LISP|::|CDDDR| . #1#)))
       (|COMMON-LISP|::|BLOCK| |KIENEMAN|::|DEFPREMETHOD|
+       `(|COMMON-LISP|::|PROGN|
+         (|CLOS|::|DEFMETHOD| ,|KIENEMAN|::|NAME| ,|KIENEMAN|::|ARGS|
+          ,@|KIENEMAN|::|BODY|)
+         (|CLOS|::|DEFMETHOD| ,|KIENEMAN|::|NAME|
+          (,(|COMMON-LISP|::|CADR| |KIENEMAN|::|ARGS|)
+           ,(|COMMON-LISP|::|CAR| |KIENEMAN|::|ARGS|))
+          ,@|KIENEMAN|::|BODY|)))))))
+  '(|KIENEMAN|::|NAME| |KIENEMAN|::|ARGS| |COMMON-LISP|::|&BODY|
+    |KIENEMAN|::|BODY|)))
+(|SYSTEM|::|REMOVE-OLD-DEFINITIONS| '|KIENEMAN|::|DEFMETHOD-DUEL|)
+(|SYSTEM|::|%PUTD| '|KIENEMAN|::|DEFMETHOD-DUEL|
+ (|SYSTEM|::|MAKE-MACRO|
+  (|COMMON-LISP|::|FUNCTION| |KIENEMAN|::|DEFMETHOD-DUEL|
+   (|COMMON-LISP|::|LAMBDA| (|SYSTEM|::|<MACRO-FORM>| |SYSTEM|::|<ENV-ARG>|)
+    (|COMMON-LISP|::|DECLARE| (|COMMON-LISP|::|CONS| |SYSTEM|::|<MACRO-FORM>|))
+    (|COMMON-LISP|::|DECLARE| (|COMMON-LISP|::|IGNORE| |SYSTEM|::|<ENV-ARG>|))
+    (|COMMON-LISP|::|IF|
+     (|COMMON-LISP|::|NOT|
+      (|SYSTEM|::|PROPER-LIST-LENGTH-IN-BOUNDS-P| |SYSTEM|::|<MACRO-FORM>| 3.))
+     (|SYSTEM|::|MACRO-CALL-ERROR| |SYSTEM|::|<MACRO-FORM>|)
+     (|COMMON-LISP|::|LET*|
+      ((|KIENEMAN|::|NAME|
+        (|COMMON-LISP|::|CADR| . #1=(|SYSTEM|::|<MACRO-FORM>|)))
+       (|KIENEMAN|::|ARGS| (|COMMON-LISP|::|CADDR| . #1#))
+       (|KIENEMAN|::|BODY| (|COMMON-LISP|::|CDDDR| . #1#)))
+      (|COMMON-LISP|::|BLOCK| |KIENEMAN|::|DEFMETHOD-DUEL|
        `(|COMMON-LISP|::|PROGN|
          (|CLOS|::|DEFMETHOD| ,|KIENEMAN|::|NAME| ,|KIENEMAN|::|ARGS|
           ,@|KIENEMAN|::|BODY|)

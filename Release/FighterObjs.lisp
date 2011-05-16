@@ -14,10 +14,6 @@ upon the actor."))
 state for the frame. Note that this state may be altered afterwards by other events acting
 upon the actor."))
 
-(defgeneric handle-collision (entity1 entity2)
-  (:documentation "If there is a collision between two entities (based on their hitbox
-collision functions) calling this function on them will resolve their collision appropriately."))
-
 (defgeneric print-state (state))
 
 

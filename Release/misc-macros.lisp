@@ -118,6 +118,17 @@ number compared to the total of all the numbers."
        (incf-to ,place ,limit ,delta :force-to-limit ,force-to-limit)
      (decf-to ,place ,limit (- ,delta) :force-to-limit ,force-to-limit)))
 
+(defun sqr (val)
+  (* val val))
+
+(defun map-through-range (num a b)
+  ""
+  (destructuring-bind (alow blow ahigh bhigh)
+      (loop for e on a
+	    for co-e on b
+	    when (< num (second e)) return (list (first e) (first co-e) (second e) (second co-e)))
+    (+ (* (/ (- num alow) (- ahigh alow)) (- bhigh blow)) blow)))
+
 ;;(load "infix.lisp")
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -144,16 +155,17 @@ a CLISP ffi callout can be used with polymorphism."
       (defmethod ,name ,arg-list
 	(,-name ,@arg-list)))))
 
-
-
-(defun premutations (list)
-  "Given a list, returns all premutations of that list."
-  t)
-
 (defmacro defpremethod (name args &body body)
   "Defines a series of methods, each of which contain a diffrent
 premutations of all the possible orders of the arguments."
   `(progn
+     (defmethod ,name ,args
+       ,@body)
+     (defmethod ,name (,(cadr args) ,(car args))
+       ,@body)))
+	   
+(defmacro defmethod-duel (name args &body body)
+`(progn
      (defmethod ,name ,args
        ,@body)
      (defmethod ,name (,(cadr args) ,(car args))

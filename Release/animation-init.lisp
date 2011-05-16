@@ -163,11 +163,13 @@
   (call-next-method)
   (add-time (animation ca) (* (animation-incr ca) (/ 1.0 60.0))))
 
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; Helper Macros
 
-
-
-
-
-
+(defmacro scale-animation (to-vals from-vals)
+ `(progn
+    (ccnm)
+    (let* ((mtp (/ (map-through-range (float tpos) ,to-vals ,from-vals) *fps*)))
+      (set-time-position animation mtp))))
 
 

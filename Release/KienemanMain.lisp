@@ -20,6 +20,7 @@
 (defconstant positive 1)
 (defconstant negative -1)
 (defconstant tau (* 2 pi))
+(defconstant *fps* 60.0)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;Setup Rendering
@@ -104,6 +105,9 @@
   (dolist (actor *actor-list*)
     (main-action actor)))
 
+(defun character-collisions ()
+	(character-collision (state *p1*) (state *p2*)))
+
 (defun collision-events ()
   (unless (null *actor-list*)
    (labels ((walk-list (list)
@@ -156,6 +160,8 @@
      (update-input)
      (begin-frame-events)
      (main-events)
+	 ;;Possibly add remove dead here.
+	 (character-collisions)
      (collision-events)
      (remove-dead)
      (debug-events)
