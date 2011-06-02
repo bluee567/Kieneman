@@ -369,8 +369,9 @@
    (if (and (get-held :cancel) (< tpos 4))
        (setf tpos-delay 1))
 	   
-     (if (and nil (get-pressed :a1) (not to-second))
-	 (setf to-second t)
+     (progn
+	 ;if (and nil (get-pressed :a1) (not to-second))
+	 ;(setf to-second t)
 	 (common-transitions))
 	 
    ;bink

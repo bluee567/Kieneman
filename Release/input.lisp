@@ -289,7 +289,7 @@ RETURNS: nil or a value between 0.0 and PI inclusive."
   (let* ((x-axis (if (get-held :right keymap not-past) (get-numeric :right keymap not-past) (if (get-held :left keymap not-past) (get-numeric :left keymap not-past) 0.0)))
 	 (y-axis (if (get-held :up keymap not-past) (- (get-numeric :up keymap not-past)) (if (get-held :down keymap not-past) (get-numeric :down keymap not-past) 0.0)))
 	 (ret-val (+ (* x-axis x-axis) (* y-axis y-axis))))
-    (format t "~&x:~a y:~a" x-axis y-axis)
+    ;;(format t "~&x:~a y:~a" x-axis y-axis)
     (if (<= ret-val 1.0) ret-val 1.0)))
 	
 (let ((upper-butterfly (+ pi 0.1)))
@@ -383,11 +383,11 @@ passed to this function."
 	  
 (defun make-PS3-alt-config (pad)
 	(list
-   :a1  (get-ji 0 pad) "Button 1"
-   :a2 (get-ji 1 pad) "Button 2"
-   :defense (get-ji 3 pad) "NUM9"
-   :dodge (get-ji 7  pad) "Button 8"
-   :cancel (get-ji 2 pad) "Button 3"
+   :a1  (get-ji 3 pad) "Button 1"
+   :a2 (get-ji 0 pad) "Button 2"
+   :defense (get-ji 1 pad) "NUM9"
+   :dodge (get-ji 2  pad) "Button 8"
+   :cancel (get-ji 7 pad) "Button 3"
    :down (get-ai 6 pad) "Down Arrow"
    :up (get-ai 6 pad :dir -1) "Up Arrow"
    :r-left (get-ai 7 pad :dir -1) "Left Arrow"

@@ -6,6 +6,7 @@
 (defconstant *neutral-leg-space* 8.0)
 (defconstant *wide-leg-space* 27.0)
 (defconstant *trigger-radius* 0.75)
+(defconstant max-step-dist 30.0)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -16,26 +17,6 @@
 
 (defmacro common-transitions ()
   `(progn
-     ;; (when (get-pressed :a1)
-;;        (set-tapped :a1))
-     
-;;      (when (get-pressed :a2)
-;;        (set-tapped :a2))
-     
-;;      (when (get-pressed :dodge)
-;;        (set-tapped :dodge))
-     
-;;      (when (get-pressed :cancel)
-;;        (set-tapped :cancel))
-
-;;      (when (or (get-held :a1) (get-held :a2) (get-held :dodge))
-;;        (when (get-pressed :r-right)
-;; 	 (set-tapped :r-right))
-;;        (when (get-pressed :r-left)
-;; 	 (set-tapped :r-left)))
-
-     ;;Copy of the case statement in idle.
-     ;; (format t "~&**ba: ~a ad: ~a**~&" (get-butterfly-angle) (get-axis-dist))
 	 (when (get-pressed :cancel)
 			(set-buffered-state nil))
      (cond
@@ -101,9 +82,10 @@
       ;; 				  ;; (get-numeric :throttle)
       ;; 				  ))
       
-      ((and (get-in-region :min-butterfly (/ (* pi 3) 8) :max-butterfly (/ (* pi 5) 8))  (not (get-held :a1)) (not (get-held :a2)))
-       (if (get-pressed :cancel)
-	   (set-buffered-state (make-state 'freestep :dir held-dir :total-dist 15.0))
+      ((and (get-in-region :min-axis-dist *trigger-radius*)  (not (get-held :a1)) (not (get-held :a2)))
+       (if (get-pressed :dodge)
+	   (set-buffered-state (make-state 'freestep :dir held-dir :total-dist (* (let ((val (* (get-butterfly-angle) 2.0 (/ pi))))
+																					(if (< val 1.0) val 1.0)) max-step-dist)))
 	 #|(set-buffered-state (make-state 'running
 				:vel (* dir 0.15)
 				:foot-pos (+ *neutral-leg-space* 4.0)))|#
@@ -131,53 +113,10 @@
 		(common-transitions)
 		(let ((bs (get-buffered-state)))
        (if bs
-	   (change-state *fighter* bs)
-	   #|(cond
-	((or
-	  (and (get-tapped :dodge) (get-held (opposite-symbol)) (get-held :up))
-	  (and (get-held :dodge)
-	       (or (and (get-tapped (opposite-symbol)) (get-tapped :up))
-		   (and (get-tapped (opposite-symbol)) (get-held :up))
-		   (and (get-held (opposite-symbol)) (get-tapped :up)))))
-	 (switch-to-state 'backflip))
-
-	((get-untapped :a1)
-	 (switch-to-state 'jab))
-
-	((and (get-held :a2) (get-tapped (direction-symbol)))
-	 (switch-to-state 'sidekickW))
-
-	((and (get-held :a2) (get-tapped (opposite-symbol)))
-	 (switch-to-state 'sidekickS))
-
-	((and (get-held :up) (get-tapped :a2))
-	 (switch-to-state 'roundhouse))
-
-	((and (get-held :a1) (get-tapped :a2))
-	 (switch-to-state 'bodykick))
-
-	((and (get-held :a2) (get-held :down))
-	 (switch-to-state 'spinning-hook-kick))
-
-	((and (get-held :defense) (get-held :a1))
-	 (switch-to-state 'grab))
-      
-	((get-held :defense)
-	 (switch-to-state 'high-block))
-
-	((and (get-held :dodge) (get-held :down))
-	 (switch-to-state 'duck))
-
-	((and (get-held :dodge) (get-held :up))
-	 (switch-to-state 'sidestep))
-      
-	((not (get-held :h-neutral))
-	 (if (not (get-held :dodge))
-	     (switch-to-state 'high-stride :dir dir)
-	       
-	   (switch-to-state 'high-dodge :dir dir))))|#)
+	   (change-state *fighter* bs))
 	   (set-buffered-state nil)
-	   (format t "~&b:~a d:~a mb:~a~&" (get-butterfly-angle) (get-axis-dist) (if (get-butterfly-angle) (<= 0.0 (get-butterfly-angle) (+ pi 0.1))))))))
+	   (when (or (get-held :cancel) (get-released :cancel)) (format t "~&b: ~a r:~a~&" (get-held :cancel) (get-released :cancel)))
+	   ))))
 
   :entryfunc
   (progn
@@ -303,19 +242,22 @@
        (decf escape-time)
        (when (<= escape-time 0)
 	 (funcall escape-func)))
-     (when (> tpos 10)
-       (cond
+    (if (> tpos 10)
+    (cond
 	((not (get-held :defense))
+	 (common-transitions)
 	 (setf escape-time 10)
 	 (setf escape-func (λ (switch-to-state 'idle))))
 	
 	((get-held :a1)
-	 (setf escape-time 3)
+	 (setf escape-time 6)
 	 (setf escape-func (λ (switch-to-state 'grab))))
 	
 	((get-pressed :down)
-	 (setf escape-time 2)
-	 (setf escape-func (λ (switch-to-state 'duck)))))))))
+	 (setf escape-time 3)
+	 (setf escape-func (λ (switch-to-state 'duck)))))
+	 
+	 (common-transitions)))))
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -715,10 +657,11 @@ In this function the new foot pos is affected by the new velocity instead of the
     (def-statemeth animate ()
       (set-time-position animation (/ foot-pos 60.0)))))
 
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; freestep
 
-(defconstant max-step-dist 60.0)
+
 
 (defstate "freestep"
 	:animation
@@ -734,28 +677,93 @@ In this function the new foot pos is affected by the new velocity instead of the
   (loseness :initform 0.7)
   ;;Reaction slots
   (covered-dist :initform 0.0)
-  (mid-time :initform nil)
+  (interruption-time :initform nil)
   (foot-pos :initform *neutral-leg-space*))
   
   :funcs
-  ((pre-time 4)
-  (end-time 24)
-  (max-spd (+ 0.6 (* (/ 1.0 max-step-dist) total-dist)))
-  (spd (if (< tpos pre-time)
-	0.1
-	(if (< tpos 5) 0.0 ;;(+ entrance-spd (+ 0.1 (* (- tpos pre-time) 0.4)))
-	 (if (< tpos 12)
-	 1.4
-	 (if (< tpos 18) 0.3 0.0)))))
+  ((time-mult 25.0)
+  (dist-weight (sqrt (/ total-dist 10.0)))
+  (pre-time (round (* dist-weight (+ 1 (* time-mult 0.16)))))
+  (body-time ;12
+  (round (* dist-weight (+ 1 (* time-mult 0.44)))))
+  (slow-time ;17
+  (round (* dist-weight (+ 1 (* time-mult 0.72)))))
+  (final-time (if interruption-time 14 (* dist-weight (+ time-mult 2.0))))
+  (end-time (round final-time))
+  (trans-fact total-dist)
+  (spd (if (or (< tpos pre-time) interruption-time)
+	(* (/ 0.04 (- pre-time 1.0)) trans-fact)
+	(if (< tpos body-time)
+	 (* (/ 0.76 (- body-time pre-time)) trans-fact)
+	 (if (< tpos slow-time) (* (/ 0.2 (- slow-time body-time)) trans-fact) (* 0.0 trans-fact)))))
   (vel (* dir spd)))
   
   :main-action
-  ((move-forward vel)
-  (cond
-  (t (common-transitions)))
+  ((if (and (get-pressed :cancel) (< tpos pre-time) (not interruption-time))
+	(setf interruption-time tpos)
+	(if (and (get-pressed :dodge) (< tpos pre-time))
+		(switch-to-state 'continued-step :dir dir :total-dist total-dist :foot-pos foot-pos)
+	 (common-transitions)))
+  (move-forward vel)
+  (incf covered-dist spd)
+  
+  (when (< tpos pre-time)
+   (incf foot-pos spd))
+  (when (>= tpos body-time)
+   (decf foot-pos spd))
+  
+  (if (= final-time 0) (switch-to-state 'idle)
+  ;else
   (lcase tpos
 	(end-time
-	(switch-to-state 'idle))))
+	(format t "~&CD: ~a tpos: ~a ~&" covered-dist tpos)
+	(switch-to-state 'idle)))))
+  
+  :rest
+  (progn
+    (def-statemeth animate ()
+      (ccnm)
+      (set-time-position animation (/ foot-pos 60.0)))))
+	  
+(defstate "continued-step"
+	:animation
+  single-animation
+	:alt-name
+  "stride"
+  
+  :slots
+  (;;Input Slots
+  (dir)
+  (total-dist)
+  (entrance-spd :initform 0.0)
+  (loseness :initform 0.7)
+  ;;Reaction slots
+  (covered-dist :initform 0.0)
+  (foot-pos :initform *neutral-leg-space*))
+  
+  :funcs
+  ((dist-weight (sqrt (/ total-dist 10.0)))
+  (pre-time (round (* 5.0 dist-weight)))
+  (body-time (round (* 13.0 dist-weight)))
+  (end-time (round (* 20.0 dist-weight)))
+  (spd (/ total-dist body-time))
+   (vel (* dir spd)))
+  
+  :main-action
+  ((move-forward vel)
+  (incf covered-dist spd)
+  
+  (when (and (< tpos pre-time) (> foot-pos 1.0))
+   (decf foot-pos spd))
+  (when (>= tpos body-time)
+   (incf foot-pos spd))
+   
+   (if (get-pressed :cancel)
+		(progn (setf tpos 0) (setf covered-dist 0.0) (setf foot-pos *neutral-leg-space*))
+		(common-transitions))
+   
+   (lcase tpos
+	 (end-time (switch-to-state 'idle))))
   
   :rest
   (progn
@@ -1065,20 +1073,26 @@ In this function the new foot pos is affected by the new velocity instead of the
 (defstate "sidestep"
 
   :funcs
-  ((vel (* -1.0 spd)))
+  ((vel (* -1.0 spd))
+   (start-time 6)
+   (stop-time 20)
+   (end-time 38))
 
   :slots
-  ((spd :initform 0.6)) ;his should be constant throughout the life of this state.
+  ((spd :initform 0.5)) ;This should be constant throughout the life of this state.
 
   :main-action
-  ((move-forward vel)
+  ((when (and (>= tpos start-time) (< tpos stop-time)) (move-forward vel))
 	(common-transitions)
-   (when (>= tpos 20)
+   (when (>= tpos end-time)
      (switch-to-state 'idle :key-buffer key-buffer)))
 
   :rest
+  (progn
+  (def-statemeth animate ()
+      (when (< tpos stop-time) (call-next-method)))
   (def-statemeth side-spd ()
-    2.0))
+    (if (and (>= tpos start-time) (< tpos stop-time)) 2.0 0.0))))
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -1118,6 +1132,9 @@ in the middle of the flip."
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (defstate "duck"
+
+	:slots
+	((end-time :initform 12))
 
   :funcs
   ((holding (get-held :down)))
