@@ -332,7 +332,7 @@ corresponding to kc is held down."))
        #59Y(00 00 00 00 02 00 00 00 86 1D 04 00 00 00 00 2B 06 7F 07 00 00 7F
             06 00 01 3B 05 01 C9 0B 00 02 3B 04 01 C9 0B 00 03 3B 03 01 CA 0B
             00 04 3B 02 01 CB 0B 00 05 AC 2C 07 01 19 08)
-       (:|DIR| :|MAX| :|DEAD-RANGE| :|STICKY-RANGE| #1=1.0f0 #2=0.1f0
+       (:|DIR| :|MAX| :|DEAD-RANGE| :|STICKY-RANGE| #1=1.0f0 #2=0.04f0
         #3=0.001f0
         #Y(|KIENEMAN|::|FILTERED-AXIS-FUNC-1|
            #80Y(00 00 00 00 00 00 00 00 06 01 69 00 03 69 00 01 69 00 02 70 01
@@ -776,10 +776,10 @@ passed to this function.")
     #Y(|KIENEMAN|::|MAKE-PS3-ALT-CONFIG|
        #75Y(00 00 00 00 01 00 00 00 06 02 DA DB AF 70 02 DD DE DF B2 70 02 E0
             E1 E2 B5 70 02 E3 E4 E5 B8 70 02 E6 E7 E8 BB 70 02 E9 EA EB BE 70
-            12 ED EE EB C1 EF F0 6E 04 12 F1 F2 E8 C4 EF F0 6E 04 12 F3 F4 E8
+            12 ED EE EB C1 EF F0 6E 04 12 F1 F2 E5 C4 EF F0 6E 04 12 F3 F4 E5
             66 1B 70 12 F5 61 1B 19 02)
        (:|A1| 3. |KIENEMAN|::|GET-JOY-INPUT-FUNC| "Button 1" :|A2| 0.
-        "Button 2" :|DEFENSE| 1. "NUM9" :|DODGE| 2. "Button 8" :|CANCEL| 7.
+        "Button 2" :|DEFENSE| 2. "NUM9" :|DODGE| 7. "Button 8" :|CANCEL| 1.
         "Button 3" :|DOWN| 6. |KIENEMAN|::|FILTERED-AXIS-FUNC| "Down Arrow"
         :|UP| :|DIR| -1. "Up Arrow" :|R-LEFT| "Left Arrow" :|R-RIGHT|
         "Right Arrow")

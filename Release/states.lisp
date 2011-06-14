@@ -14,6 +14,15 @@
   `(set-hitbox-list (0.0 0.0 1.0 0.4)
 		   (0.0 (* 0.4 (height fighter)) 0.65 0.4)
 		   (0.0 (* 0.8 (height fighter)) 0.5 0.2)))
+		   
+(defun get-step-dist ()
+"get-butterfly-angle must return a non nil value for this function to work"
+  (* (let ((val (* (get-butterfly-angle) 2.0 (/ pi))))
+	(if (< val 1.0) val 1.0)) max-step-dist))
+
+(defun valid-step-dist ()
+    "Returns true if get-step-dist will return a positive non nil number."
+	(and (get-butterfly-angle) (not (equal 0.0 (get-butterfly-angle)))))
 
 (defmacro common-transitions ()
   `(progn
@@ -74,7 +83,7 @@
       ((get-held :defense)
        (set-buffered-state (make-state 'high-block)))
 
-      ((and (get-pressed :dodge) (get-held :up))
+      ((and (get-pressed :dodge) (get-in-region :min-butterfly (/ (* pi 6) 8) :min-axis-dist *trigger-radius*))
        (set-buffered-state (make-state 'sidestep)))
       
       ;; ((and (get-held :dodge) (or (get-tapped :r-right) (get-tapped :r-left)))
@@ -84,8 +93,7 @@
       
       ((and (get-in-region :min-axis-dist *trigger-radius*)  (not (get-held :a1)) (not (get-held :a2)))
        (if (get-pressed :dodge)
-	   (set-buffered-state (make-state 'freestep :dir held-dir :total-dist (* (let ((val (* (get-butterfly-angle) 2.0 (/ pi))))
-																					(if (< val 1.0) val 1.0)) max-step-dist)))
+	   (set-buffered-state (make-state 'freestep :dir held-dir :total-dist (get-step-dist)))
 	 #|(set-buffered-state (make-state 'running
 				:vel (* dir 0.15)
 				:foot-pos (+ *neutral-leg-space* 4.0)))|#
@@ -220,7 +228,7 @@
 
 (defstate "high-block"
   :supers
-  (blocking)
+  (single-block-box)
 
   :hb
   multi-hitbox
@@ -661,8 +669,6 @@ In this function the new foot pos is affected by the new velocity instead of the
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; freestep
 
-
-
 (defstate "freestep"
 	:animation
   single-animation
@@ -677,11 +683,13 @@ In this function the new foot pos is affected by the new velocity instead of the
   (loseness :initform 0.7)
   ;;Reaction slots
   (covered-dist :initform 0.0)
-  (interruption-time :initform nil)
+  (pending-state :initform (list nil nil))
+  
   (foot-pos :initform *neutral-leg-space*))
   
   :funcs
-  ((time-mult 25.0)
+  ((interruption-time (if (equal (car pending-state) :cancel) (cadr pending-state) nil))
+  (time-mult 25.0)
   (dist-weight (sqrt (/ total-dist 10.0)))
   (pre-time (round (* dist-weight (+ 1 (* time-mult 0.16)))))
   (body-time ;12
@@ -699,10 +707,13 @@ In this function the new foot pos is affected by the new velocity instead of the
   (vel (* dir spd)))
   
   :main-action
-  ((if (and (get-pressed :cancel) (< tpos pre-time) (not interruption-time))
-	(setf interruption-time tpos)
-	(if (and (get-pressed :dodge) (< tpos pre-time))
-		(switch-to-state 'continued-step :dir dir :total-dist total-dist :foot-pos foot-pos)
+  ((if (and (get-pressed :cancel) (< tpos pre-time) (not interruption-time)) ;;If cancel is sucessful.
+	(setf pending-state (list :cancel tpos))
+	(if (get-pressed :dodge) ;;If dodge is pressed.
+		(if (< tpos pre-time)
+			(if (valid-step-dist) (switch-to-state 'continued-step :dir dir :total-dist (get-step-dist) :foot-pos foot-pos))
+			(if (< tpos slow-time)
+			 (progn (if (and (get-pressed :dodge) (valid-step-dist)) (setf pending-state (list :continue slow-time (get-step-dist))) (common-transitions))) (common-transitions)))
 	 (common-transitions)))
   (move-forward vel)
   (incf covered-dist spd)
@@ -717,7 +728,10 @@ In this function the new foot pos is affected by the new velocity instead of the
   (lcase tpos
 	(end-time
 	(format t "~&CD: ~a tpos: ~a ~&" covered-dist tpos)
-	(switch-to-state 'idle)))))
+	(switch-to-state 'idle))))
+	
+	(if (and (equal (car pending-state) :continue) (equal tpos (cadr pending-state)))
+		(switch-to-state 'continued-step :dir dir :total-dist (caddr pending-state) :foot-pos foot-pos)))
   
   :rest
   (progn
@@ -758,8 +772,8 @@ In this function the new foot pos is affected by the new velocity instead of the
   (when (>= tpos body-time)
    (incf foot-pos spd))
    
-   (if (get-pressed :cancel)
-		(progn (setf tpos 0) (setf covered-dist 0.0) (setf foot-pos *neutral-leg-space*))
+   (if (and (get-pressed :dodge) (valid-step-dist) (equal dir held-dir))
+		(progn (setf tpos 0) (setf covered-dist 0.0) (setf total-dist (get-step-dist)) (setf foot-pos *neutral-leg-space*))
 		(common-transitions))
    
    (lcase tpos

@@ -161,8 +161,9 @@ If false, then sidesteps become effective."))
 
 (defmethod attack-blocked ((state single-attack-box) opposing-state)
   ())
-  
- (defun add-nohit (nohit-entity state)
+ 
+ ;;Nohit entries must be added to the hitbox by passing it into the hitbox's hit-objects.
+ (defmethod add-nohit (nohit-entity (state single-attack-box))
    (if (hitbox state) (push nohit-entity (hit-objects (hitbox state)))
 		(push nohit-entity (clashbox-nohit-obj-list state))))
 
