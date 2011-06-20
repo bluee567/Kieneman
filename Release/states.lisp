@@ -675,6 +675,9 @@ In this function the new foot pos is affected by the new velocity instead of the
 	:alt-name
   "stride"
   
+  :supers
+  (single-block-box)
+  
   :slots
   (;;Input Slots
   (dir)
@@ -707,14 +710,17 @@ In this function the new foot pos is affected by the new velocity instead of the
   (vel (* dir spd)))
   
   :main-action
-  ((if (and (get-pressed :cancel) (< tpos pre-time) (not interruption-time)) ;;If cancel is sucessful.
-	(setf pending-state (list :cancel tpos))
-	(if (get-pressed :dodge) ;;If dodge is pressed.
+  ((cond
+  ((and (get-pressed :cancel) (< tpos pre-time) (not interruption-time)) ;;If cancel is sucessful.
+		(setf pending-state (list :cancel tpos)))
+	((get-pressed :dodge) ;;If dodge is pressed.
 		(if (< tpos pre-time)
 			(if (valid-step-dist) (switch-to-state 'continued-step :dir dir :total-dist (get-step-dist) :foot-pos foot-pos))
 			(if (< tpos slow-time)
-			 (progn (if (and (get-pressed :dodge) (valid-step-dist)) (setf pending-state (list :continue slow-time (get-step-dist))) (common-transitions))) (common-transitions)))
-	 (common-transitions)))
+			 (progn (if (and (get-pressed :dodge) (valid-step-dist)) (setf pending-state (list :continue slow-time (get-step-dist))) (common-transitions))) (common-transitions))))
+	((get-pressed :defense)
+		(setf pending-state (list :defense nil)))
+	 (t (common-transitions)))
   (move-forward vel)
   (incf covered-dist spd)
   
@@ -722,16 +728,21 @@ In this function the new foot pos is affected by the new velocity instead of the
    (incf foot-pos spd))
   (when (>= tpos body-time)
    (decf foot-pos spd))
-  
-  (if (= final-time 0) (switch-to-state 'idle)
-  ;else
-  (lcase tpos
-	(end-time
-	(format t "~&CD: ~a tpos: ~a ~&" covered-dist tpos)
-	(switch-to-state 'idle))))
 	
 	(if (and (equal (car pending-state) :continue) (equal tpos (cadr pending-state)))
-		(switch-to-state 'continued-step :dir dir :total-dist (caddr pending-state) :foot-pos foot-pos)))
+		(switch-to-state 'continued-step :dir dir :total-dist (caddr pending-state) :foot-pos foot-pos)
+	 (if (and (not blockbox) (>= tpos slow-time) (equal (car pending-state) :defense))
+		 (set-blockbox (make-instance 'clash-tribox
+				   :parent state
+				   :x (* (get-direction fighter) 8.0) :Y 45.0
+				   :scalar-list (list 0.0 8.0  0.0 0.0  18.0 7.0)))))
+				   
+	(if (= final-time 0) (switch-to-state 'idle)
+		;else
+		(lcase tpos
+			(end-time
+			(format t "~&CD: ~a tpos: ~a ~&" covered-dist tpos)
+			(switch-to-state 'idle)))))
   
   :rest
   (progn

@@ -77,6 +77,35 @@ If false, then sidesteps become effective."))
 
 (defmethod linear-tracking ((state state))
   t)
+ 
+
+;;;;;;;;;
+;; Tensions
+;; Tensions keep track of unresolved aspects of states which will be counted down.
+;;;;;;;;;
+
+;;CHANGE TO ASSUME FIGHTER CONTAINS THE TESNTIONS.
+(defun set-tension (tension-name val &optional (fighter *fighter*))
+	(setf (get-hash tension-name (tensions fighter))))	
+
+(defun get-tension (tension-name &optional (fighter *fighter*))
+	(get-hash tension-name (tensions fighter)))
+	
+(defun tensions-exist (&optional (fighter *fighter*))
+	`(null (tensions state)))
+	
+(defun remove-tension (tension-name &optional (fighter *fighter*))
+	;;`(setf (tensions state) (delete-if #'(lamda (a) (eql (car a) ,tension-name)) (tensions state)))
+	(maphash #'(lambda (k v) (when (<= v 0) (remhash k (tensions fighter)))) (tensions fighter)))
+
+(defun progress-tensions (&optional (fighter *fighter*))
+	"This should be called once at the beginning of each step.
+	Each tension will be decreased by one and removed if <= 0"
+	`(progn
+		(loop for item in (tensions state)
+			do (decf (cdr item)))
+		(setf (tensions state) (delete-if #'(lamda (a) (<= (cdr a) 0)) (tensions state))))
+		(maphash #'(lambda (k v) (when (<= v 0) (remhash k (tensions fighter)))) (tensions fighter)))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;A mixin class which allows an attack state to not linearly track the
@@ -242,6 +271,12 @@ These will allow the character-collision method to appropriately dispatch the me
 	   ;;NOTE: Handle no hitting within the attack blocked method later.
 	   (add-nohit fighter cab)
        (attack-blocked cab sbb))))
+
+ ;;Nohit entries must be added to the hitbox by passing it into the hitbox's hit-objects.
+ (defmethod add-nohit (nohit-entity (state clash-attack-box))
+   (if (hitbox state) (push nohit-entity (hit-objects (hitbox state))))
+   (if (clashbox state) (push nohit-entity (hit-objects (clashbox state))))
+	(push nohit-entity (clashbox-nohit-obj-list state)))
 		
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;A mixin class which adds movement-independent-animation to a class.

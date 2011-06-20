@@ -131,7 +131,7 @@ corresponding to kc is held down."
 (defun get-axis-input-func (axis joystick)
   (λ (axis-val axis joystick)))
 
-(defun filtered-axis-func (axis joystick &key (dir 1.0) (max 1.0) (dead-range 0.1) (sticky-range 0.001))
+(defun filtered-axis-func (axis joystick &key (dir 1.0) (max 1.0) (dead-range 0.04) (sticky-range 0.001))
   (λ (let ((pos (* dir (/ (axis-val axis joystick) *axis-max-val*))))
        (if (>= pos dead-range)
 	   (if (> pos (- max sticky-range))
@@ -385,9 +385,9 @@ passed to this function."
 	(list
    :a1  (get-ji 3 pad) "Button 1"
    :a2 (get-ji 0 pad) "Button 2"
-   :defense (get-ji 1 pad) "NUM9"
-   :dodge (get-ji 2  pad) "Button 8"
-   :cancel (get-ji 7 pad) "Button 3"
+   :defense (get-ji 2 pad) "NUM9"
+   :dodge (get-ji 7  pad) "Button 8"
+   :cancel (get-ji 1 pad) "Button 3"
    :down (get-ai 6 pad) "Down Arrow"
    :up (get-ai 6 pad :dir -1) "Up Arrow"
    :r-left (get-ai 7 pad :dir -1) "Left Arrow"

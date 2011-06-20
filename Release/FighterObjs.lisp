@@ -50,6 +50,8 @@ to represent the stance the fighter is in so that the 'openness' of the stance r
 	:documentation
 	"A keylist of functions which, when called, will return input values
 which are used to drive the actions of the character.")
+	(:ia tensions
+	 :initform (make-hash-table))
    (:iea buffered-input-func)
    (:iea input-override-func)
    (:iea death-function
