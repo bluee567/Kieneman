@@ -7,6 +7,7 @@
 (defconstant *wide-leg-space* 27.0)
 (defconstant *trigger-radius* 0.75)
 (defconstant max-step-dist 30.0)
+(defconstant *block-startup* 10)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -226,6 +227,8 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; High Block
 
+
+
 (defstate "high-block"
   :supers
   (single-block-box)
@@ -250,11 +253,11 @@
        (decf escape-time)
        (when (<= escape-time 0)
 	 (funcall escape-func)))
-    (if (> tpos 10)
+    (if (> tpos *block-startup*)
     (cond
 	((not (get-held :defense))
 	 (common-transitions)
-	 (setf escape-time 10)
+	 (setf escape-time *block-startup*)
 	 (setf escape-func (λ (switch-to-state 'idle))))
 	
 	((get-held :a1)
@@ -713,13 +716,13 @@ In this function the new foot pos is affected by the new velocity instead of the
   ((cond
   ((and (get-pressed :cancel) (< tpos pre-time) (not interruption-time)) ;;If cancel is sucessful.
 		(setf pending-state (list :cancel tpos)))
-	((get-pressed :dodge) ;;If dodge is pressed.
+	((and (get-pressed :dodge) (null (car pending-state))) ;;If dodge is pressed.
 		(if (< tpos pre-time)
 			(if (valid-step-dist) (switch-to-state 'continued-step :dir dir :total-dist (get-step-dist) :foot-pos foot-pos))
 			(if (< tpos slow-time)
 			 (progn (if (and (get-pressed :dodge) (valid-step-dist)) (setf pending-state (list :continue slow-time (get-step-dist))) (common-transitions))) (common-transitions))))
-	((get-pressed :defense)
-		(setf pending-state (list :defense nil)))
+	((and (get-pressed :defense) (null (car pending-state)))
+		(setf pending-state (list :defense tpos)))
 	 (t (common-transitions)))
   (move-forward vel)
   (incf covered-dist spd)
@@ -734,8 +737,8 @@ In this function the new foot pos is affected by the new velocity instead of the
 	 (if (and (not blockbox) (>= tpos slow-time) (equal (car pending-state) :defense))
 		 (set-blockbox (make-instance 'clash-tribox
 				   :parent state
-				   :x (* (get-direction fighter) 8.0) :Y 45.0
-				   :scalar-list (list 0.0 8.0  0.0 0.0  18.0 7.0)))))
+				   :x (* (get-direction fighter) 8.0) :Y 43.0
+				   :scalar-list (list 0.0 23.0  0.0 0.0  8.0 20.0)))))
 				   
 	(if (= final-time 0) (switch-to-state 'idle)
 		;else

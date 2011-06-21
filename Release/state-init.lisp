@@ -86,26 +86,21 @@ If false, then sidesteps become effective."))
 
 ;;CHANGE TO ASSUME FIGHTER CONTAINS THE TESNTIONS.
 (defun set-tension (tension-name val &optional (fighter *fighter*))
-	(setf (get-hash tension-name (tensions fighter))))	
+	(setf (gethash tension-name (tensions fighter)) val))	
 
 (defun get-tension (tension-name &optional (fighter *fighter*))
-	(get-hash tension-name (tensions fighter)))
+	(gethash tension-name (tensions fighter)))
 	
 (defun tensions-exist (&optional (fighter *fighter*))
-	`(null (tensions state)))
+	(> (hash-table-count (tensions fighter)) 0))
 	
 (defun remove-tension (tension-name &optional (fighter *fighter*))
-	;;`(setf (tensions state) (delete-if #'(lamda (a) (eql (car a) ,tension-name)) (tensions state)))
-	(maphash #'(lambda (k v) (when (<= v 0) (remhash k (tensions fighter)))) (tensions fighter)))
+	(remhash tension-name (tensions fighter)))
 
 (defun progress-tensions (&optional (fighter *fighter*))
 	"This should be called once at the beginning of each step.
 	Each tension will be decreased by one and removed if <= 0"
-	`(progn
-		(loop for item in (tensions state)
-			do (decf (cdr item)))
-		(setf (tensions state) (delete-if #'(lamda (a) (<= (cdr a) 0)) (tensions state))))
-		(maphash #'(lambda (k v) (when (<= v 0) (remhash k (tensions fighter)))) (tensions fighter)))
+	(maphash #'(lambda (k v) (when (<= v 0) (remhash k (tensions fighter)))) (tensions fighter)))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;A mixin class which allows an attack state to not linearly track the
@@ -267,7 +262,13 @@ These will allow the character-collision method to appropriately dispatch the me
 	(if (and (blockbox sbb) (hitbox cab) (or (and (clashbox cab) (collision (blockbox sbb) (clashbox cab))) (and  (collision (blockbox sbb) (hitbox cab)))))
 	(with-accessors ((fighter parent)) sbb
 		;;NOTE: A blocked attack may simply mean that a 'blocking-attack' method is dispatched on the defending state.
-       (change-state fighter (make-block-stun rab fighter))
+		;;NOTE: This should be changed to properly reflect the attacking state's stun potential.
+       (change-state fighter (make-instance 'high-block-stun
+		    :duration 20
+			:parent fighter
+		    :kb-direction (get-direction (parent cab))
+		    :kb-speed 3.0
+		    :decceleration 0.1))
 	   ;;NOTE: Handle no hitting within the attack blocked method later.
 	   (add-nohit fighter cab)
        (attack-blocked cab sbb))))
