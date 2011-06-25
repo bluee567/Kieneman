@@ -541,13 +541,14 @@
   :slots
   ((forward-speed :initform 0)
    (hip-box :initform nil)
-   (blocked :initform nil))
+   (blocked :initform nil)
+   (cancel-time :initform nil))
 
   :funcs
   ((clash-time 13)
-  (attack-time 16)
+  (attack-time 20)
    (block-time (+ 38 (if blocked 12 0)))
-   (end-time (+ block-time 7)))
+   (end-time (+ block-time 14)))
 
   :animation
   single-animation
@@ -564,6 +565,9 @@
 
   :main-action
   ((common-transitions)
+  
+	(when (and (< tpos clash-time) (get-pressed :cancel))
+		(setf cancel-time tpos))
 
    (when (and (>= tpos block-time) (get-held :defense))
      (switch-to-state 'high-block-stun
@@ -575,13 +579,14 @@
    (when (<= tpos attack-time)
     (setf (radius hip-box) (+ 0.65 (* 1.5 (/ tpos (float attack-time))))))
    
+   (if (not cancel-time)
    (lcase tpos
-	 (clash-time (set-clashbox (make-instance 'clash-tribox
+		(clash-time (set-clashbox (make-instance 'clash-tribox
 				   :parent state
 				   :x (* (get-direction fighter) 24.0) :Y 32.0
 				   :scalar-list (list -10.0 8.0  -10.0 0.0  7.0 14.0))))
-     (attack-time (set-hitbox
-	  (make-static-dist-rab
+		(attack-time (set-hitbox
+			(make-static-dist-rab
 			 :parent state
 			 :damage 90
 			 :hitstun 20
@@ -591,21 +596,24 @@
 			 :x (* (get-direction fighter) 36.0) :Y 55.0
 			 :radius 9.0 :height 8.0)))
      
-     ((+ 1 attack-time) (remove-hitbox))
-     
-     (end-time (switch-to-state 'idle :key-buffer key-buffer))))
+		((+ 1 attack-time) (remove-hitbox))
+	 
+		(end-time (switch-to-state 'idle :key-buffer key-buffer)))
+	 ;;If cancel-time
+	 (if (= tpos (* 2 cancel-time)) (switch-to-state 'idle :key-buffer key-buffer))))
 
   :rest
   (progn
     (def-statemeth animate ()
-      (ccnm)
+      #|(ccnm)
       (let* ((tp (float tpos))
 	     (ani animation)
 	     (mtp (if (< tp attack-time)
 		      (* 12.0 (/ tp attack-time))
 		    (+ (* (/ (- tp attack-time) (- end-time attack-time)) (- 26.0 12.0)) 12.0)))
 	     (atp (/ (float mtp) 60.0)))
-	(set-time-position ani atp)))
+	(set-time-position ani atp))|#
+	(scale-animation (list 0.0 7.0 14.0 attack-time end-time) (list 0.0 0.5 5.0 12.0 26.0)))
 
     (def-statemeth attack-blocked (other-state)
       (ccnm)

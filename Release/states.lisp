@@ -81,7 +81,7 @@
       ((and (get-pressed :defense) (get-held :down))
        (set-buffered-state (make-state 'duck)))
       
-      ((get-held :defense)
+      ((get-pressed :defense)
        (set-buffered-state (make-state 'high-block)))
 
       ((and (get-pressed :dodge) (get-in-region :min-butterfly (/ (* pi 6) 8) :min-axis-dist *trigger-radius*))
@@ -120,12 +120,14 @@
 			  (get-released input))))
      (let ((dir (if (get-held (direction-symbol)) positive negative)))
 		(common-transitions)
-		(let ((bs (get-buffered-state)))
+		(if(get-held :defense)
+			(set-buffered-state (make-state 'high-block)))
+			
+	(let ((bs (get-buffered-state)))
        (if bs
 	   (change-state *fighter* bs))
 	   (set-buffered-state nil)
-	   (when (or (get-held :cancel) (get-released :cancel)) (format t "~&b: ~a r:~a~&" (get-held :cancel) (get-released :cancel)))
-	   ))))
+	   (when (or (get-held :cancel) (get-released :cancel)) (format t "~&b: ~a r:~a~&" (get-held :cancel) (get-released :cancel)))))))
 
   :entryfunc
   (progn
@@ -260,13 +262,9 @@
 	 (setf escape-time *block-startup*)
 	 (setf escape-func (λ (switch-to-state 'idle))))
 	
-	((get-held :a1)
+	((and (get-held :a1) (get-held :defense))
 	 (setf escape-time 6)
-	 (setf escape-func (λ (switch-to-state 'grab))))
-	
-	((get-pressed :down)
-	 (setf escape-time 3)
-	 (setf escape-func (λ (switch-to-state 'duck)))))
+	 (setf escape-func (λ (switch-to-state 'grab)))))
 	 
 	 (common-transitions)))))
 
@@ -732,20 +730,21 @@ In this function the new foot pos is affected by the new velocity instead of the
   (when (>= tpos body-time)
    (decf foot-pos spd))
 	
+	(when (>= tpos slow-time)
 	(if (and (equal (car pending-state) :continue) (equal tpos (cadr pending-state)))
 		(switch-to-state 'continued-step :dir dir :total-dist (caddr pending-state) :foot-pos foot-pos)
-	 (if (and (not blockbox) (>= tpos slow-time) (equal (car pending-state) :defense))
+	 (if (and (not blockbox) (= tpos slow-time) (equal (car pending-state) :defense))
 		 (set-blockbox (make-instance 'clash-tribox
 				   :parent state
 				   :x (* (get-direction fighter) 8.0) :Y 43.0
-				   :scalar-list (list 0.0 23.0  0.0 0.0  8.0 20.0)))))
+				   :scalar-list (list 0.0 23.0  0.0 0.0  8.0 20.0))))))
 				   
 	(if (= final-time 0) (switch-to-state 'idle)
 		;else
 		(lcase tpos
 			(end-time
 			(format t "~&CD: ~a tpos: ~a ~&" covered-dist tpos)
-			(switch-to-state 'idle)))))
+			(if (equal (car pending-state) :defense) (switch-to-state 'high-block :tpos (- tpos (cadr pending-state))) (switch-to-state 'idle))))))
   
   :rest
   (progn
