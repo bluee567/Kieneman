@@ -93,12 +93,10 @@
       ;; 				  ))
       
       ((and (get-in-region :min-axis-dist *trigger-radius*)  (not (get-held :a1)) (not (get-held :a2)))
-       (if (get-pressed :dodge)
+       (if (get-pressed :slow)
 	   (set-buffered-state (make-state 'freestep :dir held-dir :total-dist (get-step-dist)))
-	 #|(set-buffered-state (make-state 'running
-				:vel (* dir 0.15)
-				:foot-pos (+ *neutral-leg-space* 4.0)))|#
-				)))))
+	   (if (get-pressed :dodge)
+	   (set-buffered-state (make-state 'yukuri-step :dir held-dir :total-dist (get-step-dist)))))))))
 
 ;;Idle
 
@@ -693,7 +691,7 @@ In this function the new foot pos is affected by the new velocity instead of the
   
   :funcs
   ((interruption-time (if (equal (car pending-state) :cancel) (cadr pending-state) nil))
-  (time-mult 25.0)
+  (time-mult 20.0)
   (dist-weight (sqrt (/ total-dist 10.0)))
   (pre-time (round (* dist-weight (+ 1 (* time-mult 0.16)))))
   (body-time ;12
@@ -718,7 +716,7 @@ In this function the new foot pos is affected by the new velocity instead of the
 		(if (< tpos pre-time)
 			(if (valid-step-dist) (switch-to-state 'continued-step :dir dir :total-dist (get-step-dist) :foot-pos foot-pos))
 			(if (< tpos slow-time)
-			 (progn (if (and (get-pressed :dodge) (valid-step-dist)) (setf pending-state (list :continue slow-time (get-step-dist))) (common-transitions))) (common-transitions))))
+			 (progn (if (and (get-pressed :dodge) (equal held-dir dir) (valid-step-dist)) (setf pending-state (list :continue slow-time (get-step-dist))) (common-transitions))) (common-transitions))))
 	((and (get-pressed :defense) (null (car pending-state)))
 		(setf pending-state (list :defense tpos)))
 	 (t (common-transitions)))
@@ -749,6 +747,86 @@ In this function the new foot pos is affected by the new velocity instead of the
   :rest
   (progn
     (def-statemeth animate ()
+      (ccnm)
+      (set-time-position animation (/ foot-pos 60.0)))))
+
+(defstate "yukuri-step"
+	:animation
+		single-animation
+	:alt-name
+		"stride"
+	:supers
+	(single-block-box)
+	
+	:slots
+	(;;Input Slots
+  (dir)
+  (total-dist)
+  (entrance-spd :initform 0.0)
+  (loseness :initform 0.7)
+  ;;Reaction slots
+  (covered-dist :initform 0.0)
+  (pending-state :initform (list nil nil))
+  
+  (foot-pos :initform *neutral-leg-space*))
+	
+	:funcs
+  ((interruption-time (if (equal (car pending-state) :cancel) (cadr pending-state) nil))
+  (time-mult 20.0)
+  (dist-weight (sqrt (/ total-dist 10.0)))
+  (pre-time (round (* dist-weight (+ 1 (* time-mult 0.25)))))
+  (body-time ;12
+  (round (* dist-weight (+ 1 (* time-mult 0.55)))))
+  (slow-time ;17
+  (round (* dist-weight (+ 1 (* time-mult 0.72)))))
+  (final-time (if interruption-time 14 (* dist-weight (+ time-mult 2.0))))
+  (end-time (round final-time))
+  (trans-fact total-dist)
+  (spd (if (or (< tpos pre-time) interruption-time)
+	(* (/ 0.2 (- pre-time 1.0)) trans-fact)
+	(if (< tpos body-time)
+	 (* (/ 0.5 (- body-time pre-time)) trans-fact)
+	 (if (< tpos slow-time) (* (/ 0.3 (- slow-time body-time)) trans-fact) (* 0.0 trans-fact)))))
+  (vel (* dir spd)))
+	
+	:main-action
+	((cond
+  ((and (get-pressed :cancel) (< tpos pre-time) (not interruption-time)) ;;If cancel is sucessful.
+		(setf pending-state (list :cancel tpos)))
+	((and (get-pressed :dodge) (null (car pending-state))) ;;If dodge is pressed.
+		(if (< tpos pre-time)
+			(if (valid-step-dist) (switch-to-state 'continued-step :dir dir :total-dist (get-step-dist) :foot-pos foot-pos))
+			(if (< tpos slow-time)
+			 (progn (if (and (get-pressed :dodge) (equal held-dir dir) (valid-step-dist)) (setf pending-state (list :continue slow-time (get-step-dist))) (common-transitions))) (common-transitions))))
+	((and (get-pressed :defense) (null (car pending-state)))
+		(setf pending-state (list :defense tpos)))
+	 (t (common-transitions)))
+  (move-forward vel)
+  (incf covered-dist spd)
+  
+  (when (< tpos pre-time)
+   (incf foot-pos spd))
+  (when (>= tpos body-time)
+   (decf foot-pos spd))
+	
+	(if (and (equal (car pending-state) :continue) (equal tpos (cadr pending-state)))
+		(switch-to-state 'continued-step :dir dir :total-dist (caddr pending-state) :foot-pos foot-pos)
+	 (if (and (not blockbox) (= tpos slow-time) (equal (car pending-state) :defense))
+		 (set-blockbox (make-instance 'clash-tribox
+				   :parent state
+				   :x (* (get-direction fighter) 8.0) :Y 43.0
+				   :scalar-list (list 0.0 23.0  0.0 0.0  8.0 20.0)))))
+				   
+	(if (= final-time 0) (switch-to-state 'idle)
+		;else
+		(lcase tpos
+			(end-time
+			(format t "~&CD: ~a tpos: ~a ~&" covered-dist tpos)
+			(if (equal (car pending-state) :defense) (switch-to-state 'high-block :tpos (- tpos (cadr pending-state))) (switch-to-state 'idle))))))
+	
+	:rest
+	(progn
+     (def-statemeth animate ()
       (ccnm)
       (set-time-position animation (/ foot-pos 60.0)))))
 	  

@@ -49,6 +49,9 @@
 (defclass+ clash-tribox (attached-box displayed-tribox mortal)
 	())
 
+(defmethod animate ((anim clash-tribox))
+  t)
+
 (defmethod material-name ((obj clash-tribox))
 	"green")
 
@@ -529,6 +532,7 @@
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+(defconstant cancel-extra 16)
 
 (defstate "roundhouse"
 
@@ -546,7 +550,7 @@
 
   :funcs
   ((clash-time 13)
-  (attack-time 20)
+   (attack-time 20)
    (block-time (+ 38 (if blocked 12 0)))
    (end-time (+ block-time 14)))
 
@@ -600,20 +604,15 @@
 	 
 		(end-time (switch-to-state 'idle :key-buffer key-buffer)))
 	 ;;If cancel-time
-	 (if (= tpos (* 2 cancel-time)) (switch-to-state 'idle :key-buffer key-buffer))))
+	 (if (= tpos (+ cancel-extra (* 2 cancel-time))) (switch-to-state 'idle :key-buffer key-buffer))))
 
   :rest
   (progn
     (def-statemeth animate ()
-      #|(ccnm)
-      (let* ((tp (float tpos))
-	     (ani animation)
-	     (mtp (if (< tp attack-time)
-		      (* 12.0 (/ tp attack-time))
-		    (+ (* (/ (- tp attack-time) (- end-time attack-time)) (- 26.0 12.0)) 12.0)))
-	     (atp (/ (float mtp) 60.0)))
-	(set-time-position ani atp))|#
-	(scale-animation (list 0.0 7.0 14.0 attack-time end-time) (list 0.0 0.5 5.0 12.0 26.0)))
+	(let ((atime ))
+		(scale-animation (list 0.0 14.0 attack-time end-time) (list 0.0 5.0 12.0 26.0)
+		:time (if cancel-time (if (< (- tpos cancel-time) (/ cancel-extra 2)) cancel-time (max 1 (- (* 2 cancel-time) tpos))) tpos))
+		(format t "~&tpos: ~a c-t: ~a~&" tpos cancel-time)))
 
     (def-statemeth attack-blocked (other-state)
       (ccnm)
@@ -849,16 +848,16 @@ is possible from the foot position of the previous state.
   multi-hitbox
 
   :supers
-  (single-attack-box partial-tracking)
+  (clash-attack-box movement-independent-animation partial-tracking)
 
   :slots
-  ((hip-box))
+  ((hip-box)
+   (move-speed :initform 0.3))
 
   :funcs
   ((attack-time 22)
    (threat-end-time (+ attack-time 4))
-   (end-time 64)
-   (move-speed 0.3))
+   (end-time 64))
 
   :initfunc
   ((&key)
@@ -872,8 +871,14 @@ is possible from the foot position of the previous state.
 
   :main-action
   ((common-transitions)
-  (incf x (* move-speed (get-direction fighter)))
+  (if (> move-speed 0.0)
+	(animate-forward move-speed)
+	(progn (move-forward move-speed) (move-animation move-speed)))
    (lcase tpos
+	  (10 (set-clashbox (make-instance 'clash-tribox
+				   :parent state
+				   :x (* (get-direction fighter) 6.0) :Y 30.0
+				   :scalar-list (list 0.0 10.0  0.0 0.0  20.0 8.0))))
 	  (attack-time
 	   (set-hitbox
 	    (make-static-dist-rab 
@@ -900,10 +905,14 @@ is possible from the foot position of the previous state.
 
   :rest
   (progn
-    (def-statemeth animate ()
+    #|(def-statemeth animate ()
       (ccnm)
       (if (get-enabled animation)
-	  (set-position-f (ogre-node parent) (- x (float (* tpos move-speed (get-direction fighter)))) y 0.0)))
+	  (set-position-f (ogre-node parent) (- x (float (* tpos move-speed (get-direction fighter)))) y 0.0)))|#
+	  
+	  (def-statemeth mutual-clash :after ((other sidekickW))
+		(setf move-speed -0.1)
+		(setf (move-speed other) -0.1))
 
     (def-statemeth linear-tracking ()
       nil)))
@@ -1109,8 +1118,8 @@ is possible from the foot position of the previous state.
 	  ((- attack-time 2)
 		(set-clashbox (make-instance 'clash-tribox
 				   :parent state
-				   :x (* (get-direction fighter) 28.0) :Y 34.0
-				   :scalar-list (list 0.0 6.0  0.0 0.0  16.0 6.0))))
+				   :x (* (get-direction fighter) 12.0) :Y 34.0
+				   :scalar-list (list 0.0 4.0  0.0 0.0  32.0 6.0))))
 	  (attack-time
 	   (set-hitbox
 	    (make-static-dist-rab 
@@ -1130,9 +1139,12 @@ is possible from the foot position of the previous state.
 	   (switch-to-state 'idle :key-buffer key-buffer))))
 
   :rest
+  (progn
+  
+		
   (def-statemeth attack-blocked (other-state)
       (ccnm)
-      (setf end-time 65)))
+      (setf end-time 65))))
 
 
 
@@ -1144,26 +1156,36 @@ is possible from the foot position of the previous state.
   multi-hitbox
 
   :constants
-  ((attack-point 28)
+  ((dodge-point 10)
+   (dodge-end-point 22)
+   (attack-point 28)
    (end-point 65))
 
   :slots
-  ((hip-box :initform nil))
+  ((head-box :initform nil)
+  (hip-box :initform nil))
 
   :initfunc
   ((&key)
-    (let ((hip (make-uni-box state 0.0 (* 0.4 (height fighter)) 0.65 0.3)))
+    (let ((hip (make-uni-box state 0.0 (* 0.4 (height fighter)) 0.65 0.3))
+		   (head (make-uni-box state 0.0 (* 0.7 (height fighter)) 0.5 0.3)))
+	 (setf (head-box state) head)
      (setf (hip-box state) hip)
      (setf (hitbox-list state)
 	   (list
+	   head
 	    (make-uni-box state 0.0 0.0 1.0 0.4)
 	    hip))))
 
   :main-action
   ((common-transitions)
-  (when (<= tpos attack-point)
-     (setf (x hip-box)  (* 0.75 (get-direction) (/ tpos (float attack-point))))
-     (setf (radius hip-box) (+ 0.65 (* 0.75 (/ tpos (float attack-point))))))
+  (when (and (> tpos dodge-point) (<= tpos dodge-end-point))
+  (let* ((trunc-time (- tpos dodge-point)) (trunc-end-point (float (- dodge-end-point dodge-point)))
+		(ratio (/ trunc-time trunc-end-point)))
+     (setf (x hip-box)  (* 0.75 (get-direction) ratio))
+     (setf (radius hip-box) (+ 0.65 (* 0.75 ratio)))
+	 (setf (x head-box)  (* (width fighter) -0.75 (get-direction) ratio))
+     (setf (y head-box) (* (height fighter) (- 0.7 (* 0.2 ratio))))))
    (lcase tpos
 	  (attack-point (set-hitbox
 			 (make-static-dist-rab

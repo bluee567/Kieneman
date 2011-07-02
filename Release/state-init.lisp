@@ -232,6 +232,10 @@ If false, then sidesteps become effective."))
 	 (kill clashbox))
      (setf clashbox nil)))
 
+(defmethod animate :after ((anim single-clash-box))
+	(with-accessors ((clashbox clashbox)) anim
+	(when clashbox (animate clashbox))))
+
 (defmethod exit-state :after ((fighter fighter) (state single-clash-box))
   (when (clashbox state)
     (kill (clashbox state))))
@@ -290,6 +294,10 @@ These will allow the character-collision method to appropriately dispatch the me
 (defmethod animate ((anim movement-independent-animation))
   (ccnm)
   (set-position-f (ogre-node (parent anim)) (- (x anim) (animation-distance anim)) (y anim) 0.0))
+  
+(defmacro move-animation (dist)
+  `(let ((dist-vec (* ,dist (get-direction fighter))))
+     (incf animation-distance (- dist-vec))))
 
 (defmacro animate-forward (dist)
   `(let ((dist-vec (* ,dist (get-direction fighter))))

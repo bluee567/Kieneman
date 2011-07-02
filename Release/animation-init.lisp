@@ -166,10 +166,10 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Helper Macros
 
-(defmacro scale-animation (to-vals from-vals)
+(defmacro scale-animation (to-vals from-vals &key (time 'tpos))
  `(progn
     (ccnm)
-    (let* ((mtp (/ (map-through-range (float tpos) ,to-vals ,from-vals) *fps*)))
+    (let* ((mtp (/ (map-through-range (float ,time) ,to-vals ,from-vals) *fps*)))
       (set-time-position animation mtp))))
 
 
