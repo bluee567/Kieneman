@@ -47,17 +47,17 @@
 				:min-axis-dist *trigger-radius*))
        (set-buffered-state (make-state 'sidekickS)))
       
-      ((and (get-pressed :a2) ;; (get-tapped (direction-symbol)) (get-held :down)
+      ((and (get-pressed :a2)
 	    (get-in-region :min-butterfly (/ (* pi 1) 8) :max-butterfly (/ (* pi 3) 8)
 				:min-axis-dist *trigger-radius*))
        (set-buffered-state (make-state 'sidekickW)))
 
-      ((and (get-pressed :a2) ;; (get-tapped (direction-symbol))
+      ((and (get-pressed :a2)
 	    (get-in-region :min-butterfly (/ (* pi 3) 8) :max-butterfly (/ (* pi 5) 8)
 				:min-axis-dist *trigger-radius*))
        (set-buffered-state (make-state 'sidekickW)))
       
-      ((and (get-pressed :a2) ;; (get-tapped (direction-symbol))
+      ((and (get-pressed :a2)
 	    (get-in-region :min-butterfly (/ (* pi 7) 8)
 				:min-axis-dist *trigger-radius*))
        (set-buffered-state (make-state 'bodykick)))
@@ -78,11 +78,11 @@
       ((and (get-held :defense) (get-held :a1))
        (set-buffered-state (make-state 'grab)))
       
-      ((and (get-pressed :defense) (get-held :down))
-       (set-buffered-state (make-state 'duck)))
-      
       ((get-pressed :defense)
        (set-buffered-state (make-state 'high-block)))
+	  
+	  ((get-pressed :alt-def)
+       (set-buffered-state (make-state 'high-block :block-height :gut)))
 
       ((and (get-pressed :dodge) (get-in-region :min-butterfly (/ (* pi 6) 8) :min-axis-dist *trigger-radius*))
        (set-buffered-state (make-state 'sidestep)))
@@ -93,12 +93,18 @@
       ;; 				  ))
       
       ((and (get-in-region :min-axis-dist *trigger-radius*)  (not (get-held :a1)) (not (get-held :a2)))
-       (if (get-pressed :slow)
-	   (set-buffered-state (make-state 'freestep :dir held-dir :total-dist (get-step-dist)))
-	   (if (get-pressed :dodge)
-	   (set-buffered-state (make-state 'yukuri-step :dir held-dir :total-dist (get-step-dist)))))))))
+       (if (get-pressed :dodge)
+	    (set-buffered-state (make-state 'freestep :dir held-dir :total-dist (get-step-dist)))
+	   (if (get-pressed :move)
+	    (set-buffered-state (make-state 'yukuri-step :dir held-dir :total-dist (get-step-dist)))))))))
 
 ;;Idle
+
+(defun use-buffered-state ()
+	(let ((bs (get-buffered-state)))
+	(if bs
+	   (change-state *fighter* bs))
+	   (set-buffered-state nil)))
 
 (defstate "idle"
   :slots
@@ -118,8 +124,11 @@
 			  (get-released input))))
      (let ((dir (if (get-held (direction-symbol)) positive negative)))
 		(common-transitions)
-		(if(get-held :defense)
+		(cond
+			((get-held :defense)
 			(set-buffered-state (make-state 'high-block)))
+			((get-held :alt-def)
+			(set-buffered-state (make-state 'high-block :block-height :gut))))
 			
 	(let ((bs (get-buffered-state)))
        (if bs
@@ -227,7 +236,11 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; High Block
 
-
+(defun make-block-tribox (height-symbol &optional (fighter *fighter*))
+	(make-instance 'clash-tribox
+				   :parent (state fighter)
+				   :x (* (get-direction fighter) (if (equal height-symbol :high) 5.0 2.0)) :Y (if (equal height-symbol :high) 43.0 27.0)
+				   :scalar-list (list (if (equal height-symbol :high) 8.0 2.0) 20.0  8.0 0.0  0.0 10.0)))
 
 (defstate "high-block"
   :supers
@@ -237,14 +250,17 @@
   multi-hitbox
 
   :slots
-  ((escape-time :initform nil) ;;The number of frames before blocking can return to idle.
-   (escape-func :initform nil)) ;;A lambda to be executed when escape time runs out.
+  (;;CAN BE: nil - meaning that there has been no trigger causing the state to change.
+	;;		 int - The number of frames before blocking can return to idle.
+   (escape-time :initform nil)
+   ;;A lambda to be executed when escape time runs out.
+   (escape-func :initform nil)
+   (block-height :initform :high)
+   (block-startup :initform *block-startup*))
 
   :initfunc
   ((&key)
-  (set-hitbox-list (0.0 0.0 1.0 0.4)
-		   (0.0 (* 0.4 (height fighter)) 1.0 0.3)
-		   (0.0 (* 0.7 (height fighter)) 1.8 0.3)))
+  (default-hitboxes))
 
   :main-action
   ((if escape-time
@@ -253,18 +269,28 @@
        (decf escape-time)
        (when (<= escape-time 0)
 	 (funcall escape-func)))
-    (if (> tpos *block-startup*)
-    (cond
-	((not (get-held :defense))
-	 (common-transitions)
-	 (setf escape-time *block-startup*)
-	 (setf escape-func (λ (switch-to-state 'idle))))
-	
-	((and (get-held :a1) (get-held :defense))
-	 (setf escape-time 6)
-	 (setf escape-func (λ (switch-to-state 'grab)))))
 	 
+   (progn
+   (if (and (not blockbox) (> tpos 6))
+		(set-blockbox (make-block-tribox block-height)))
+   (if (> tpos block-startup)
+	(cond
+	 ((or (and (equal block-height :high) (not (get-held :defense)))
+		  (and (equal block-height :gut) (not (get-held :alt-def))))
+	  (common-transitions)
+	  (setf escape-time block-startup)
+	  (setf escape-func (λ (switch-to-state 'idle))))
+	
+	 ((and (get-held :a1) (get-held :defense))
+	  (setf escape-time 5)
+	  (setf escape-func (λ (switch-to-state 'grab)))))
+	 
+	(if (get-pressed :cancel)
+	  (progn (setf escape-time (+ 4 (/ tpos 2)))
+			(setf escape-func (λ (switch-to-state 'idle))))
 	 (common-transitions)))))
+	 ;(when blockbox (format t "~&x:~a~&bx:~a~&px:~a~&" x (x blockbox) (x (car (point-list blockbox)))))
+	 ))
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -712,13 +738,16 @@ In this function the new foot pos is affected by the new velocity instead of the
   ((cond
   ((and (get-pressed :cancel) (< tpos pre-time) (not interruption-time)) ;;If cancel is sucessful.
 		(setf pending-state (list :cancel tpos)))
-	((and (get-pressed :dodge) (null (car pending-state))) ;;If dodge is pressed.
+	((and (get-pressed :move) (null (car pending-state))) ;;If move is pressed.
 		(if (< tpos pre-time)
 			(if (valid-step-dist) (switch-to-state 'continued-step :dir dir :total-dist (get-step-dist) :foot-pos foot-pos))
 			(if (< tpos slow-time)
-			 (progn (if (and (get-pressed :dodge) (equal held-dir dir) (valid-step-dist)) (setf pending-state (list :continue slow-time (get-step-dist))) (common-transitions))) (common-transitions))))
+			 (progn (if (and (get-pressed :move) (equal held-dir dir) (valid-step-dist)) (setf pending-state (list :continue slow-time (get-step-dist))) (common-transitions))) (common-transitions))))
 	((and (get-pressed :defense) (null (car pending-state)))
 		(setf pending-state (list :defense tpos)))
+	((and (get-pressed :a1)
+		   (null (car pending-state)))
+		(setf pending-state (list :jab tpos)))
 	 (t (common-transitions)))
   (move-forward vel)
   (incf covered-dist spd)
@@ -729,20 +758,20 @@ In this function the new foot pos is affected by the new velocity instead of the
    (decf foot-pos spd))
 	
 	(when (>= tpos slow-time)
-	(if (and (equal (car pending-state) :continue) (equal tpos (cadr pending-state)))
-		(switch-to-state 'continued-step :dir dir :total-dist (caddr pending-state) :foot-pos foot-pos)
-	 (if (and (not blockbox) (= tpos slow-time) (equal (car pending-state) :defense))
-		 (set-blockbox (make-instance 'clash-tribox
-				   :parent state
-				   :x (* (get-direction fighter) 8.0) :Y 43.0
-				   :scalar-list (list 0.0 23.0  0.0 0.0  8.0 20.0))))))
+	(cond ((and (equal (car pending-state) :continue) (equal tpos (cadr pending-state)))
+		(switch-to-state 'continued-step :dir dir :total-dist (caddr pending-state) :foot-pos foot-pos))
+		((and (equal (car pending-state) :jab) (equal tpos slow-time))
+		(switch-to-state 'jab))
+	 ((and (not blockbox) (= tpos slow-time) (equal (car pending-state) :defense))
+		 (set-blockbox (make-block-tribox :high)))))
 				   
 	(if (= final-time 0) (switch-to-state 'idle)
 		;else
 		(lcase tpos
 			(end-time
 			(format t "~&CD: ~a tpos: ~a ~&" covered-dist tpos)
-			(if (equal (car pending-state) :defense) (switch-to-state 'high-block :tpos (- tpos (cadr pending-state))) (switch-to-state 'idle))))))
+			(if (equal (car pending-state) :defense) (progn (switch-to-state 'high-block :tpos (- tpos (cadr pending-state))))
+				(switch-to-state 'idle))))))
   
   :rest
   (progn
@@ -791,15 +820,22 @@ In this function the new foot pos is affected by the new velocity instead of the
 	
 	:main-action
 	((cond
-  ((and (get-pressed :cancel) (< tpos pre-time) (not interruption-time)) ;;If cancel is sucessful.
+	 ((and (get-pressed :cancel) (< tpos pre-time) (not interruption-time)) ;;If cancel is sucessful.
 		(setf pending-state (list :cancel tpos)))
-	((and (get-pressed :dodge) (null (car pending-state))) ;;If dodge is pressed.
+	 ((and (get-pressed :move) (null (car pending-state))) ;;If move is pressed.
 		(if (< tpos pre-time)
 			(if (valid-step-dist) (switch-to-state 'continued-step :dir dir :total-dist (get-step-dist) :foot-pos foot-pos))
 			(if (< tpos slow-time)
-			 (progn (if (and (get-pressed :dodge) (equal held-dir dir) (valid-step-dist)) (setf pending-state (list :continue slow-time (get-step-dist))) (common-transitions))) (common-transitions))))
-	((and (get-pressed :defense) (null (car pending-state)))
+			 (progn (if (and (get-pressed :move) (equal held-dir dir) (valid-step-dist)) (setf pending-state (list :continue slow-time (get-step-dist))) (common-transitions))) (common-transitions))))
+	 ((and (get-pressed :defense) (null (car pending-state)))
 		(setf pending-state (list :defense tpos)))
+	 ((and  (get-pressed :a2)
+			(get-in-region :min-butterfly (/ (* pi 1) 8) :max-butterfly (/ (* pi 5) 8) :min-axis-dist *trigger-radius*) 
+			(null (car pending-state)))
+		(setf pending-state (list :sidekickw tpos)))
+	 ((and (get-pressed :a1)
+		   (null (car pending-state)))
+		(setf pending-state (list :jab tpos)))
 	 (t (common-transitions)))
   (move-forward vel)
   (incf covered-dist spd)
@@ -809,13 +845,15 @@ In this function the new foot pos is affected by the new velocity instead of the
   (when (>= tpos body-time)
    (decf foot-pos spd))
 	
-	(if (and (equal (car pending-state) :continue) (equal tpos (cadr pending-state)))
-		(switch-to-state 'continued-step :dir dir :total-dist (caddr pending-state) :foot-pos foot-pos)
-	 (if (and (not blockbox) (= tpos slow-time) (equal (car pending-state) :defense))
-		 (set-blockbox (make-instance 'clash-tribox
-				   :parent state
-				   :x (* (get-direction fighter) 8.0) :Y 43.0
-				   :scalar-list (list 0.0 23.0  0.0 0.0  8.0 20.0)))))
+	(cond
+	((and (equal (car pending-state) :continue) (equal tpos (cadr pending-state)))
+		(switch-to-state 'continued-step :dir dir :total-dist (caddr pending-state) :foot-pos foot-pos))
+	 ((and (equal (car pending-state) :sidekickw) (equal tpos slow-time))
+		(switch-to-state 'sidekickw))
+	 ((and (equal (car pending-state) :jab) (equal tpos slow-time))
+		(switch-to-state 'jab))
+	 ((and (not blockbox) (= tpos slow-time) (equal (car pending-state) :defense))
+		 (set-blockbox (make-block-tribox :high))))
 				   
 	(if (= final-time 0) (switch-to-state 'idle)
 		;else
@@ -863,7 +901,7 @@ In this function the new foot pos is affected by the new velocity instead of the
   (when (>= tpos body-time)
    (incf foot-pos spd))
    
-   (if (and (get-pressed :dodge) (valid-step-dist) (equal dir held-dir))
+   (if (and (get-pressed :move) (valid-step-dist) (equal dir held-dir))
 		(progn (setf tpos 0) (setf covered-dist 0.0) (setf total-dist (get-step-dist)) (setf foot-pos *neutral-leg-space*))
 		(common-transitions))
    

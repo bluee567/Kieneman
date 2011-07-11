@@ -179,6 +179,10 @@ If false, then sidesteps become effective."))
 	 (kill hitbox))
      (setf hitbox nil)))
 
+(defmethod animate :after ((anim single-attack-box))
+	(with-accessors ((hitbox hitbox)) anim
+	(when hitbox (animate hitbox))))
+
 (defmethod exit-state :after ((fighter fighter) (state single-attack-box))
   (when (hitbox state)
     (kill (hitbox state))))
@@ -208,6 +212,10 @@ If false, then sidesteps become effective."))
      (when blockbox
 	 (kill blockbox))
      (setf blockbox nil)))
+
+(defmethod animate :after ((anim single-block-box))
+	(with-accessors ((blockbox blockbox)) anim
+	(when blockbox (animate blockbox))))
 
 (defmethod exit-state :after ((fighter fighter) (state single-block-box))
   (when (blockbox state)
@@ -263,16 +271,18 @@ These will allow the character-collision method to appropriately dispatch the me
 				(add-nohit (parent s2) s1)))))
 		
 (defmethod-duel character-collision ((cab clash-attack-box) (sbb single-block-box))
-	(if (and (blockbox sbb) (hitbox cab) (or (and (clashbox cab) (collision (blockbox sbb) (clashbox cab))) (and  (collision (blockbox sbb) (hitbox cab)))))
+	(if (and (blockbox sbb) (hitbox cab) (or (and (clashbox cab) (collision (blockbox sbb) (clashbox cab))) (and  (collision (blockbox sbb) (hitbox cab))) (collision (clashbox cab) sbb)))
 	(with-accessors ((fighter parent)) sbb
 		;;NOTE: A blocked attack may simply mean that a 'blocking-attack' method is dispatched on the defending state.
 		;;NOTE: This should be changed to properly reflect the attacking state's stun potential.
-       (change-state fighter (make-instance 'high-block-stun
+       #|(change-state fighter (make-instance 'high-block-stun
 		    :duration 20
 			:parent fighter
 		    :kb-direction (get-direction (parent cab))
 		    :kb-speed 3.0
-		    :decceleration 0.1))
+		    :decceleration 0.1))|#
+		;;(block-collision-prep (hitbox cab) sbb)
+		(change-state fighter (make-block-stun (hitbox cab) fighter))
 	   ;;NOTE: Handle no hitting within the attack blocked method later.
 	   (add-nohit fighter cab)
        (attack-blocked cab sbb))))

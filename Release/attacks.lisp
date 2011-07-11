@@ -104,12 +104,13 @@
    (decf (hp fighter) (damage rab))		;Hurt him!
    (change-state fighter (make-hitstun rab fighter))))
 
-(defmethod handle-collision ((rab strike-box) (state high-block))
+#|(defmethod handle-collision ((rab strike-box) (state high-block))
      (with-accessors ((fighter parent)) state		
        (change-state fighter (make-block-stun rab fighter))
        (attack-blocked (parent rab) state)))
 	   
 (defclass+ rec-strike-box (strike-box default-hitbox) ())
+|#
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -263,6 +264,7 @@
 			     blockdist
 			     (min-blockdist 0)
 			     scalar-list
+				 point-list
 				 x y)
   (let* ((hit-deccel (/ (* 2 (float hitdist)) (* hitstun hitstun)))
 	 (hit-init-vel (* hit-deccel hitstun))
@@ -282,7 +284,8 @@
 		  :blockdist blockdist
 		  :min-blockdist min-blockdist
 		  :x x :y y
-		  :scalar-list scalar-list)))
+		  :scalar-list scalar-list
+		  :point-list point-list)))
 
 
 (defun make-hitstun (rab fighter)
@@ -311,6 +314,7 @@
   (hit-collision rab state))
 
 (defun make-block-stun (rab fighter)
+  (block-collision-prep rab (state fighter))
   (make-instance 'high-block-stun
 		    :duration (blockstun rab)
 			:parent fighter
@@ -318,9 +322,11 @@
 		    :kb-speed (blockspeed rab)
 		    :decceleration (blockdeccel rab)))
 
+;;Prepared the attack box for make-block-stun. 
+(defmethod block-collision-prep (rab state)
+	t)
 
-
-(defmethod handle-collision ((rab attack-sdist-box) (state high-block))
+(defmethod block-collision-prep ((rab attack-sdist-box) state)
   (with-accessors
    ((fighter parent)) state
    (with-accessors
@@ -329,13 +335,31 @@
      (blockspeed blockspeed) (min-blockdist min-blockdist)) rab
      (with-accessors
       ((attacker parent)) attack-state
+	  
+      (let* ((actual-dist (- blockdist (ground-dist fighter attacker)))
+			(actual-dist (if (> actual-dist min-blockdist)
+			      actual-dist min-blockdist)))
+			(setf blockdeccel (/ (* 2 (float actual-dist)) (* block-movement-time block-movement-time)))
+			(setf blockspeed (* blockdeccel block-movement-time)))))))
+
+#|(defmethod handle-collision ((rab attack-sdist-box) (state high-block))
+  (with-accessors
+   ((fighter parent)) state
+   (with-accessors
+    ((attack-state parent) (blockdist blockdist)
+     (blockstun blockstun) (blockdeccel blockdeccel) (block-movement-time block-movement-time)
+     (blockspeed blockspeed) (min-blockdist min-blockdist)) rab
+     (with-accessors
+      ((attacker parent)) attack-state
+	  
       (let* ((actual-dist (- blockdist (ground-dist fighter attacker)))
 	     (actual-dist (if (> actual-dist min-blockdist)
 			      actual-dist min-blockdist)))
-	(setf blockdeccel (/ (* 2 (float actual-dist)) (* block-movement-time block-movement-time)))
-	(setf blockspeed (* blockdeccel block-movement-time))
-	(change-state fighter (make-block-stun rab fighter))
-	(attack-blocked (parent rab) state))))))
+			(setf blockdeccel (/ (* 2 (float actual-dist)) (* block-movement-time block-movement-time)))
+			(setf blockspeed (* blockdeccel block-movement-time))
+			(change-state fighter (make-block-stun rab fighter))
+			(attack-blocked (parent rab) state))))))
+	|#
 
 (defmethod handle-collision ((rab unblockable-box) (state high-block))
   (hit-collision rab state))
@@ -359,10 +383,14 @@
    (cancel-held-at-start :initform nil)
    (forward-speed :initform 0)
    (to-second :initform nil)
-   (move-speed :initform 0.0))
+   (move-speed :initform 0.0)
+   (tip-point :initform nil))
 
   :animation
   single-animation
+  
+  :initfunc
+  ((&key) (setf tip-point (make-instance 'child-vector :x 15.0 :y 56.0 :parent state)))
 
   :main-action
   ((when (and (> tpos-delay 0) (>= tpos 5))
@@ -379,11 +407,11 @@
 	 
    ;bink
    (case tpos
-	 (5 (set-clashbox (make-instance 'clash-tribox
+	 (4 (set-clashbox (make-instance 'clash-tribox
 				   :parent state
-				   :x (* (get-direction fighter) 8.0) :Y 45.0
-				   :scalar-list (list 0.0 8.0  0.0 0.0  18.0 7.0))))
-     (7 (set-hitbox (make-tri-static-dist-rab
+				   :x (* (get-direction fighter) 5.0) :Y 50.0
+				   :scalar-list (list 0.0 5.0  0.0 0.0  7.0 5.0))))
+     (6 (set-hitbox (make-tri-static-dist-rab
 				   :parent state
 				   :damage 50
 				   :hitstun 18
@@ -393,8 +421,8 @@
 				   :blockstun 8
 				   :block-movement-time 6
 				   :blockdist 30
-				   :x (* (get-direction fighter) 20.0) :Y 50.0
-				   :scalar-list (list -8.0 8.0  -8.0 0.0  10.0 8.0))
+				   :x (* (get-direction fighter) 20.0) :Y 53.0
+				   :point-list (list (make-instance 'child-vector :x 12.0 :y 56.0 :parent state) (make-instance 'child-vector :x 12.0 :y 52.0 :parent state) tip-point))
 				   #|(make-static-dist-rab
 				   :parent state
 				   :damage 50
@@ -407,8 +435,10 @@
 				   :blockdist 30
 				   :x (* (get-direction fighter) 20.0) :Y 52.0
 				   :radius 5.0 :height 5.0)|#))
-     (8 (remove-hitbox))
+     (10 (remove-hitbox))
      (25 (switch-to-state 'idle :key-buffer key-buffer)))
+	 
+	 (when (<= 7 tpos 9) (setf (x tip-point) (+ (slot-value tip-point 'x) 5.0)))
 	 
 	 (move-forward move-speed)
    
@@ -424,6 +454,10 @@
 	 (def-statemeth mutual-clash :after ((other jab))
 		(setf move-speed -0.3)
 		(setf (move-speed other) -0.3))
+	
+	 (def-statemeth attack-blocked (other-state)
+		(ccnm)
+		(setf move-speed -0.2))
   
    (defmethod handle-collision ((rab jab-box) (state idle))
      (with-accessors ((fighter parent)) state		
@@ -483,53 +517,6 @@
 		   (+ (* (/ (- tp attack-time) (- end-time attack-time)) (- 40.0 20.0)) 20.0))))
        (set-time-position ani mtp)))))
 
-
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
-(defstate "forward-jab"
-
-  :supers
-  (single-attack-box)
-
-  :alt-name
-  "jab"
-
-  :slots
-  ((vel)
-   (foot-pos)
-   (attacked-time :initform nil))
-
-  :funcs
-  ((attack-time 6))
-
-  :main-action
-  ((if (not (< (abs vel) 0.15))
-     (let ((dash-accel (* (signum vel) (hs-accel vel foot-pos))))
-      (decf vel dash-accel)
-      (decf foot-pos (abs vel))
-      (move-forward vel))
-     (setf vel 0.0))
-
-   (cond
-    ((and (not attacked-time)
-	  (>= tpos attack-time)
-	  (< (abs vel) 0.15))
-     (setf attacked-time tpos)
-     (set-hitbox (make-static-dist-rab 
-		  :parent state
-		  :damage 40
-		  :hitstun 15
-		  :hitdist 45
-		  :blockstun 5
-		  :blockdist 40
-		  :x (* (get-direction fighter) 25.0) :Y 44.0
-		  :radius 6.0 :height 5.0)))
-    
-    ((and attacked-time (= tpos (+ 1 attacked-time))) (remove-hitbox))
-    
-    ((and attacked-time (= tpos (+ 20 attacked-time))) (switch-to-state 'idle :key-buffer key-buffer)))))
-
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (defconstant cancel-extra 16)
@@ -551,8 +538,8 @@
   :funcs
   ((clash-time 13)
    (attack-time 20)
-   (block-time (+ 38 (if blocked 12 0)))
-   (end-time (+ block-time 14)))
+   (block-time (+ 40 (if blocked 12 0)))
+   (end-time (+ block-time 12)))
 
   :animation
   single-animation
@@ -573,12 +560,11 @@
 	(when (and (< tpos clash-time) (get-pressed :cancel))
 		(setf cancel-time tpos))
 
-   (when (and (>= tpos block-time) (get-held :defense))
-     (switch-to-state 'high-block-stun
-		      :duration (* 1.2 (- end-time tpos))
-		      :kb-direction 1.0
-		      :kb-speed 0.0
-		      :decceleration 0.0))
+   (when (and (>= tpos block-time) (equal 'high-block (class-name (class-of (get-buffered-state)))))
+	 ;;(use-buffered-state)
+	 (set-buffered-state nil)
+     (switch-to-state 'high-block
+		      :block-startup (+ (- end-time tpos) 10)))
 
    (when (<= tpos attack-time)
     (setf (radius hip-box) (+ 0.65 (* 1.5 (/ tpos (float attack-time))))))
@@ -588,7 +574,7 @@
 		(clash-time (set-clashbox (make-instance 'clash-tribox
 				   :parent state
 				   :x (* (get-direction fighter) 24.0) :Y 32.0
-				   :scalar-list (list -10.0 8.0  -10.0 0.0  7.0 14.0))))
+				   :scalar-list (list -10.0 8.0  -10.0 0.0  7.0 20.0))))
 		(attack-time (set-hitbox
 			(make-static-dist-rab
 			 :parent state
@@ -597,7 +583,7 @@
 			 :hitdist 48
 			 :blockstun 8
 			 :blockdist 40
-			 :x (* (get-direction fighter) 36.0) :Y 55.0
+			 :x (* (get-direction fighter) 36.0) :Y 52.0
 			 :radius 9.0 :height 8.0)))
      
 		((+ 1 attack-time) (remove-hitbox))
@@ -852,7 +838,9 @@ is possible from the foot position of the previous state.
 
   :slots
   ((hip-box)
-   (move-speed :initform 0.3))
+   (leg-overstep :initform 0.0)
+   (move-speed :initform 0.3)
+   (move-deccel :initform 0.0))
 
   :funcs
   ((attack-time 22)
@@ -889,7 +877,7 @@ is possible from the foot position of the previous state.
 	     :hitdist 70
 	     :blockstun (- end-time 20 tpos)
 	     :block-movement-time 20
-	     :blockdist 50
+	     :blockdist 30
 	     :x (* (get-direction fighter) 34.0) :Y 32.0
 	     :radius 10.0 :height 8.0)))
 		 
@@ -913,6 +901,10 @@ is possible from the foot position of the previous state.
 	  (def-statemeth mutual-clash :after ((other sidekickW))
 		(setf move-speed -0.1)
 		(setf (move-speed other) -0.1))
+		
+	  (def-statemeth attack-blocked (other-state)
+		(ccnm)
+		(setf move-speed -0.3))
 
     (def-statemeth linear-tracking ()
       nil)))
@@ -923,7 +915,7 @@ is possible from the foot position of the previous state.
   multi-hitbox
 
   :supers
-  (single-attack-box partial-tracking movement-independent-animation)
+  (clash-attack-box partial-tracking movement-independent-animation)
 
   :slots
   ((hip-box)
@@ -1011,7 +1003,8 @@ is possible from the foot position of the previous state.
     (setf (hitbox-list state)
 	  (list
 	   (make-uni-box state 0.0 0.0 1.0 0.4)
-	   hip))
+	   hip
+	   (make-uni-box state 0.0 (* 0.7 (height fighter)) 0.5 0.3)))
     (setf (tpos state) (entry-time state))))
 
   :main-action
@@ -1119,7 +1112,7 @@ is possible from the foot position of the previous state.
 		(set-clashbox (make-instance 'clash-tribox
 				   :parent state
 				   :x (* (get-direction fighter) 12.0) :Y 34.0
-				   :scalar-list (list 0.0 4.0  0.0 0.0  32.0 6.0))))
+				   :scalar-list (list 0.0 4.0  0.0 0.0  19.0 6.0))))
 	  (attack-time
 	   (set-hitbox
 	    (make-static-dist-rab 
@@ -1150,7 +1143,7 @@ is possible from the foot position of the previous state.
 
 (defstate "spinning-hook-kick"
   :supers
-  (single-attack-box)
+  (clash-attack-box)
 
   :hb
   multi-hitbox
