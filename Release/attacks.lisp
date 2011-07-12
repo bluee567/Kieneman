@@ -108,9 +108,9 @@
      (with-accessors ((fighter parent)) state		
        (change-state fighter (make-block-stun rab fighter))
        (attack-blocked (parent rab) state)))
-	   
+	   |#
 (defclass+ rec-strike-box (strike-box default-hitbox) ())
-|#
+
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -621,7 +621,7 @@ is possible from the foot position of the previous state.
    (min-speed 0.15))
 
   :supers
-  (single-attack-box)
+  (clash-attack-box)
 
   :slots
   (;Action can have the following values [:accel  :prep :reco]
@@ -695,6 +695,10 @@ is possible from the foot position of the previous state.
 	  ()
 	(progn
 	  ;;Sets the hitbox.
+	  (set-clashbox (make-instance 'clash-tribox
+				   :parent state
+				   :x (* (get-direction fighter) 10.0) :Y 42.0
+				   :scalar-list (list -4.0 8.0  -4.0 0.0  4.0 4.0)))
 	  (set-hitbox
 	    (make-instance 'rec-strike-box
 			   :parent state
@@ -716,7 +720,7 @@ is possible from the foot position of the previous state.
 	(remove-hitbox))
       (when (> tpos reco-time)
 	(switch-to-state 'idle :key-buffer key-buffer))))
-
+	(common-transitions)
     (format t "Action: ~a ~10T Tpos: ~a ~10T Vel: ~a" action tpos vel)
     (format t "~&************************~%")))
   

@@ -30,6 +30,12 @@
 	 (when (get-pressed :cancel)
 			(set-buffered-state nil))
      (cond
+	   
+	  ((and (get-pressed :a1) (get-in-region :min-butterfly (/ (* pi 1) 8) :max-butterfly (/ (* pi 7) 8)))
+       (let ((val (min (/ (get-butterfly-angle) (* pi 0.5)) 1.0)))
+	    (format t "~&val: ~a~&ba: ~a~&" val (get-butterfly-angle))
+	    (set-buffered-state (make-state 'straight :forward-speed (* 1.8 val) :leg-space (+ *neutral-leg-space* (* 12.0 val))))))
+	 
       ((and (get-pressed :a1))
        (set-buffered-state (make-state 'jab)))
       
@@ -833,7 +839,7 @@ In this function the new foot pos is affected by the new velocity instead of the
 			(get-in-region :min-butterfly (/ (* pi 1) 8) :max-butterfly (/ (* pi 5) 8) :min-axis-dist *trigger-radius*) 
 			(null (car pending-state)))
 		(setf pending-state (list :sidekickw tpos)))
-	 ((and (get-pressed :a1)
+	 ((and (get-pressed :a1) (get-in-region :max-axis-dist *trigger-radius*)
 		   (null (car pending-state)))
 		(setf pending-state (list :jab tpos)))
 	 (t (common-transitions)))

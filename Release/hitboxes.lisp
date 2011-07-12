@@ -249,7 +249,6 @@ in order to form the multibox.")))
 (defmethod animate :after ((obj displayed-tribox))
   (with-accessors ((pl point-list) (display display)) obj
 		  (destructuring-bind (a b c) pl
-		  (format t "Tri anim")
 		    (update-hit-triangle (x a) (y a) (x b) (y b) (x c) (y c) display))))
 			
 (defmethod kill ((box displayed-tribox))
