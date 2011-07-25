@@ -30,47 +30,21 @@
    :r-left (get-kbi KC_LEFT) "A"
    :r-right (get-kbi KC_RIGHT) "D"))
 
-(defun make-PS3-defult-config (controler-num)
-  (if t ;(> (no-of-joysticks) controler-num)
-  (let* ((pad controler-num)
-	 (xa 7)
-	 (ya 5)
-	 (eastd (get-di east pad))
-	 (easta (get-ai 7 pad))
-	 (westd (get-di west pad))
-	 (westa (get-ai 7 pad :dir -1.0))
-	 (northd (get-di north pad))
-	 (northa (get-ai 6 pad :dir -1.0))
-	 (southd (get-di south pad))
-	 (southa (get-ai 6 pad))
-	 (cb (get-ji 4 pad))
-	 (rt (get-ai 5 pad :dir -1.0 :dead-range 0.001 :sticky-range 0.01)))
-    (labels ((make-dir-func (dpad stick)
-			    "Creates a function combining the functions of both dpad and stick controls."
-			    (? () (let ((val
-					 (convert-to-numeric (or (funcall dpad)
-								 (funcall stick)))))
-				    (if (equal val 0.0) nil val)))))
-     (list
-      :a1  (get-ji 2 pad) "Button 1"
-      :a2 (get-ji 3 pad) "Button 2"
-      :defense (get-ji 0 pad) "Sholder R"
-      :dodge (get-ji 5 pad) "Button 8"
-      :cancel (? () (or (funcall easta) (funcall westa))) "Button 3"
-      :throttle (get-ai 2 pad :dir -1.0 :dead-range 0.001 :sticky-range 0.01) "Trigger R"
-      :retard rt "Trigger L"
-      :feint cb "Sholder L"
-      :down (make-dir-func southa southd)
-      "Down Arrow"
-      :up (make-dir-func northa northd)
-      "Up Arrow"
-      :r-left
-      (make-dir-func westa westd)
-      "Left Arrow"
-      :r-right
-      (make-dir-func easta eastd)
-      "Right Arrow")))
-	  (error "Not enough controlers are connected!")))
+(defun make-PS3-defult-config (pad)
+  (let ((d (get-di south pad)) (d2 (get-ai 2 pad)) (u (get-di north pad)) (u2 (get-ai 2 pad :dir -1))
+  (l (get-di west pad)) (l2 (get-ai 3 pad :dir -1)) (r (get-di east pad)) (r2 (get-ai 3 pad)))
+   (list
+   :a1  (get-ji 3 pad) "Button 1"
+   :a2 (get-ji 0 pad) "Button 2"
+   :defense (get-ji 5 pad) "b7"
+   :alt-def (get-ji 7 pad) "b6"
+   :move (get-ji 1  pad) "Button 8"
+   :cancel (let ((f1 (get-ji 4 pad)) (f2 (get-ji 6 pad))) #'(lambda () (or (funcall f1) (funcall f2)))) "Button 3"
+   :dodge (get-ji 2  pad) "Left Trigger"
+   :down #'(lambda () (or (funcall d) (funcall d2))) "Down Arrow"
+   :up  #'(lambda () (or (funcall u) (funcall u2))) "Up Arrow"
+   :r-left  #'(lambda () (or (funcall l) (funcall l2))) "Left Arrow"
+   :r-right  #'(lambda () (or (funcall r) (funcall r2))) "Right Arrow")))
 	  
 (defun make-PS3-alt-config (pad)
 	(list
@@ -115,9 +89,11 @@
     "Right Arrow")))
 
 (defvar *1p-input*
-  (make-PS3-alt-config 0)
+  (make-PS3-defult-config 0)
   ;*k1-config*
   )
 
 (defvar *2p-input*
-  *k2-config*)
+  *k2-config*
+  ;(make-PS3-alt-config 1)
+  )

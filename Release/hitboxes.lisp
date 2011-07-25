@@ -152,7 +152,6 @@ in order to form the multibox.")))
 ;;   (set-visible ( (parent obj))))
 
  (defmethod setup-box-display ((obj multi-hitbox))
- (format t "blag")
 	(loop for box in (hitbox-list obj)
 	do (setup-box-display box)))
 
@@ -208,6 +207,15 @@ in order to form the multibox.")))
 
 ;; Requires: -
 ;; Impliments: Triangle
+
+(defgeneric point-list (class)
+(:documentation
+"Returns a singly linked list of a box's points"))
+
+(defgeneric point-sets (class)
+(:documentation
+"Returns a list of all the triangles (three point sets) that an object's points comprise.
+ Naturally, vectors will be shared between these structures."))
 
 (defclass+ triangular-hitbox (single-hitbox)
 	(;A list of 2d-vectors.

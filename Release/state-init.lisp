@@ -84,15 +84,16 @@ If false, then sidesteps become effective."))
 ;; Tensions keep track of unresolved aspects of states which will be counted down.
 ;;;;;;;;;
 
-;;CHANGE TO ASSUME FIGHTER CONTAINS THE TESNTIONS.
+
 (defun set-tension (tension-name val &optional (fighter *fighter*))
 	(setf (gethash tension-name (tensions fighter)) val))	
 
 (defun get-tension (tension-name &optional (fighter *fighter*))
 	(gethash tension-name (tensions fighter)))
 	
-(defun tensions-exist (&optional (fighter *fighter*))
-	(> (hash-table-count (tensions fighter)) 0))
+(defun tensions-exist (&key (fighter *fighter*) exceptions)
+	(let ((no-excep (if exceptions (loop for e in exceptions count (gethash e (tensions fighter))) 0)))
+	 (> (hash-table-count (tensions fighter)) no-excep)))
 	
 (defun remove-tension (tension-name &optional (fighter *fighter*))
 	(remhash tension-name (tensions fighter)))
@@ -100,7 +101,12 @@ If false, then sidesteps become effective."))
 (defun progress-tensions (&optional (fighter *fighter*))
 	"This should be called once at the beginning of each step.
 	Each tension will be decreased by one and removed if <= 0"
-	(maphash #'(lambda (k v) (when (<= v 0) (remhash k (tensions fighter)))) (tensions fighter)))
+	(with-accessors ((tensions tensions)) fighter
+	 (maphash #'(lambda (k v) (decf (gethash k tensions)) (when (<= v 0) (remhash k tensions))) tensions)))
+
+(defgeneric tensions-resolved (state))
+
+(defmethod tensions-resolved (state) (not (tensions-exist)))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;A mixin class which allows an attack state to not linearly track the
@@ -193,7 +199,7 @@ If false, then sidesteps become effective."))
  ;;Nohit entries must be added to the hitbox by passing it into the hitbox's hit-objects.
  (defmethod add-nohit (nohit-entity (state single-attack-box))
    (if (hitbox state) (push nohit-entity (hit-objects (hitbox state)))
-		(push nohit-entity (clashbox-nohit-obj-list state))))
+		(push nohit-entity (hitbox-nohit-obj-list state))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;A mixin class which adds a single defense hitbox to a class.
@@ -289,9 +295,11 @@ These will allow the character-collision method to appropriately dispatch the me
 
  ;;Nohit entries must be added to the hitbox by passing it into the hitbox's hit-objects.
  (defmethod add-nohit (nohit-entity (state clash-attack-box))
+ (format t "~&CAB nohit~&" )
    (if (hitbox state) (push nohit-entity (hit-objects (hitbox state))))
    (if (clashbox state) (push nohit-entity (hit-objects (clashbox state))))
-	(push nohit-entity (clashbox-nohit-obj-list state)))
+   (push nohit-entity (clashbox-nohit-obj-list state))
+   )
 		
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;A mixin class which adds movement-independent-animation to a class.
@@ -473,7 +481,7 @@ alt-name allows the default animation to be overridden and replaced with another
 
 |#
 
-(defmacro defstate (name &key slots rest supers constants funcs main-action initfunc entryfunc (type 'state) (hb 'singlebox-state) (animation 'combined-linear-animation) (linear t) alt-name)
+(defmacro defstate (name &key slots rest supers constants funcs main-action initfunc entryfunc tensions-resolved (type 'state) (hb 'singlebox-state) (animation 'combined-linear-animation) (linear t) alt-name)
   (let* ((symbol-name (intern (string-upcase name)))
 	 (supers (append (list type hb) supers (list animation) (when linear '(linear-timer))))
 	 (slot-names (new-class-all-slots slots supers))
@@ -528,10 +536,15 @@ alt-name allows the default animation to be overridden and replaced with another
 	 ,funcs
 	 
 	 (def-statemeth main-action ()
+		(progress-tensions)
 	   ,@main-action)
 
 	 (def-statemeth print-state ()
 	   (format nil ,(concatenate 'string "~a~&" print-str "~&") (ccnm) ,@print-vals))
+	  
+	 ,(when tensions-resolved
+		`(def-statemeth tensions-resolved ()
+		   ,tensions-resolved))
 
 	 ,(when initfunc
 	    (let ((keyargs (car initfunc))

@@ -436,7 +436,7 @@
 				   :x (* (get-direction fighter) 20.0) :Y 52.0
 				   :radius 5.0 :height 5.0)|#))
      (10 (remove-hitbox))
-     (25 (switch-to-state 'idle :key-buffer key-buffer)))
+     (25 (set-tension :front-pressure 10) (switch-to-state 'idle :key-buffer key-buffer)))
 	 
 	 (when (<= 7 tpos 9) (setf (x tip-point) (+ (slot-value tip-point 'x) 5.0)))
 	 
@@ -530,7 +530,8 @@
   (clash-attack-box)
   
   :slots
-  ((forward-speed :initform 0)
+  ((forward-speed :initform 0.0)
+   (forward-dist :initform 0.0)
    (hip-box :initform nil)
    (blocked :initform nil)
    (cancel-time :initform nil))
@@ -556,8 +557,13 @@
 
   :main-action
   ((common-transitions)
+    
+	(when (> forward-dist 0.0)
+		(if (> forward-dist forward-speed)
+			(progn (move-forward forward-speed) (decf forward-dist forward-speed))
+		 (progn (move-forward forward-dist) (setf forward-dist 0.0))))
   
-	(when (and (< tpos clash-time) (get-pressed :cancel))
+	(when (and (< tpos clash-time) (eql forward-speed 0.0) (get-pressed :cancel))
 		(setf cancel-time tpos))
 
    (when (and (>= tpos block-time) (equal 'high-block (class-name (class-of (get-buffered-state)))))
@@ -588,7 +594,7 @@
      
 		((+ 1 attack-time) (remove-hitbox))
 	 
-		(end-time (switch-to-state 'idle :key-buffer key-buffer)))
+		(end-time (set-tension :rear-leg-neutral 10) (switch-to-state 'idle :key-buffer key-buffer)))
 	 ;;If cancel-time
 	 (if (= tpos (+ cancel-extra (* 2 cancel-time))) (switch-to-state 'idle :key-buffer key-buffer))))
 
@@ -893,6 +899,7 @@ is possible from the foot position of the previous state.
 	   (remove-hitbox))
 
 	  (end-time
+	   (set-tension :front-leg-forward 10)
 	   (switch-to-state 'idle :key-buffer key-buffer))))
 
   :rest
@@ -953,7 +960,7 @@ is possible from the foot position of the previous state.
 	(animate-forward move-speed)
       (animate-forward (* 0.6 move-speed))))
    (within 0 11
-	   (if (or (not (get-held (opposite-symbol))) (get-pressed :cancel) (get-pressed :defense))
+	   (if (or (not (get-held :a2)) (get-pressed :cancel) (get-pressed :defense))
 	       (switch-to-state 'sidekickS-a
 				:key-buffer key-buffer
 				:entry-time tpos)))
@@ -995,7 +1002,8 @@ is possible from the foot position of the previous state.
   multi-hitbox
 
   :slots
-  ((entry-time)) ;;The tpos from which the state was entered. This does not change.
+  ((entry-time);;The tpos from which the state was entered. This does not change.
+  (next-state :initform (list nil 0)))
 
   :funcs
   ((end-time 23)
@@ -1012,11 +1020,24 @@ is possible from the foot position of the previous state.
     (setf (tpos state) (entry-time state))))
 
   :main-action
-  ((common-transitions)
-  (animate-forward (if (< tpos 12) move-speed (* 0.3 move-speed)))
+  ((if (and (not (and (>= (get-axis-dist) *trigger-radius*) (equal held-dir (opposite (get-direction)))))  (get-pressed :move))
+	 (setf next-state (list 'continued-step 5.0))
+   (common-transitions))
+   
+   (animate-forward (if (< tpos 12) move-speed (* 0.3 move-speed)))
+   
+   (if (> tpos 20)
+	(when (first next-state)
+		(set-tension :front-leg-forward 20)
+		(switch-to-state 'continued-step :dir positive :total-dist (second next-state))))
+		
    (lcase tpos
 	  (end-time
-	   (switch-to-state 'idle :key-buffer key-buffer)))))
+	   (set-tension :front-leg-forward 15)
+	   (switch-to-state 'idle :key-buffer key-buffer))))
+	
+	:tensions-resolved
+	(not (tensions-exist :exceptions '(:front-leg-forward))))
 
 
 (defstate "frontkick"
