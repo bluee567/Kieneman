@@ -746,9 +746,8 @@ is possible from the foot position of the previous state.
 			     ))
 	 (setf max-vel (+ 2.0  ;; (* 2.0 (/ (abs forward-speed) max-entrance-speed))
 			  ))
-	 (setf prep-base-deccel (+ 0.3 (* base-accel 0.8)))
-	 (setf deccel-max-vel (+ max-vel (- 0.3 (* 0.2 (/ max-vel (+ 1.7 1.7)) ;;Max vel's maximum.
-						   ))))
+	 (setf prep-base-deccel 0.46)
+	 (setf deccel-max-vel (+ max-vel (- 0.3 (* 0.2 (/ max-vel 3.4))))) ;;Max vel's maximum.
 	 (setf punch-time (round (- 3.0 (/ (- leg-space *neutral-leg-space*) 3))))
 	 (setf prep-time 20);TO DO!!
 	 (setf reco-time (+ 18 (round (* 5.0 (/ (abs forward-speed) max-entrance-speed))))) ;TO DO!!

@@ -1,5 +1,8 @@
 (in-package "KIENEMAN")
 
+(defun make-lamb (a b)
+	#'(lambda () (or (funcall a) (funcall b))))
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; INPUT CONFIGURATIONS
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -41,12 +44,14 @@
    :move (get-ji 1  pad) "Button 8"
    :cancel (let ((f1 (get-ji 4 pad)) (f2 (get-ji 6 pad))) #'(lambda () (or (funcall f1) (funcall f2)))) "Button 3"
    :dodge (get-ji 2  pad) "Left Trigger"
-   :down #'(lambda () (or (funcall d) (funcall d2))) "Down Arrow"
-   :up  #'(lambda () (or (funcall u) (funcall u2))) "Up Arrow"
-   :r-left  #'(lambda () (or (funcall l) (funcall l2))) "Left Arrow"
-   :r-right  #'(lambda () (or (funcall r) (funcall r2))) "Right Arrow")))
+   :down (make-lamb d d2) "Down Arrow"
+   :up  (make-lamb u u2) "Up Arrow"
+   :r-left  (make-lamb l l2) "Left Arrow"
+   :r-right  (make-lamb r r2) "Right Arrow")))
 	  
 (defun make-PS3-alt-config (pad)
+	(let ((d (get-di south pad)) (d2 (get-ai 6 pad)) (u (get-di north pad)) (u2 (get-ai 6 pad :dir -1))
+  (l (get-di west pad)) (l2 (get-ai 7 pad :dir -1)) (r (get-di east pad)) (r2 (get-ai 7 pad)))
 	(list
    :a1  (get-ji 3 pad) "Button 1"
    :a2 (get-ji 0 pad) "Button 2"
@@ -55,10 +60,10 @@
    :move (get-ji 2  pad) "Button 8"
    :cancel (let ((f1 (get-ji 4 pad)) (f2 (get-ji 5 pad))) #'(lambda () (or (funcall f1) (funcall f2)))) "Button 3"
    :dodge (get-ji 1  pad) "Left Trigger"
-   :down (get-ai 6 pad) "Down Arrow"
-   :up (get-ai 6 pad :dir -1) "Up Arrow"
-   :r-left (get-ai 7 pad :dir -1) "Left Arrow"
-   :r-right (get-ai 7 pad) "Right Arrow"))
+   :down (make-lamb d d2) "Down Arrow"
+   :up  (make-lamb u u2) "Up Arrow"
+   :r-left  (make-lamb l l2) "Left Arrow"
+   :r-right  (make-lamb r r2) "Right Arrow")))
 
 (defvar *c1-config*
  nil)
@@ -94,6 +99,6 @@
   )
 
 (defvar *2p-input*
-  *k2-config*
-  ;(make-PS3-alt-config 1)
+  ;*k2-config*
+  (make-PS3-alt-config 1)
   )
