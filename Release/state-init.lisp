@@ -101,7 +101,13 @@ If false, then sidesteps become effective."))
 (defun progress-tensions (&optional (fighter *fighter*))
 	"This should be called once at the beginning of each step.
 	Each tension will be decreased by one and removed if <= 0"
-	(with-accessors ((tensions tensions)) fighter
+	(with-accessors ((tensions tensions) (buffered-state buffered-state) (buffer-time buffer-time)) fighter
+	 ;(format t "~&buffer-time: ~a~&" buffer-time)
+	 (when buffer-time
+		(decf buffer-time)
+		(when (<= buffer-time 0)
+			(setf buffered-state nil)
+			(setf buffer-time nil)))
 	 (maphash #'(lambda (k v) (decf (gethash k tensions)) (when (<= v 0) (remhash k tensions))) tensions)))
 
 (defgeneric tensions-resolved (state))

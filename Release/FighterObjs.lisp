@@ -31,6 +31,8 @@ upon the actor."))
 	:initform (make-instance 'idle))
 	(:ia buffered-state
 		:initform nil)
+	(:ia buffer-time
+		:initform nil)
    (:ia radius)
    (:ia height)
    
@@ -197,7 +199,11 @@ Values are :left or :right"
   (buffered-state fighter))
 
 (defmethod set-buffered-state (val &optional (fighter *fighter*))
+  (setf (buffer-time fighter) (buffer-time-max (state fighter)))
   (setf (buffered-state fighter) val))
+
+(defmethod buffer-time-max (state)
+	*buffer-time-max*)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;; Control

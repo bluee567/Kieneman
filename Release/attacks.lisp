@@ -725,7 +725,8 @@ is possible from the foot position of the previous state.
       (when (= tpos 2)
 	(remove-hitbox))
       (when (> tpos reco-time)
-	(switch-to-state 'idle :key-buffer key-buffer))))
+		(set-tension :front-pressure 10)
+		(switch-to-state 'idle :key-buffer key-buffer))))
 	(common-transitions)
     (format t "Action: ~a ~10T Tpos: ~a ~10T Vel: ~a" action tpos vel)
     (format t "~&************************~%")))
@@ -737,16 +738,12 @@ is possible from the foot position of the previous state.
       (with-accessors ((forward-speed forward-speed) (accel-time accel-time) (prep-time prep-time) (reco-time reco-time) (punch-time punch-time) (base-damage base-damage)
 		       (base-accel base-accel) (prep-base-deccel prep-base-deccel) (max-vel max-vel) (deccel-max-vel deccel-max-vel) (leg-space leg-space) (vel vel)) state
        (let* ((power (+ forward-speed extra-speed))
-	      (total-accel (/ (+ leg-space 25.0) 60.0))
-	      (acceleration-time 4 ;; (round (+ 1.0 (/ (+ leg-space 1.0) 10.0)))
-				 ))
+	      (total-accel (/ (+ leg-space 25.0) 60.0)))
 	 (setf vel forward-speed)
-	 (setf accel-time acceleration-time)
-	 (setf base-accel (+ 0.2 ;; (* leg-space 0.04)
-			     ))
-	 (setf max-vel (+ 2.0  ;; (* 2.0 (/ (abs forward-speed) max-entrance-speed))
-			  ))
-	 (setf prep-base-deccel 0.46)
+	 (setf accel-time 9)
+	 (setf base-accel 0.2)
+	 (setf max-vel 2.0)
+	 (setf prep-base-deccel 0.4)
 	 (setf deccel-max-vel (+ max-vel (- 0.3 (* 0.2 (/ max-vel 3.4))))) ;;Max vel's maximum.
 	 (setf punch-time (round (- 3.0 (/ (- leg-space *neutral-leg-space*) 3))))
 	 (setf prep-time 20);TO DO!!
@@ -886,7 +883,7 @@ is possible from the foot position of the previous state.
 	     :hitdist 70
 	     :blockstun (- end-time 20 tpos)
 	     :block-movement-time 20
-	     :blockdist 30
+	     :blockdist 0.0
 	     :x (* (get-direction fighter) 34.0) :Y 32.0
 	     :radius 10.0 :height 8.0)))
 		 
@@ -914,7 +911,10 @@ is possible from the foot position of the previous state.
 		
 	  (def-statemeth attack-blocked (other-state)
 		(ccnm)
-		(setf move-speed -0.3))
+		(let*
+		((actual-dist (- 30.0 (ground-dist parent (target parent))))
+			(actual-dist (max actual-dist 0.0)))
+			(setf move-speed (/ actual-dist (- tpos end-time)))))
 
     (def-statemeth linear-tracking ()
       nil)))
@@ -1163,7 +1163,10 @@ is possible from the foot position of the previous state.
       (ccnm)
       (setf end-time 65))))
 
-
+(defmethod-duel character-collision ((cab bodykick) other-state)
+	(when (or (collision (clashbox cab) other-state))
+	  (add-nohit (parent other-state) cab)
+      (attack-blocked cab other-state)))
 
 (defstate "spinning-hook-kick"
   :supers

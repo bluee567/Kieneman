@@ -21,6 +21,7 @@
 (defconstant negative -1)
 (defconstant tau (* 2 pi))
 (defconstant *fps* 60.0)
+(defconstant *buffer-time-max* 80)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;Setup Rendering
@@ -156,7 +157,7 @@
 
 (defun main-loop ()
   (loop
-   (progn
+   (time (progn
      (update-input)
      (begin-frame-events)
      (main-events)
@@ -169,18 +170,17 @@
      (advance-animation)
      (if (key-held KC_F4)
 	 (return))
-     (if (key-held KC_EQUALS)
+     #|(if (key-held KC_EQUALS)
 	 (incf *frame-delay* (/ 1 60)))
      (if (key-held KC_MINUS)
 	 (progn
 	   (decf *frame-delay* (/ 1 60))
 	   (if (< *frame-delay* 0)
-	       (setf *frame-delay* 0))))
+	       (setf *frame-delay* 0))))|#
      (if (not (render-frame))
 	 (restart-case (error 'game-yielded)
 		       (continue () nil)
-		       (exit () (return))))
-     (sleep *frame-delay*))))
+		       (exit () (return))))))))
 
 (defun reset ()
   (setf (hp *p1*) 1000)
