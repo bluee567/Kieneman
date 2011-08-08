@@ -1,0 +1,2 @@
+cd Release
+"./clisp-2.44/clisp" -K full -i .clisprc.lisp StartKieneman.lisp

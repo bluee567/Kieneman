@@ -282,7 +282,7 @@
   
   :constants
   ((max-reco 10)
-  (outside-tension 14))
+  (outside-tension 10))
 
   :slots
   (;;CAN BE: nil - meaning that there has been no trigger causing the state to change.
@@ -319,7 +319,7 @@
 																:min-axis-dist *trigger-radius*)))))
 	  (common-transitions)
 	  (setf escape-time (min tpos max-reco))
-	  (setf escape-func (λ (set-tension :outside-stance outside-tension) (switch-to-state 'idle)))))
+	  (setf escape-func (λ (set-tension :outside-stance outside-tension) (set-minor-tension :lead-hand-use 30) (switch-to-state 'idle)))))
 	 
 	#|(if (get-pressed :cancel)
 	  (progn (setf escape-time (min tpos max-reco))
@@ -963,7 +963,7 @@ In this function the new foot pos is affected by the new velocity instead of the
 	(common-transitions)
    
    (cond
-		((and (or (= tpos body-time) (= tpos final-time)) (equal dir (get-direction)) (equal (type-of (get-buffered-state)) 'sidekickW))
+		((and (or (= tpos body-time) (= tpos final-time)) (equal dir positive) (equal (type-of (get-buffered-state)) 'sidekickW))
 			(use-buffered-state))
    
 		((and (or (and (equal (type-of (get-buffered-state)) 'continued-step) (equal dir (dir (get-buffered-state))))

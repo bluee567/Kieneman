@@ -90,6 +90,12 @@ If false, then sidesteps become effective."))
 
 (defun get-tension (tension-name &optional (fighter *fighter*))
 	(gethash tension-name (tensions fighter)))
+
+(defun set-minor-tension (tension-name val &optional (fighter *fighter*))
+	(setf (gethash tension-name (minor-tensions fighter)) val))	
+
+(defun get-minor-tension (tension-name &optional (fighter *fighter*))
+	(gethash tension-name (minor-tensions fighter)))
 	
 (defun tensions-exist (&key (fighter *fighter*) exceptions)
 	(let ((no-excep (if exceptions (loop for e in exceptions count (gethash e (tensions fighter))) 0)))
@@ -97,18 +103,22 @@ If false, then sidesteps become effective."))
 	
 (defun remove-tension (tension-name &optional (fighter *fighter*))
 	(remhash tension-name (tensions fighter)))
+	
+(defun remove-minor-tension (tension-name &optional (fighter *fighter*))
+	(remhash tension-name (minor-tensions fighter)))
 
 (defun progress-tensions (&optional (fighter *fighter*))
 	"This should be called once at the beginning of each step.
 	Each tension will be decreased by one and removed if <= 0"
-	(with-accessors ((tensions tensions) (buffered-state buffered-state) (buffer-time buffer-time)) fighter
+	(with-accessors ((tensions tensions) (minor-tensions minor-tensions) (buffered-state buffered-state) (buffer-time buffer-time)) fighter
 	 ;(format t "~&buffer-time: ~a~&" buffer-time)
 	 (when buffer-time
 		(decf buffer-time)
 		(when (<= buffer-time 0)
 			(setf buffered-state nil)
 			(setf buffer-time nil)))
-	 (maphash #'(lambda (k v) (decf (gethash k tensions)) (when (<= v 0) (remhash k tensions))) tensions)))
+	 (maphash #'(lambda (k v) (decf (gethash k tensions)) (when (<= v 0) (remhash k tensions))) tensions)
+	 (maphash #'(lambda (k v) (decf (gethash k minor-tensions)) (when (<= v 0) (remhash k minor-tensions))) minor-tensions)))
 
 (defgeneric tensions-resolved (state))
 

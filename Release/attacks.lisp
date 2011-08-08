@@ -451,7 +451,7 @@
 	     (switch-to-state 'second-jab))))
 	
 	:tensions-resolved
-	(not (tensions-exist :exceptions '(:rear-pressure)))
+	(not (or (tensions-exist :exceptions '(:rear-pressure)) (get-minor-tension :lead-hand-use)))
   
   :rest
   (progn
@@ -759,7 +759,7 @@ is possible from the foot position of the previous state.
        (let* ((power (+ forward-speed extra-speed))
 	      (total-accel (/ (+ leg-space 25.0) 60.0)))
 	 (setf vel forward-speed)
-	 (setf accel-time 14)
+	 (setf accel-time 10)
 	 (setf base-accel 0.2)
 	 (setf max-vel 2.0)
 	 (setf prep-base-deccel 0.4)

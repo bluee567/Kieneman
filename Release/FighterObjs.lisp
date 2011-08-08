@@ -54,6 +54,8 @@ to represent the stance the fighter is in so that the 'openness' of the stance r
 which are used to drive the actions of the character.")
 	(:ia tensions
 	 :initform (make-hash-table))
+	(:ia minor-tensions
+	 :initform (make-hash-table))
    (:iea buffered-input-func)
    (:iea input-override-func)
    (:iea death-function

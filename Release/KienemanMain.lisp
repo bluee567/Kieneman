@@ -21,7 +21,7 @@
 (defconstant negative -1)
 (defconstant tau (* 2 pi))
 (defconstant *fps* 60.0)
-(defconstant *buffer-time-max* 80)
+(defconstant *buffer-time-max* 60)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;Setup Rendering
