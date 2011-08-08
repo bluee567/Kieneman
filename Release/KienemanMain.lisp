@@ -157,7 +157,7 @@
 
 (defun main-loop ()
   (loop
-   (time (progn
+   (progn
      (update-input)
      (begin-frame-events)
      (main-events)
@@ -180,7 +180,7 @@
      (if (not (render-frame))
 	 (restart-case (error 'game-yielded)
 		       (continue () nil)
-		       (exit () (return))))))))
+		       (exit () (return)))))))
 
 (defun reset ()
   (setf (hp *p1*) 1000)

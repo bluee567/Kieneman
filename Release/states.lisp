@@ -5,9 +5,9 @@
 
 (defconstant *neutral-leg-space* 8.0)
 (defconstant *wide-leg-space* 27.0)
-(defconstant *trigger-radius* 0.2)
+(defconstant *trigger-radius* 0.1)
 (defconstant max-step-dist 30.0)
-(defconstant *block-startup* 8)
+(defconstant *block-startup* 1)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -20,7 +20,7 @@
 "get-butterfly-angle must return a non nil value for this function to work"
   (* (let ((val (* (get-butterfly-angle) 2.0 (/ pi))))
 			(min (sqr val) 1.5))
-		;(get-numeric :move)
+		(get-axis-dist)
 		max-step-dist))
 
 (defun valid-step-dist ()
@@ -40,7 +40,7 @@
 	  ((and (get-pressed :a1) (get-in-region :min-butterfly (/ (* pi 1) 8) :max-butterfly (/ (* pi 7) 8)))
        (let ((val (min (/ (get-butterfly-angle) (* pi 0.5)) 1.0)))
 	    (format t "~&val: ~a~&ba: ~a~&" val (get-butterfly-angle))
-	    (set-buffered-state (make-state 'straight :forward-speed (* 1.8 val) :leg-space (+ *neutral-leg-space* (* 12.0 val))))))
+	    (set-buffered-state (make-state 'straight :forward-speed (* 1.5 val) :leg-space (+ *neutral-leg-space* (* 12.0 val))))))
 	 
       ((and (get-pressed :a1))
        (set-buffered-state (make-state 'jab)))
@@ -90,16 +90,20 @@
 	   #|((and (valid-step-dist) (or (and (get-held :defense) (get-pressed :move)) (and (get-held :move) (get-pressed :defense))))
 		)|#
       
-      ((and (get-held :defense) (get-held :a1))
-       (set-buffered-state (make-state 'grab)))
-      
-      ((get-pressed :defense)
-       (set-buffered-state (make-state 'high-block)))
+      #|((and (get-held :defense) (get-held :a1))
+       (set-buffered-state (make-state 'grab)))|#
 	  
-	  ((get-pressed :alt-def)
+	  ((and (get-pressed :defense)
+			(get-in-region :max-butterfly (/ (* pi 2) 8)
+				:min-axis-dist *trigger-radius*))
        (set-buffered-state (make-state 'high-block :block-height :gut)))
+	   
+	   ((get-pressed :defense)
+       (set-buffered-state (make-state 'high-block)))
 
-      ((and (get-pressed :dodge) (get-in-region :min-butterfly (/ (* pi 6) 8) :min-axis-dist *trigger-radius*))
+      ((or
+			(and (get-pressed :dodge) (get-in-region :min-butterfly (/ (* pi 6) 8) :min-axis-dist *trigger-radius*))
+			(and (get-held :dodge) 	  (get-region-entered :min-butterfly (/ (* pi 6) 8) :min-axis-dist *trigger-radius*)))
        (set-buffered-state (make-state 'sidestep)))
       
       ;; ((and (get-held :dodge) (or (get-tapped :r-right) (get-tapped :r-left)))
@@ -107,8 +111,11 @@
       ;; 				  ;; (get-numeric :throttle)
       ;; 				  ))
 	  
-	  ((and (get-held :move) (get-region-entered :min-axis-dist *trigger-radius*) (valid-step-dist))
+	  ((and (get-held :move) (get-region-entered :min-axis-dist *trigger-radius* :min-butterfly 0.01) (valid-step-dist))
 		(set-buffered-state (make-state 'continued-step :dir held-dir :total-dist (get-step-dist) :foot-pos (+ 2.0 *neutral-leg-space*))))
+		
+	  ((and (get-held :dodge) (get-region-entered :min-axis-dist *trigger-radius* :min-butterfly 0.01) (valid-step-dist))
+		(set-buffered-state (make-state 'freestep :dir held-dir :total-dist (get-step-dist))))
       
       ((and (get-in-region :min-axis-dist *trigger-radius*)  (valid-step-dist))
        (if (get-pressed :dodge)
@@ -120,10 +127,9 @@
 
 ;;Idle
 
-(defun use-buffered-state ()
-	(let ((bs (get-buffered-state)))
-	(if bs
-	   (change-state *fighter* bs))
+(defun use-buffered-state (&optional (bs (get-buffered-state)))
+	(when (and bs (tensions-resolved bs))
+	   (change-state *fighter* bs)
 	   (set-buffered-state nil)))
 
 (defstate "idle"
@@ -146,15 +152,20 @@
 		(common-transitions)
 		(when (not (get-buffered-state))
 		 (cond
-			((get-held :defense)
-			(set-buffered-state (make-state 'high-block)))
-			((get-held :alt-def)
-			(set-buffered-state (make-state 'high-block :block-height :gut)))))
+			((and (get-held :defense)
+			(get-in-region :max-butterfly (/ (* pi 2) 8)
+				:min-axis-dist *trigger-radius*))
+			(set-buffered-state (make-state 'high-block :block-height :gut)))
 			
-	(let ((bs (get-buffered-state)))
+			((get-held :defense)
+			(set-buffered-state (make-state 'high-block)))))
+			
+	(use-buffered-state)
+			
+	#|(let ((bs (get-buffered-state)))
        (when (and bs (tensions-resolved bs))
 	   (change-state *fighter* bs)
-	   (set-buffered-state nil))))))
+	   (set-buffered-state nil)))|#)))
 
   :entryfunc
   (progn
@@ -260,7 +271,7 @@
 	(make-instance 'clash-tribox
 				   :parent (state fighter)
 				   :x (* (get-direction fighter) (if (equal height-symbol :high) 5.0 2.0)) :Y (if (equal height-symbol :high) 43.0 27.0)
-				   :scalar-list (list (if (equal height-symbol :high) 8.0 2.0) 20.0  8.0 0.0  0.0 10.0)))
+				   :scalar-list (list (if (equal height-symbol :high) 4.0 2.0) 20.0  8.0 0.0  0.0 10.0)))
 
 (defstate "high-block"
   :supers
@@ -268,6 +279,10 @@
 
   :hb
   multi-hitbox
+  
+  :constants
+  ((max-reco 10)
+  (outside-tension 14))
 
   :slots
   (;;CAN BE: nil - meaning that there has been no trigger causing the state to change.
@@ -292,29 +307,31 @@
 	 (funcall escape-func)))
 	 
    (progn
-   (if (and (not blockbox) (> tpos 4))
+   (if (and (not blockbox) (> tpos 0))
 		(set-blockbox (make-block-tribox block-height)))
-   (if (> tpos block-startup)
+   ;(if (> tpos block-startup)
 	(cond
-	 ((or (and (equal block-height :high) (not (get-held :defense)))
-		  (and (equal block-height :gut) (not (get-held :alt-def))))
+	 ((and (> tpos block-startup)
+		(or (not (get-held :defense))
+			(and (equal block-height :high)  (get-in-region :max-butterfly (/ (* pi 2) 8)
+																:min-axis-dist *trigger-radius*))
+			(and (equal block-height :gut) (not (get-in-region :max-butterfly (/ (* pi 2) 8)
+																:min-axis-dist *trigger-radius*)))))
 	  (common-transitions)
-	  (setf escape-time block-startup)
-	  (setf escape-func (λ (switch-to-state 'idle))))
-	
-	 ((and (get-held :a1) (get-held :defense))
-	  (setf escape-time 5)
-	  (setf escape-func (λ (switch-to-state 'grab)))))
+	  (setf escape-time (min tpos max-reco))
+	  (setf escape-func (λ (set-tension :outside-stance outside-tension) (switch-to-state 'idle)))))
 	 
-	(if (get-pressed :cancel)
-	  (progn (setf escape-time (+ 4 (/ tpos 2)))
-			(setf escape-func (λ (switch-to-state 'idle))))
+	#|(if (get-pressed :cancel)
+	  (progn (setf escape-time (min tpos max-reco))
+			(setf escape-func (λ (set-tension :outside-stance outside-tension) (switch-to-state 'idle))))
 	 (if (and (valid-step-dist) (get-held :defense) (get-pressed :move))
 		(progn (format t "CS~&") (switch-to-state 'continued-step :dir held-dir :total-dist (get-step-dist) :foot-pos (+ 2.0 *neutral-leg-space*)))
-	 (common-transitions)))))))
+	 (common-transitions)))|#
+	 ;)
+	 )))
 	 
 	:tensions-resolved
-	(not (tensions-exist :exceptions '(:front-pressure))))
+	(not (tensions-exist :exceptions '(:front-pressure :rear-pressure :kick-recovery :outside-stance))))
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -715,6 +732,7 @@ In this function the new foot pos is affected by the new velocity instead of the
       (set-time-position animation (/ foot-pos 60.0)))))
 
 
+	  
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; freestep
 
@@ -743,19 +761,19 @@ In this function the new foot pos is affected by the new velocity instead of the
   ((interruption-time (if (equal (car pending-state) :cancel) (cadr pending-state) nil))
   (time-mult 20.0)
   (dist-weight (sqrt (/ total-dist 10.0)))
-  (pre-time (round (* dist-weight (+ 1 (* time-mult 0.16)))))
+  (pre-time (round (* dist-weight (+ 1 (* time-mult 0.1)))))
   (body-time ;12
-  (round (* dist-weight (+ 1 (* time-mult 0.44)))))
+  (round (* dist-weight (+ 1 (* time-mult 0.50)))))
   (slow-time ;17
-  (round (* dist-weight (+ 1 (* time-mult 0.72)))))
-  (final-time (if interruption-time 14 (* dist-weight (+ time-mult 2.0))))
+  (round (* dist-weight (+ 1 (* time-mult 0.60)))))
+  (final-time (if interruption-time 14 (* dist-weight (+ time-mult 1.0))))
   (end-time (round final-time))
   (trans-fact total-dist)
   (spd (if (or (< tpos pre-time) interruption-time)
 	(* (/ 0.04 (- pre-time 1.0)) trans-fact)
 	(if (< tpos body-time)
-	 (* (/ 0.76 (- body-time pre-time)) trans-fact)
-	 (if (< tpos slow-time) (* (/ 0.2 (- slow-time body-time)) trans-fact) (* 0.0 trans-fact)))))
+	 (* (/ 0.86 (- body-time pre-time)) trans-fact)
+	 (if (< tpos slow-time) (* (/ 0.1 (- slow-time body-time)) trans-fact) (* 0.0 trans-fact)))))
   (vel (* dir spd)))
   
   :main-action
@@ -788,11 +806,13 @@ In this function the new foot pos is affected by the new velocity instead of the
 			(format t "~&CD: ~a tpos: ~a ~&" covered-dist tpos)
 			(if (equal (car pending-state) :defense) (progn (switch-to-state 'high-block :tpos (- tpos (cadr pending-state))))
 				(progn
-				(set-tension :front-pressure 15)
+				(if (equal dir positive)
+					(set-tension :front-pressure (round (* dist-weight 5)))
+					(set-tension :rear-pressure (round (* dist-weight 5))))
 				(switch-to-state 'idle)))))))
 				
 	:tensions-resolved
-	(not (tensions-exist :exceptions '(:front-pressure)))
+	(not (tensions-exist :exceptions '(:front-pressure :rear-pressure)))
   
   :rest
   (progn
@@ -942,23 +962,32 @@ In this function the new foot pos is affected by the new velocity instead of the
 		 (common-transitions))|#
 	(common-transitions)
    
-   (if (and (or (equal (type-of (get-buffered-state)) 'continued-step) (and (get-held :move) (valid-step-dist) (equal dir held-dir))) (equal tpos body-time))
+   (cond
+		((and (or (= tpos body-time) (= tpos final-time)) (equal dir (get-direction)) (equal (type-of (get-buffered-state)) 'sidekickW))
+			(use-buffered-state))
+   
+		((and (or (and (equal (type-of (get-buffered-state)) 'continued-step) (equal dir (dir (get-buffered-state))))
+				(and (get-held :move) (valid-step-dist) (equal dir held-dir))) 
+			(equal tpos body-time))
 		(progn (setf tpos 0) (setf covered-dist 0.0) (setf total-dist (or (and (equal (type-of (get-buffered-state)) 'continued-step) (total-dist (get-buffered-state))) (get-step-dist)))
 			(setf foot-pos (+ (* 0.3 total-dist) *neutral-leg-space*))
-			(set-buffered-state nil)
-			;(if (equal (type-of (get-buffered-state)) 'continued-step) (if (= (third pending-state) 0) (setf pending-state (list nil nil)) (setf (third pending-state) 0)))
-			))
+			(set-buffered-state nil)))
+			
+		((and (get-held :move) (null (get-buffered-state)) (valid-step-dist) (equal (opposite dir) held-dir))
+			(progn (set-buffered-state (make-state 'continued-step :dir held-dir :total-dist (get-step-dist) :foot-pos (+ 2.0 *neutral-leg-space*)))))
+		
+		(t (lcase tpos
+		    (end-time
+			(if (equal dir positive)
+			(set-tension :front-pressure 15)
+			(set-tension :rear-pressure 15))
+			(switch-to-state 'idle)))))
    
-   (lcase tpos
-	 (end-time
-		(if (equal dir positive)
-		(set-tension :front-pressure 20)
-		(set-tension :rear-pressure 20))
-		(switch-to-state 'idle)))
-	(format t "~&f-p: ~a ~a~&" foot-pos pending-state))
+   
+	(format t "~&f-p: ~a ~a~&" foot-pos (type-of (get-buffered-state))))
 	
   :tensions-resolved
-  (not (tensions-exist :exceptions '(:front-pressure :rear-pressure)))
+  (not (tensions-exist :exceptions '(:front-pressure :front-leg-forward :rear-pressure :kick-recovery)))
   
   :rest
   (progn
@@ -1146,6 +1175,9 @@ In this function the new foot pos is affected by the new velocity instead of the
 	(common-transitions)
    (when (>= tpos end-time)
      (switch-to-state 'idle :key-buffer key-buffer)))
+	
+  :tensions-resolved
+  (not (tensions-exist :exceptions '(:kick-recovery)))
 
   :rest
   (progn

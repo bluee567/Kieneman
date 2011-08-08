@@ -377,6 +377,9 @@
 
   :supers
   (clash-attack-box)
+  
+  :constants
+  ((end-movement 15))
 
   :slots
   ((tpos-delay :initform 0) ;Used to delay tpos when canceling the attack.
@@ -440,11 +443,15 @@
 	 
 	 (when (<= 7 tpos 9) (setf (x tip-point) (+ (slot-value tip-point 'x) 5.0)))
 	 
-	 (move-forward move-speed)
+	 (when (<= tpos end-movement)
+		(move-forward move-speed))
    
    (within 12 25
 	   (when to-second
 	     (switch-to-state 'second-jab))))
+	
+	:tensions-resolved
+	(not (tensions-exist :exceptions '(:rear-pressure)))
   
   :rest
   (progn
@@ -452,12 +459,20 @@
      ())
 	 
 	 (def-statemeth mutual-clash :after ((other jab))
-		(setf move-speed -0.3)
-		(setf (move-speed other) -0.3))
+		(when (< tpos end-movement)
+		  (let*
+			((actual-dist (- 30.0 (ground-dist parent (parent other))))
+			(actual-speed (min 0.0 (/ actual-dist (- tpos end-movement)))))
+				(setf move-speed actual-speed)
+				(setf (move-speed other) actual-speed))))
 	
 	 (def-statemeth attack-blocked (other-state)
 		(ccnm)
-		(setf move-speed -0.2))
+		(when (< tpos end-movement)
+		  (let*
+			((actual-dist (- 25.0 (ground-dist parent (target parent))))
+			(actual-speed (min 0.0 (/ actual-dist (- tpos end-movement)))))
+				(setf move-speed actual-speed))))
   
    (defmethod handle-collision ((rab jab-box) (state idle))
      (with-accessors ((fighter parent)) state		
@@ -598,6 +613,9 @@
 	 ;;If cancel-time
 	 (if (= tpos (+ cancel-extra (* 2 cancel-time))) (switch-to-state 'idle :key-buffer key-buffer))))
 
+	;:tensions-resolved
+	;(not (tensions-exist :exceptions '(:kick-recovery)))
+
   :rest
   (progn
     (def-statemeth animate ()
@@ -641,15 +659,13 @@ is possible from the foot position of the previous state.
    (prep-time)
    (punch-time)
    (reco-time)
+   (end-movement)
    (base-damage)
    (max-vel)
    (deccel-max-vel)
    (prep-base-deccel)
    ;;These values are 'live' and modifiable.
-   (vel)
-   ;;Key buffer.
-   ;; (key-buffer :initform nil)
-   )
+   (vel))
 
   :animation
   single-animation
@@ -693,6 +709,7 @@ is possible from the foot position of the previous state.
 	 ;;Causes the recovery phase to last longer the faster the punch.
 	 (progn
 	   (setf action :punch)
+	   (setf vel 0.0)
 	   ;;Resets the timer to 0, allowing the hitbox to be destroyed with precision.
 	   (setf tpos 0)))))
 
@@ -723,7 +740,9 @@ is possible from the foot position of the previous state.
      (:reco
       ;;After the attack box has already been deployed.
       (when (= tpos 2)
-	(remove-hitbox))
+		(remove-hitbox))
+	  (when (<= tpos end-movement)
+		(move-forward vel))
       (when (> tpos reco-time)
 		(set-tension :front-pressure 10)
 		(switch-to-state 'idle :key-buffer key-buffer))))
@@ -736,11 +755,11 @@ is possible from the foot position of the previous state.
   (progn
     (defmethod initialize-instance :after ((state straight) &key)
       (with-accessors ((forward-speed forward-speed) (accel-time accel-time) (prep-time prep-time) (reco-time reco-time) (punch-time punch-time) (base-damage base-damage)
-		       (base-accel base-accel) (prep-base-deccel prep-base-deccel) (max-vel max-vel) (deccel-max-vel deccel-max-vel) (leg-space leg-space) (vel vel)) state
+		       (base-accel base-accel) (prep-base-deccel prep-base-deccel) (max-vel max-vel) (deccel-max-vel deccel-max-vel) (leg-space leg-space) (vel vel) (end-movement end-movement)) state
        (let* ((power (+ forward-speed extra-speed))
 	      (total-accel (/ (+ leg-space 25.0) 60.0)))
 	 (setf vel forward-speed)
-	 (setf accel-time 9)
+	 (setf accel-time 14)
 	 (setf base-accel 0.2)
 	 (setf max-vel 2.0)
 	 (setf prep-base-deccel 0.4)
@@ -748,6 +767,7 @@ is possible from the foot position of the previous state.
 	 (setf punch-time (round (- 3.0 (/ (- leg-space *neutral-leg-space*) 3))))
 	 (setf prep-time 20);TO DO!!
 	 (setf reco-time (+ 18 (round (* 5.0 (/ (abs forward-speed) max-entrance-speed))))) ;TO DO!!
+	 (setf end-movement (round (/ reco-time 2.0)))
 	 (setf base-damage (round (* power (/ 100.0 max-power))))
 
 	 (format t "~&************************~%")
@@ -755,6 +775,12 @@ is possible from the foot position of the previous state.
 ~%base-damage: ~a ~8T~%"
 		 forward-speed accel-time reco-time base-damage)
 	 (format t "~&************************~%"))))
+	 
+	  (def-statemeth attack-blocked (other-state)
+		(ccnm)
+		(let
+		((actual-dist (- 24.0 (ground-dist parent (target parent)))))
+			(setf vel (/ actual-dist (- tpos end-movement)))))
     
     (def-statemeth animate ()
       (let* ((ftime (float tpos))
@@ -845,12 +871,13 @@ is possible from the foot position of the previous state.
   :slots
   ((hip-box)
    (leg-overstep :initform 0.0)
-   (move-speed :initform 0.3)
+   (move-speed :initform 0.5)
    (move-deccel :initform 0.0))
 
   :funcs
   ((attack-time 22)
    (threat-end-time (+ attack-time 4))
+   (end-movement 40)
    (end-time 64))
 
   :initfunc
@@ -865,13 +892,16 @@ is possible from the foot position of the previous state.
 
   :main-action
   ((common-transitions)
-  (if (> move-speed 0.0)
+  
+  (when (<= tpos end-movement)
+   (if (> move-speed 0.0)
 	(animate-forward move-speed)
-	(progn (move-forward move-speed) (move-animation move-speed)))
+	(progn (move-forward move-speed) (move-animation move-speed))))
+	
    (lcase tpos
 	  (10 (set-clashbox (make-instance 'clash-tribox
 				   :parent state
-				   :x (* (get-direction fighter) 6.0) :Y 30.0
+				   :x (* (get-direction fighter) 3.0) :Y 30.0
 				   :scalar-list (list 0.0 10.0  0.0 0.0  20.0 8.0))))
 	  (attack-time
 	   (set-hitbox
@@ -884,7 +914,7 @@ is possible from the foot position of the previous state.
 	     :blockstun (- end-time 20 tpos)
 	     :block-movement-time 20
 	     :blockdist 0.0
-	     :x (* (get-direction fighter) 34.0) :Y 32.0
+	     :x (* (get-direction fighter) 30.0) :Y 32.0
 	     :radius 10.0 :height 8.0)))
 		 
 		((+ 1 attack-time) (setf (damage (hitbox state)) 0)
@@ -896,25 +926,31 @@ is possible from the foot position of the previous state.
 
 	  (end-time
 	   (set-tension :front-leg-forward 10)
-	   (switch-to-state 'idle :key-buffer key-buffer))))
+	   (switch-to-state 'idle :key-buffer key-buffer))
+	   
+	   (t ))
+	   
+	   (when (and (< (+ 5 end-movement) tpos end-time) (or (equal (type-of (get-buffered-state)) 'sidekickW) (equal (type-of (get-buffered-state)) 'continued-step)))
+				(use-buffered-state)))
+	
+	:tensions-resolved
+	(not (tensions-exist :exceptions '(:front-leg-forward :kick-recovery)))
 
   :rest
   (progn
-    #|(def-statemeth animate ()
-      (ccnm)
-      (if (get-enabled animation)
-	  (set-position-f (ogre-node parent) (- x (float (* tpos move-speed (get-direction fighter)))) y 0.0)))|#
-	  
 	  (def-statemeth mutual-clash :after ((other sidekickW))
-		(setf move-speed -0.1)
-		(setf (move-speed other) -0.1))
+		(when (< tpos end-movement)
+		  (let*
+			((actual-dist (- 35.0 (ground-dist parent (parent other))))
+			(actual-speed (min move-speed (/ actual-dist (- tpos end-movement)))))
+				(setf move-speed actual-speed)
+				(setf (move-speed other) actual-speed))))
 		
 	  (def-statemeth attack-blocked (other-state)
 		(ccnm)
-		(let*
-		((actual-dist (- 30.0 (ground-dist parent (target parent))))
-			(actual-dist (max actual-dist 0.0)))
-			(setf move-speed (/ actual-dist (- tpos end-time)))))
+		(let
+		((actual-dist (- 30.0 (ground-dist parent (target parent)))))
+			(setf move-speed (/ actual-dist (- tpos end-movement)))))
 
     (def-statemeth linear-tracking ()
       nil)))
@@ -983,6 +1019,9 @@ is possible from the foot position of the previous state.
 
 	  (end-time
 	   (switch-to-state 'idle :key-buffer key-buffer))))
+	   
+	:tensions-resolved
+	(not (tensions-exist :exceptions '(:front-leg-forward :rear-pressure :front-pressure)))
 
   :rest
   (progn
@@ -1032,7 +1071,7 @@ is possible from the foot position of the previous state.
 		
    (lcase tpos
 	  (end-time
-	   (set-tension :front-leg-forward 15)
+	   (set-tension :front-leg-forward 8)
 	   (switch-to-state 'idle :key-buffer key-buffer))))
 	
 	:tensions-resolved
@@ -1141,7 +1180,7 @@ is possible from the foot position of the previous state.
 	   (set-hitbox
 	    (make-static-dist-rab 
 	     :parent state
-	     :damage 60
+	     :damage 50
 	     :hitstun (- end-time tpos)
 	     :hitdist 25
 	     :blockstun (- end-time 12 tpos)
@@ -1153,17 +1192,20 @@ is possible from the foot position of the previous state.
 	   (remove-hitbox))
 	  
 	  (end-time
+	   (set-tension :kick-recovery 18)
 	   (switch-to-state 'idle :key-buffer key-buffer))))
+	
+	:tensions-resolved
+	(not (tensions-exist :exceptions '(:kick-recovery)))
 
   :rest
   (progn
-  
-		
   (def-statemeth attack-blocked (other-state)
       (ccnm)
       (setf end-time 65))))
 
 (defmethod-duel character-collision ((cab bodykick) other-state)
+	(ccnm)
 	(when (or (collision (clashbox cab) other-state))
 	  (add-nohit (parent other-state) cab)
       (attack-blocked cab other-state)))
@@ -1196,6 +1238,9 @@ is possible from the foot position of the previous state.
 	   head
 	    (make-uni-box state 0.0 0.0 1.0 0.4)
 	    hip))))
+
+	:tensions-resolved
+	(not (tensions-exist :exceptions '(:rear-pressure)))
 
   :main-action
   ((common-transitions)

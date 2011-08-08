@@ -294,7 +294,7 @@ These will allow the character-collision method to appropriately dispatch the me
 		    :kb-speed 3.0
 		    :decceleration 0.1))|#
 		;;(block-collision-prep (hitbox cab) sbb)
-		(change-state fighter (make-block-stun (hitbox cab) fighter))
+		;(change-state fighter (make-block-stun (hitbox cab) fighter))
 	   ;;NOTE: Handle no hitting within the attack blocked method later.
 	   (add-nohit fighter cab)
        (attack-blocked cab sbb))))

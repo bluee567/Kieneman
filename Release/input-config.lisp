@@ -53,13 +53,13 @@
   (let ((d (get-di south pad)) (d2 (get-ai 0 pad)) (u (get-di north pad)) (u2 (get-ai 0 pad :dir -1))
   (l (get-di west pad)) (l2 (get-ai 1 pad :dir -1)) (r (get-di east pad)) (r2 (get-ai 1 pad)))
    (list
-   :a1  (get-ji 3 pad) "Button 1"
-   :a2 (get-ji 0 pad) "Button 2"
+   :a1  (get-ji 2 pad) "Button 1"
+   :a2 (get-ji 1 pad) "Button 2"
    :defense (get-ji 5 pad) "b7"
    :alt-def (get-ji 7 pad) "b6"
-   :move (get-ai 4 pad :dir -1) "Button 8"
+   :move (get-ji 0 pad) "Button 8"
    :cancel (let ((f1 (get-ji 4 pad)) (f2 (get-ji 6 pad))) #'(lambda () (or (funcall f1) (funcall f2)))) "Button 3"
-   :dodge (get-ji 2  pad) "Left Trigger"
+   :dodge (get-ji 3  pad) "Left Trigger"
    :down (make-lamb d d2) "Down Arrow"
    :up  (make-lamb u u2) "Up Arrow"
    :r-left  (make-lamb l l2) "Left Arrow"
@@ -116,6 +116,6 @@
   )
 
 (defvar *2p-input*
-  *k2-config*
-  ;(make-PS3-alt-config 1)
+  ;*k2-config*
+  (make-PS3-alt-config 1)
   )
