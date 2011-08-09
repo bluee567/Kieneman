@@ -29,15 +29,16 @@ Attack-A - Preforms these actions.
 
 	Tap: 				Jab - Will feint if cancel is also pressed (notated with the symbol '*'). Will clash will itself (notated with '#') [* #]
 	Forward + Tap: 		Advancing Hook - [%]
+	Dodge + Tap:		Bear Hug - Heavy/Unblockable (notated with '!') [!]
 	
 
 Attack-B - Preforms these actions.
 
 	Tap:				Roundhouse - [* #]
-	Forward + Tap:		Sidekick - Can be preformed from forward movement (notated with '>'). [# >]
+	Forward + Tap:		Sidekick - Can be preformed from forward movement (notated '>'). [# >]
 	UpForward + Tap&Hold:	Long Front - [* >]
 	Up + Tap:			Bodykick - [#]
-	Down + Tap:			Spinning Hook - Heavy/Unblockable (notated '!') [!]
+	Down + Tap:			Spinning Hook - [!]
 	
 
 Note that various attacks may have hidden properties which may not be apparent at first.
@@ -50,4 +51,5 @@ Currently only white hit point bars are displayed at the top of the screen. Depl
 
 - Known Bugs -
 
-* Pressing down and dodge will lock your character into position.
+* Pressing straight down and dodge will lock your character into position.
+* Loading the game without controllers connected may result in an error.

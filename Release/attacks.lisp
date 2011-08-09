@@ -152,6 +152,7 @@
 
       ((and (> tpos 3) (not grabbed-entity))
        (when (not (get-held :a1))
+	    (set-tension :outside-stance 10)
 		(switch-to-state 'idle)))
 
       ((and (> tpos 3) grabbed-entity)

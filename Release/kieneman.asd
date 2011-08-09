@@ -20,6 +20,7 @@
 		   (:file "ai"
 		      :depends-on ("input"))
 		   (:file "input-config"
+			  :pathname "../input-config"
 		      :depends-on ("ai" "input"))
 
 	       (:file "ffiogre"

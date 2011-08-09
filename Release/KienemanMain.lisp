@@ -170,17 +170,18 @@
      (advance-animation)
      (if (key-held KC_F4)
 	 (return))
-     #|(if (key-held KC_EQUALS)
-	 (incf *frame-delay* (/ 1 60)))
+     (if (key-held KC_EQUALS)
+	 (incf *frame-delay* (/ 1.0 240.0)))
      (if (key-held KC_MINUS)
 	 (progn
-	   (decf *frame-delay* (/ 1 60))
+	   (decf *frame-delay* (/ 1.0 240.0))
 	   (if (< *frame-delay* 0)
-	       (setf *frame-delay* 0))))|#
+	       (setf *frame-delay* 0))))
      (if (not (render-frame))
 	 (restart-case (error 'game-yielded)
 		       (continue () nil)
-		       (exit () (return)))))))
+		       (exit () (return))))
+			   (sleep 0.012))))
 
 (defun reset ()
   (setf (hp *p1*) 1000)

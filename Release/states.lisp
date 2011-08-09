@@ -41,6 +41,9 @@
        (let ((val (min (/ (get-butterfly-angle) (* pi 0.5)) 1.0)))
 	    (format t "~&val: ~a~&ba: ~a~&" val (get-butterfly-angle))
 	    (set-buffered-state (make-state 'straight :forward-speed (* 1.5 val) :leg-space (+ *neutral-leg-space* (* 12.0 val))))))
+		
+	  ((and (get-held :dodge) (get-pressed :a1))
+       (set-buffered-state (make-state 'grab)))
 	 
       ((and (get-pressed :a1))
        (set-buffered-state (make-state 'jab)))
@@ -89,9 +92,6 @@
 	   
 	   #|((and (valid-step-dist) (or (and (get-held :defense) (get-pressed :move)) (and (get-held :move) (get-pressed :defense))))
 		)|#
-      
-      #|((and (get-held :defense) (get-held :a1))
-       (set-buffered-state (make-state 'grab)))|#
 	  
 	  ((and (get-pressed :defense)
 			(get-in-region :max-butterfly (/ (* pi 2) 8)
@@ -281,7 +281,7 @@
   multi-hitbox
   
   :constants
-  ((max-reco 10)
+  ((max-reco 15)
   (outside-tension 10))
 
   :slots
@@ -299,27 +299,28 @@
   (default-hitboxes))
 
   :main-action
-  ((if escape-time
+  ((common-transitions)
+  
+  (if escape-time
      (progn
-	   (common-transitions)
        (decf escape-time)
        (when (<= escape-time 0)
 	 (funcall escape-func)))
 	 
    (progn
-   (if (and (not blockbox) (> tpos 0))
+    (if (and (not blockbox) (> tpos 0))
 		(set-blockbox (make-block-tribox block-height)))
-   ;(if (> tpos block-startup)
+    ;(if (> tpos block-startup)
 	(cond
 	 ((and (> tpos block-startup)
-		(or (not (get-held :defense))
+		(or (get-buffered-state)
+			(not (get-held :defense))
 			(and (equal block-height :high)  (get-in-region :max-butterfly (/ (* pi 2) 8)
 																:min-axis-dist *trigger-radius*))
 			(and (equal block-height :gut) (not (get-in-region :max-butterfly (/ (* pi 2) 8)
 																:min-axis-dist *trigger-radius*)))))
-	  (common-transitions)
 	  (setf escape-time (min tpos max-reco))
-	  (setf escape-func (λ (set-tension :outside-stance outside-tension) (set-minor-tension :lead-hand-use 30) (switch-to-state 'idle)))))
+	  (setf escape-func #'(lambda () (set-tension :outside-stance outside-tension) (set-minor-tension :lead-hand-use 27) (switch-to-state 'idle)))))
 	 
 	#|(if (get-pressed :cancel)
 	  (progn (setf escape-time (min tpos max-reco))
