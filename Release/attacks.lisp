@@ -931,7 +931,7 @@ is possible from the foot position of the previous state.
 	   
 	   (t ))
 	   
-	   (when (and (< (+ 5 end-movement) tpos end-time) (or (equal (type-of (get-buffered-state)) 'sidekickW) (equal (type-of (get-buffered-state)) 'continued-step)))
+	   (when (and (< (+ 10 end-movement) tpos end-time) (or (equal (type-of (get-buffered-state)) 'sidekickW) (equal (type-of (get-buffered-state)) 'continued-step)))
 				(use-buffered-state)))
 	
 	:tensions-resolved

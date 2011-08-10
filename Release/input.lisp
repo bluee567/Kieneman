@@ -131,7 +131,7 @@ corresponding to kc is held down."
 (defun get-axis-input-func (axis joystick)
   (λ (axis-val axis joystick)))
 
-(defun filtered-axis-func (axis joystick &key (dir 1.0) (max 1.0) (dead-range 0.04) (sticky-range 0.001))
+(defun filtered-axis-func (axis joystick &key (dir 1.0) (max 1.0) (dead-range 0.0) (sticky-range 0.001))
   (λ (let ((pos (* dir (/ (axis-val axis joystick) *axis-max-val*))))
        (if (>= pos dead-range)
 	   (if (> pos (- max sticky-range))

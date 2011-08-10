@@ -13,7 +13,7 @@ If you've had any of the above thoughts, I hope Project Kieneman (working title)
 
 - Controls -
 
-The controls are currently assigned to 2 gamepads which must have analogue sticks. Gameplay without analogue controls is possible, but won't allow the degree of precision which would otherwise be possible with analogue enabled.
+The controls are currently assigned to 2 gamepads which must have analogue sticks. Gameplay without analogue controls is possible, but won't allow the degree of precision which would otherwise be possible with analogue enabled. Open the file "input-config.lisp" in a text editor and modify the 1p-input and 2p-input values under the heading 'PLAYER INPUT CONFIGURATIONS' at the bottom of the file.
 
 
 Move - Hold the direction of motion and tap/hold MOVE. Aiming the direction upward will increase the movement distance/speed while aiming diaginally down will shorten it. This method of movement will allow fine control of approach and retreat given that movement requires a certain comitment. Any action which is affected in degree by the angle of the stick will be refered to as a butterfly action (notated with the symbol '%').
@@ -51,5 +51,4 @@ Currently only white hit point bars are displayed at the top of the screen. Depl
 
 - Known Bugs -
 
-* Pressing straight down and dodge will lock your character into position.
 * Loading the game without controllers connected may result in an error.

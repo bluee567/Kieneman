@@ -313,7 +313,7 @@
     ;(if (> tpos block-startup)
 	(cond
 	 ((and (> tpos block-startup)
-		(or (get-buffered-state)
+		(or (equal 'straight (type-of (get-buffered-state)))
 			(not (get-held :defense))
 			(and (equal block-height :high)  (get-in-region :max-butterfly (/ (* pi 2) 8)
 																:min-axis-dist *trigger-radius*))
@@ -768,7 +768,7 @@ In this function the new foot pos is affected by the new velocity instead of the
   (slow-time ;17
   (round (* dist-weight (+ 1 (* time-mult 0.60)))))
   (final-time (if interruption-time 14 (* dist-weight (+ time-mult 1.0))))
-  (end-time (round final-time))
+  (end-time (max 1(round final-time)))
   (trans-fact total-dist)
   (spd (if (or (< tpos pre-time) interruption-time)
 	(* (/ 0.04 (- pre-time 1.0)) trans-fact)
@@ -800,7 +800,7 @@ In this function the new foot pos is affected by the new velocity instead of the
 	 ((and (not blockbox) (= tpos slow-time) (equal (car pending-state) :defense))
 		 (set-blockbox (make-block-tribox :high)))))
 				   
-	(if (= final-time 0) (switch-to-state 'idle);The case that zero distance was given.
+	(if (= end-time 0) (switch-to-state 'idle);The case that zero distance was given.
 		;else
 		(lcase tpos
 			(end-time
@@ -944,7 +944,7 @@ In this function the new foot pos is affected by the new velocity instead of the
   (pre-time (round (* 5.0 dist-weight)))
   (body-time (round (* 20.0 dist-weight)))
   (final-time (round (* 22.0 dist-weight)))
-  (end-time (round (* 28.0 dist-weight)))
+  (end-time (max 1 (round (* 28.0 dist-weight))))
   (spd (/ (* 1.5 total-dist) final-time))
    (vel (* dir spd)))
   
@@ -985,7 +985,7 @@ In this function the new foot pos is affected by the new velocity instead of the
 			(switch-to-state 'idle)))))
    
    
-	(format t "~&f-p: ~a ~a~&" foot-pos (type-of (get-buffered-state))))
+	(format t "~&f-p: ~a ~a~&" total-dist (type-of (get-buffered-state))))
 	
   :tensions-resolved
   (not (tensions-exist :exceptions '(:front-pressure :front-leg-forward :rear-pressure :kick-recovery)))

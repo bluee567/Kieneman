@@ -406,7 +406,7 @@
            (|COMMON-LISP|::|NIL| |KIENEMAN|::|GAME-YIELDED|)
            (|COMMON-LISP|::|T| |COMMON-LISP|::|T| |COMMON-LISP|::|T|) ()
            |COMMON-LISP|::|NIL|)
-        (#(|COMMON-LISP|::|CONDITION| 167.) 3. . 2.) 0.01f0
+        (#(|COMMON-LISP|::|CONDITION| 167.) 3. . 2.) 0.012f0
         |COMMON-LISP|::|SLEEP|)
        (|COMMON-LISP|::|T| |COMMON-LISP|::|T| |COMMON-LISP|::|T|) ()
        |COMMON-LISP|::|NIL|))

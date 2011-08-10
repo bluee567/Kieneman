@@ -110,13 +110,13 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;|#
 
 (defvar *1p-input*
-  k1-config
+  ;k1-config
   ;(make-PS3-defult-config 0)
-  ;(make-logitech-config 0)
+  (make-logitech-config 0)
   )
 
 (defvar *2p-input*
-  k2-config
-  ;(make-PS3-alt-config 1)
+  ;k2-config
+  (make-PS3-alt-config 1)
   ;(make-logitech-config 1)
   )
