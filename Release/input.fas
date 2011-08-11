@@ -332,7 +332,7 @@ corresponding to kc is held down."))
        #59Y(00 00 00 00 02 00 00 00 86 1D 04 00 00 00 00 2B 06 7F 07 00 00 7F
             06 00 01 3B 05 01 C9 0B 00 02 3B 04 01 C9 0B 00 03 3B 03 01 CA 0B
             00 04 3B 02 01 CB 0B 00 05 AC 2C 07 01 19 08)
-       (:|DIR| :|MAX| :|DEAD-RANGE| :|STICKY-RANGE| #1=1.0f0 #2=0.0f0
+       (:|DIR| :|MAX| :|DEAD-RANGE| :|STICKY-RANGE| #1=1.0f0 #2=0.02f0
         #3=0.001f0
         #Y(|KIENEMAN|::|FILTERED-AXIS-FUNC-1|
            #80Y(00 00 00 00 00 00 00 00 06 01 69 00 03 69 00 01 69 00 02 70 01

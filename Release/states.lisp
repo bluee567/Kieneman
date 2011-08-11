@@ -30,6 +30,14 @@
 (defun rear-avalable ()
 	"true if any the rear foot is stable enough to begin moves such as the straight punch."
 	t)
+	
+(defun use-buffered-state (&optional (bs (get-buffered-state)))
+	(when (and bs (tensions-resolved bs))
+	   (change-state *fighter* bs)
+	   (set-buffered-state nil)))
+
+(defun buffered-equal (sym)
+	(equal (type-of (get-buffered-state)) sym))
 
 (defmacro common-transitions ()
   `(progn
@@ -126,11 +134,7 @@
 		))))))
 
 ;;Idle
-
-(defun use-buffered-state (&optional (bs (get-buffered-state)))
-	(when (and bs (tensions-resolved bs))
-	   (change-state *fighter* bs)
-	   (set-buffered-state nil)))
+	  
 
 (defstate "idle"
   :slots
@@ -292,7 +296,10 @@
    (escape-func :initform nil)
    (block-height :initform :high)
    (block-angle :initform 'outside)
-   (block-startup :initform *block-startup*))
+   (block-startup :initform *block-startup*)
+   ;;For when in blockstun
+   (move-speed :initform 0.0)
+   (movement-end-timer :initform 0))
 
   :initfunc
   ((&key)
@@ -300,6 +307,10 @@
 
   :main-action
   ((common-transitions)
+  
+  (when (> movement-end-timer 0)
+	(decf movement-end-timer)
+	(move-forward move-speed))
   
   (if escape-time
      (progn
@@ -312,7 +323,7 @@
 		(set-blockbox (make-block-tribox block-height)))
     ;(if (> tpos block-startup)
 	(cond
-	 ((and (> tpos block-startup)
+	 ((and (> tpos block-startup) (<= movement-end-timer 0)
 		(or (equal 'straight (type-of (get-buffered-state)))
 			(not (get-held :defense))
 			(and (equal block-height :high)  (get-in-region :max-butterfly (/ (* pi 2) 8)
@@ -330,6 +341,12 @@
 	 (common-transitions)))|#
 	 ;)
 	 )))
+	 
+	 :rest
+	 (progn
+	 (def-statemeth block-hit (cab)
+		(setf move-speed (/ (- (blockdist cab)) (block-movement-time cab)))
+		(setf movement-end-timer (block-movement-time cab))))
 	 
 	:tensions-resolved
 	(not (tensions-exist :exceptions '(:front-pressure :rear-pressure :kick-recovery :outside-stance))))
@@ -964,11 +981,11 @@ In this function the new foot pos is affected by the new velocity instead of the
 	(common-transitions)
    
    (cond
-		((and (or (= tpos body-time) (= tpos final-time)) (equal dir positive) (equal (type-of (get-buffered-state)) 'sidekickW))
+		((and (or (= tpos body-time) (= tpos final-time)) (equal dir positive) (buffered-equal 'sidekickW))
 			(use-buffered-state))
    
 		((and (or (and (equal (type-of (get-buffered-state)) 'continued-step) (equal dir (dir (get-buffered-state))))
-				(and (get-held :move) (valid-step-dist) (equal dir held-dir))) 
+				(and (get-held :move) (valid-step-dist) (equal dir held-dir) (not (get-buffered-state))))
 			(equal tpos body-time))
 		(progn (setf tpos 0) (setf covered-dist 0.0) (setf total-dist (or (and (equal (type-of (get-buffered-state)) 'continued-step) (total-dist (get-buffered-state))) (get-step-dist)))
 			(setf foot-pos (+ (* 0.3 total-dist) *neutral-leg-space*))
@@ -980,8 +997,8 @@ In this function the new foot pos is affected by the new velocity instead of the
 		(t (lcase tpos
 		    (end-time
 			(if (equal dir positive)
-			(set-tension :front-pressure 15)
-			(set-tension :rear-pressure 15))
+			(set-tension :front-pressure 20)
+			(set-tension :rear-pressure 20))
 			(switch-to-state 'idle)))))
    
    

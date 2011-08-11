@@ -421,10 +421,10 @@
 				   :hitstun 18
 				   :hit-movement-time 14
 				   :hitdist 38
-				   :min-hitdist 5
+				   ;:min-hitdist 5
 				   :blockstun 8
-				   :block-movement-time 6
-				   :blockdist 30
+				   ;:block-movement-time 6
+				   :blockdist 30.0
 				   :x (* (get-direction fighter) 20.0) :Y 53.0
 				   :point-list (list (make-instance 'child-vector :x 12.0 :y 56.0 :parent state) (make-instance 'child-vector :x 12.0 :y 52.0 :parent state) tip-point))
 				   #|(make-static-dist-rab
@@ -555,8 +555,8 @@
   :funcs
   ((clash-time 13)
    (attack-time 20)
-   (block-time (+ 40 (if blocked 12 0)))
-   (end-time (+ block-time 12)))
+   (block-time (+ 46 (if blocked 8 4)))
+   (end-time (+ block-time 6)))
 
   :animation
   single-animation
@@ -586,7 +586,7 @@
 	 ;;(use-buffered-state)
 	 (set-buffered-state nil)
      (switch-to-state 'high-block
-		      :block-startup (+ (- end-time tpos) 10)))
+		      :block-startup (+ (- end-time tpos) 2)))
 
    (when (<= tpos attack-time)
     (setf (radius hip-box) (+ 0.65 (* 1.5 (/ tpos (float attack-time))))))
@@ -724,15 +724,18 @@ is possible from the foot position of the previous state.
 				   :x (* (get-direction fighter) 10.0) :Y 42.0
 				   :scalar-list (list -4.0 8.0  -4.0 0.0  4.0 4.0)))
 	  (set-hitbox
-	    (make-instance 'rec-strike-box
+	    (make-static-dist-rab
+		;make-instance 'rec-attack-sdist-box
 			   :parent state
 			   :damage base-damage
 			   :hitstun (+ 2 reco-time)
-			   :hitspeed 1.6
-			   :hitdeccel 0.08
+			   ;:hitspeed 1.6
+			   ;:hitdeccel 0.08
+			   :hitdist 42.0
 			   :blockstun (- reco-time 10)
-			   :blockspeed 1.0
-			   :blockdeccel 0.08
+			   ;:blockspeed 1.0
+			   ;:blockdeccel 0.08
+			   :blockdist 0.0
 			   :x (* (get-direction fighter) 22.0) :Y 42.0
 			   :radius 7.0 :height 6.0))
 	  (setf action :reco)

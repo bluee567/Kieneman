@@ -1,6 +1,6 @@
 -  The Kineman Project  -
 
-v0.51
+v0.52
 
 
 Do you enjoy the thrill of carefully evading an attack in order to set up a devistating counter blow?
@@ -13,10 +13,12 @@ If you've had any of the above thoughts, I hope Project Kieneman (working title)
 
 - Controls -
 
-The controls are currently assigned to 2 gamepads which must have analogue sticks. Gameplay without analogue controls is possible, but won't allow the degree of precision which would otherwise be possible with analogue enabled. Open the file "input-config.lisp" in a text editor and modify the 1p-input and 2p-input values under the heading 'PLAYER INPUT CONFIGURATIONS' at the bottom of the file.
+The controls are currently assigned to 2 gamepads which must have analogue sticks. Gameplay without analogue controls is possible, but won't allow the degree of precision which would otherwise be possible with analogue enabled. Open the file "input-config.lisp" in a text editor and modify the 1p-input and 2p-input values under the heading 'PLAYER INPUT CONFIGURATIONS' at the bottom of the file if you want to change the control configuration.
+
+Exit Game - Press Esc or F4 in order to exit the game.
 
 
-Move - Hold the direction of motion and tap/hold MOVE. Aiming the direction upward will increase the movement distance/speed while aiming diaginally down will shorten it. This method of movement will allow fine control of approach and retreat given that movement requires a certain comitment. Any action which is affected in degree by the angle of the stick will be refered to as a butterfly action (notated with the symbol '%').
+Move - Hold the direction of motion and tap/hold MOVE. Aiming the direction upward will increase the movement distance/speed while aiming diaginally down will shorten it. This method of movement will allow fine control of approach and retreat given that movement requires a certain comitment. Any action which is affected in degree by the angle of the stick will be refered to as a butterfly action (notated with the symbol '%'). 
 
 
 Dodge - Hold the direction of motion and tap/hold DODGE. Works similarly to MOVE, except it creates short bursts of movement.
@@ -52,3 +54,4 @@ Currently only white hit point bars are displayed at the top of the screen. Depl
 - Known Bugs -
 
 * Loading the game without controllers connected may result in an error.
+* The geme is degined to be used WITHOUT vsync turned on.

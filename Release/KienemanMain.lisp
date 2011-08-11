@@ -168,7 +168,7 @@
      (debug-events)
      (move-camera)
      (advance-animation)
-     (if (key-held KC_F4)
+     (if (or (key-held KC_ESCAPE) (key-held KC_F4))
 	 (return))
      (if (key-held KC_EQUALS)
 	 (incf *frame-delay* (/ 1.0 240.0)))

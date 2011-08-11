@@ -14,11 +14,12 @@
 
 (defvar k1-config
   (list
-   :a1 (get-kbi KC_H) "J"
-   :a2 (get-kbi KC_J) "K"
-   :defense (get-kbi KC_K) "L"
-   :dodge (get-kbi KC_U) "I"
-   :cancel (get-kbi KC_I) "O"
+   :a1 (get-kbi KC_G) "G"
+   :a2 (get-kbi KC_H) "H"
+   :defense (get-kbi KC_J) "J"
+   :move (get-kbi KC_T) "T"
+   :dodge (get-kbi KC_Y) "Y"
+   :cancel (get-kbi KC_U) "U"
    :down (get-kbi KC_S) "S"
    :up (get-kbi KC_W) "W"
    :r-left (get-kbi KC_A) "A"
@@ -26,17 +27,17 @@
 
 (defvar k2-config
   (list
-   :a1 (get-kbi KC_L) "J"
-   :a2 (get-kbi KC_SEMICOLON) "K"
-   :defense (get-kbi KC_APOSTROPHE) "L"
+   :a1 (get-kbi KC_L) "L"
+   :a2 (get-kbi KC_SEMICOLON) ";"
+   :defense (get-kbi KC_APOSTROPHE) "'"
    :alt-def (get-kbi KC_SLASH) "/"
-   :dodge (get-kbi KC_O) "I"
+   :dodge (get-kbi KC_O) "O"
    :move (get-kbi KC_LBRACKET) "["
-   :cancel (get-kbi KC_P) "O"
-   :down (get-kbi KC_DOWN) "S"
-   :up (get-kbi KC_UP) "W"
-   :r-left (get-kbi KC_LEFT) "A"
-   :r-right (get-kbi KC_RIGHT) "D"))
+   :cancel (get-kbi KC_P) "P"
+   :down (get-kbi KC_DOWN) "down"
+   :up (get-kbi KC_UP) "up"
+   :r-left (get-kbi KC_LEFT) "left"
+   :r-right (get-kbi KC_RIGHT) "right"))
 
 (defun make-PS3-defult-config (pad)
   (let ((d (get-di south pad)) (d2 (get-ai 2 pad)) (u (get-di north pad)) (u2 (get-ai 2 pad :dir -1))
